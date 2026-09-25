@@ -1,6 +1,6 @@
-<div id="stairlab-concept" aria-label="StairLab 界面概念">
+<div id="stairlab-concept" aria-label="StairLab interactive concept">
   <style>
-    #stairlab-concept{--sl-bg:light-dark(#f4f7f8,#101b25);--sl-panel:light-dark(#ffffff,#162430);--sl-ink:light-dark(#142c3c,#eaf2f7);--sl-dim:light-dark(#536b7b,#a5b8c6);--sl-line:light-dark(#d7e2e8,#304654);--sl-accent:light-dark(#007f8b,#6dd9e2);--sl-soft:light-dark(#e1f3f3,#183a42);--sl-step:light-dark(#e9eff2,#364e5d);--sl-front:light-dark(#cad9e0,#2a404f);--sl-side:light-dark(#b2c7d1,#223644);--sl-metal:light-dark(#f9fbfc,#d9e4eb);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;color:var(--sl-ink);background:var(--sl-bg);border:1px solid var(--sl-line);border-radius:18px;overflow:hidden;width:100%;box-sizing:border-box;font-size:14px;line-height:1.5;container-type:inline-size;container-name:sl-concept}
+    #stairlab-concept{--sl-bg:light-dark(#f4f7f8,#101b25);--sl-panel:light-dark(#ffffff,#162430);--sl-ink:light-dark(#142c3c,#eaf2f7);--sl-dim:light-dark(#536b7b,#a5b8c6);--sl-line:light-dark(#d7e2e8,#304654);--sl-accent:light-dark(#007f8b,#6dd9e2);--sl-soft:light-dark(#e1f3f3,#183a42);--sl-step:light-dark(#e9eff2,#364e5d);--sl-front:light-dark(#cad9e0,#2a404f);--sl-side:light-dark(#b2c7d1,#223644);--sl-metal:light-dark(#f9fbfc,#d9e4eb);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--sl-ink);background:var(--sl-bg);border:1px solid var(--sl-line);border-radius:18px;overflow:hidden;width:100%;box-sizing:border-box;font-size:14px;line-height:1.5;container-type:inline-size;container-name:sl-concept}
     #stairlab-concept *{box-sizing:border-box}
     #stairlab-concept button,#stairlab-concept input{font:inherit}
     #stairlab-concept .sl-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 24px;background:var(--sl-panel);border-bottom:1px solid var(--sl-line);flex-wrap:wrap}
@@ -42,25 +42,25 @@
   </style>
   <header class="sl-head">
     <div class="sl-brand"><div class="sl-wordmark">stair<span>lab</span><span aria-hidden="true">.</span></div><div class="sl-eyebrow">INDUSTRIAL HUMANOID LEARNING</div></div>
-    <div class="sl-status"><span class="sl-dot" aria-hidden="true"></span>界面概念 · 未连接训练</div>
+    <div class="sl-status"><span class="sl-dot" aria-hidden="true"></span>Concept interface · No training run connected</div>
   </header>
-  <div class="sl-intro"><div><div class="sl-kicker">SKF CHALLENGE / 01</div><h2>让每一步，都看得见。</h2></div><div class="sl-meta">G1 示意模型 / 参数化楼梯</div></div>
+  <div class="sl-intro"><div><div class="sl-kicker">SKF CHALLENGE / 01</div><h2>Make every step visible.</h2></div><div class="sl-meta">Illustrative G1 model / Parametric stairs</div></div>
   <div class="sl-workspace">
-    <section class="sl-stage" aria-label="楼梯与机器人几何示意">
-      <div class="sl-toolbar"><div class="sl-switch" role="group" aria-label="查看方式"><button class="cursor-interaction" type="button" data-view="scene" aria-pressed="false">空间视图</button><button class="cursor-interaction" type="button" data-view="perception" aria-pressed="true">感知视图</button></div><span class="sl-meta">SCENARIO PREVIEW</span></div>
-      <svg class="sl-scene" role="img" aria-label="随台阶尺寸更新的三维几何示意图，不代表机器人运行结果"></svg>
-      <div class="sl-caption"><span><strong>●</strong> 地形采样 / 脚落点示意</span><span>概念预览 · 非物理仿真</span></div>
+    <section class="sl-stage" aria-label="Stair and robot geometry">
+      <div class="sl-toolbar"><div class="sl-switch" role="group" aria-label="View mode"><button class="cursor-interaction" type="button" data-view="scene" aria-pressed="false">3D view</button><button class="cursor-interaction" type="button" data-view="perception" aria-pressed="true">Perception view</button></div><span class="sl-meta">SCENARIO PREVIEW</span></div>
+      <svg class="sl-scene" role="img" aria-label="Illustrative 3D stair geometry that updates with the controls; not a robot test result"></svg>
+      <div class="sl-caption"><span><strong>●</strong> Terrain samples / Example footholds</span><span>Concept preview · Not a physics simulation</span></div>
     </section>
-    <aside class="sl-controls" aria-label="场景参数">
-      <div class="sl-control-title"><h3>设计一段楼梯</h3><div class="sl-note">输入值用于几何预览</div></div>
-      <label class="sl-field"><span class="sl-label">台阶高度 <output data-out="rise">20 cm</output></span><input aria-label="台阶高度" data-input="rise" type="range" min="6" max="20" value="20" step="1"></label>
-      <label class="sl-field"><span class="sl-label">踏面深度 <output data-out="tread">40 cm</output></span><input aria-label="踏面深度" data-input="tread" type="range" min="20" max="40" value="40" step="1"></label>
-      <label class="sl-field"><span class="sl-label">可用宽度 <output data-out="width">110 cm</output></span><input aria-label="可用宽度" data-input="width" type="range" min="70" max="140" value="110" step="5"></label>
-      <label class="sl-check"><input type="checkbox" data-input="footholds" checked>显示脚落点示意</label>
-      <div class="sl-evidence" aria-live="polite">实验记录<span>成功率、耗时、跌倒次数：待实测</span></div>
+    <aside class="sl-controls" aria-label="Stair parameters">
+      <div class="sl-control-title"><h3>Set up a staircase</h3><div class="sl-note">Adjust values to preview the geometry</div></div>
+      <label class="sl-field"><span class="sl-label">Riser height <output data-out="rise">20 cm</output></span><input aria-label="Riser height" data-input="rise" type="range" min="6" max="20" value="20" step="1"></label>
+      <label class="sl-field"><span class="sl-label">Tread depth <output data-out="tread">40 cm</output></span><input aria-label="Tread depth" data-input="tread" type="range" min="20" max="40" value="40" step="1"></label>
+      <label class="sl-field"><span class="sl-label">Usable width <output data-out="width">110 cm</output></span><input aria-label="Usable width" data-input="width" type="range" min="70" max="140" value="110" step="5"></label>
+      <label class="sl-check"><input type="checkbox" data-input="footholds" checked>Show example footholds</label>
+      <div class="sl-evidence" aria-live="polite">Experiment log<span>Success rate, time, and falls: not yet measured</span></div>
     </aside>
   </div>
-  <footer class="sl-footer"><div class="sl-flow"><b>01 感知地形</b><span>→</span><b>02 学习迈步</b><span>→</span><b>03 验证泛化</b></div><span>可复现实验 · 可解释结果</span></footer>
+  <footer class="sl-footer"><div class="sl-flow"><b>01 Perceive terrain</b><span>→</span><b>02 Learn to step</b><span>→</span><b>03 Test generalization</b></div><span>Reproducible experiments · Interpretable results</span></footer>
   <script>
   (()=>{
     const root=document.getElementById('stairlab-concept');
@@ -81,7 +81,7 @@
       root.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===state.view)));
       const w=svg.getBoundingClientRect().width||600,h=svg.getBoundingClientRect().height||330;
       svg.setAttribute('viewBox','0 0 '+w+' '+h);svg.replaceChildren();
-      const title=add('title',{});title.textContent='楼梯高 '+state.rise+' 厘米，踏面深 '+state.tread+' 厘米，宽 '+state.width+' 厘米；机器人与脚落点仅作界面示意。';
+      const title=add('title',{});title.textContent='Riser: '+state.rise+' cm; tread: '+state.tread+' cm; usable width: '+state.width+' cm. Robot and footholds are illustrative only.';
       const rise=state.rise/100,tread=state.tread/100,width=state.width/100;
       const project=(x,y,z)=>[x*.92+y*.6,-x*.30+y*.35-z];
       const corners=[[-.8,-width/2-.25,0],[-.8,width/2+.25,0],[5*tread+.3,-width/2-.25,0],[5*tread+.3,width/2+.25,0],[-.55,-.28,1.46],[-.28,.28,1.46]];
@@ -134,7 +134,7 @@
     window.addEventListener('openai:set_globals',event=>{const next=event.detail?.globals?.widgetState?.modelContent;if(next){Object.assign(state,next);render();}});
     new ResizeObserver(render).observe(svg);
     render();
-    if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:render});tweak.addSelect(design,'accent',{label:'强调色',options:[{label:'工业青',value:'teal'},{label:'工程蓝',value:'blue'}]});tweak.addSlider(design,'radius',{label:'外框圆角',min:0,max:24,unit:'px'});}
+    if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:render});tweak.addSelect(design,'accent',{label:'Accent color',options:[{label:'Industrial teal',value:'teal'},{label:'Engineering blue',value:'blue'}]});tweak.addSlider(design,'radius',{label:'Container corner radius',min:0,max:24,unit:'px'});}
   })();
   </script>
 </div>
