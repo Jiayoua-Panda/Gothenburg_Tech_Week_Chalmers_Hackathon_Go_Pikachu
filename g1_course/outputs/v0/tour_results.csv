@@ -1,0 +1,15 @@
+segment,status
+A warm-up,PASS
+B1 up 5deg,PASS
+B1 down 5deg,PASS
+B2 up 10deg,STUCK
+B2 down 10deg,PASS
+B3 up 15deg,STUCK
+B3 down 15deg,FELL
+C1 step 5cm,FELL
+C2 step 10cm,FELL
+C3 step 15cm,FELL
+D1 up 10/30,FELL
+D2 up 15/25,FELL
+E1 down 15/30,FELL
+E2 down 10/30,FELL
