@@ -1,0 +1,40 @@
+<mujoco model="g1 stairs scene">
+
+  <include file="g1_29dof_rev_1_0_daf.xml" />
+
+  <statistic center="2 0 0.8" extent="4.0" />
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global azimuth="-130" elevation="-20" />
+  </visual>
+
+  <asset>
+    <material name="stairs" rgba="0.6 0.6 0.6 1" />
+  </asset>
+
+  <worldbody>
+    <light pos="2 0 3" dir="0 0 -1" directional="true" />
+
+
+
+
+
+    <geom name="stair_up_1" type="box" size="0.200000 0.800000 0.075000" pos="1.355000 0.000000 0.075000" material="stairs" />
+    <geom name="stair_up_2" type="box" size="0.200000 0.800000 0.150000" pos="1.755000 0.000000 0.150000" material="stairs" />
+    <geom name="stair_up_3" type="box" size="0.200000 0.800000 0.225000" pos="2.155000 0.000000 0.225000" material="stairs" />
+    <geom name="stair_up_4" type="box" size="0.200000 0.800000 0.300000" pos="2.555000 0.000000 0.300000" material="stairs" />
+    <geom name="stair_up_5" type="box" size="0.200000 0.800000 0.375000" pos="2.955000 0.000000 0.375000" material="stairs" />
+    <geom name="stair_up_6" type="box" size="0.200000 0.800000 0.450000" pos="3.355000 0.000000 0.450000" material="stairs" />
+    <geom name="stair_up_7" type="box" size="0.200000 0.800000 0.525000" pos="3.755000 0.000000 0.525000" material="stairs" />
+    <geom name="stair_up_8" type="box" size="0.200000 0.800000 0.600000" pos="4.155000 0.000000 0.600000" material="stairs" />
+    <geom name="stair_up_9" type="box" size="0.200000 0.800000 0.675000" pos="4.555000 0.000000 0.675000" material="stairs" />
+    <geom name="stair_up_10" type="box" size="0.200000 0.800000 0.750000" pos="4.955000 0.000000 0.750000" material="stairs" />
+
+
+    <geom name="platform" type="box" size="0.400000 0.800000 0.750000" pos="5.555000 0.000000 0.750000" material="stairs" />
+
+
+    <geom name="upper_corridor" type="box" size="3.500000 0.800000 0.750000" pos="9.455000 0.000000 0.750000" material="stairs" /><geom name="lower_wall_left" type="box" size="0.7 0.05 0.6" pos="0.55 0.9 0.6" /><geom name="lower_wall_right" type="box" size="0.7 0.05 0.6" pos="0.55 -0.9 0.6" /><geom name="upper_wall_left" type="box" size="3.500000 0.050000 0.600000" pos="9.455000 0.900000 2.200000" /><geom name="upper_wall_right" type="box" size="3.500000 0.050000 0.600000" pos="9.455000 -0.900000 2.200000" /></worldbody>
+</mujoco>
