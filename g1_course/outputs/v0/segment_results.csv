@@ -1,0 +1,15 @@
+segment,trials,pass_rate,fell,timeout,mean_time_pass,fail_x_rel,stride_target,stride_mean,stride_err
+A warm-up,10,1.0,0,0,12.739999999999998,nan,nan,nan,nan
+B1 up 5deg,10,1.0,0,0,17.856,nan,nan,nan,nan
+B1 down 5deg,10,0.9,1,0,10.846666666666668,2.6362949815954178,nan,nan,nan
+B2 up 10deg,10,0.0,3,7,nan,-0.823944046721911,nan,nan,nan
+B2 down 10deg,10,0.8,2,0,9.907499999999999,2.5579150234259833,nan,nan,nan
+B3 up 15deg,10,0.0,3,7,nan,-1.9109851256412766,nan,nan,nan
+B3 down 15deg,10,1.0,0,0,8.336,nan,nan,nan,nan
+C1 step 5cm,10,0.0,10,0,nan,0.49138647526803947,nan,nan,nan
+C2 step 10cm,10,0.0,10,0,nan,0.46204306704712683,nan,nan,nan
+C3 step 15cm,10,0.0,10,0,nan,0.43889224729945386,nan,nan,nan
+D1 up 10/30,10,0.0,10,0,nan,0.37409774272884444,nan,nan,nan
+D2 up 15/25,10,0.0,10,0,nan,0.2574214013758456,nan,nan,nan
+E1 down 15/30,10,0.0,10,0,nan,1.1984505644462924,nan,nan,nan
+E2 down 10/30,10,0.1,9,0,7.9,1.1939896518235917,nan,nan,nan
