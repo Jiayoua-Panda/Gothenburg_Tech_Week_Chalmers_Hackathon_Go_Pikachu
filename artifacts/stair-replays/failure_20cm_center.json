@@ -1,0 +1,18 @@
+{
+  "case": "failure_20cm_center",
+  "scene": "skf-corridor-stairs-20cm-40cm.xml",
+  "policy": "third-party G1DWAQ_Lab model_9999.pt",
+  "speed_command_mps": 0.3,
+  "center_correction_uses_simulator_ground_truth": true,
+  "camera_perception_used": false,
+  "visual_only_wall_alpha": 0.08,
+  "outcome": "fall",
+  "sim_time_s": 10.640000000000263,
+  "final_xyz_m": [
+    0.22499595355046081,
+    -0.6725743814656991,
+    0.3186371088745262
+  ],
+  "video_fps": 20,
+  "video_frames": 234
+}
