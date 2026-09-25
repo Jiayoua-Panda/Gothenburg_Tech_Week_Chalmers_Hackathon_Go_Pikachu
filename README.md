@@ -28,7 +28,7 @@ python3 /path/to/visualize/scripts/render.py web/stairlab.fragment.html index.ht
 
 ## Docs
 
-- [SKF challenge brief](docs/SKF_Analyze%20and%20compare%20learning%20methods%20suitable%20for%20industrial%20humanoids.pdf)
-- [Participant schedule & practical info](docs/Participant_Schedule_Practical_Information_Hackathon_2026.pdf)
-- [Challenge to Pitch crash course](docs/GTW%20Chalmers%20Hackathon%20-%20Challenge%20to%20Pitch%20Crash%20Course.pdf)
+- [SKF challenge brief](SKF_Analyze%20and%20compare%20learning%20methods%20suitable%20for%20industrial%20humanoids.pdf)
+- [Participant schedule & practical info](Participant_Schedule_Practical_Information_Hackathon_2026%20%282%29.pdf)
+- [Challenge to Pitch crash course](GTW%20Chalmers%20Hackathon%20-%20Challenge%20to%20Pitch%20Crash%20Course.pdf)
 - [Research papers and reported results](papers/README.md)
