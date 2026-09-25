@@ -1,0 +1,33 @@
+{
+  "mode": "dwaq-fast",
+  "flat_speed_command_mps": 0.6,
+  "initial_lateral_offset_cm": 0,
+  "scene": "artifacts/stair-sweep/scenes/r15_t31_w160.xml",
+  "outcome": "goal",
+  "sim_time_s": 31.619999999997994,
+  "switch_time_s": 23.39999999999963,
+  "switch_x_m": 5.776511576174324,
+  "final_xyz_m": [
+    10.479712531268731,
+    0.09031421626328943,
+    2.2742191852259537
+  ],
+  "max_x_m": 10.479712531268731,
+  "goal_x_m": 10.475,
+  "smoothness_segment": {
+    "segment_x_m": [
+      7.0,
+      10.4
+    ],
+    "mean_forward_speed_mps": 0.5811999692015071,
+    "forward_speed_std_mps": 0.05440455759785858,
+    "pelvis_height_std_cm": 0.46886666490832996,
+    "max_abs_lateral_offset_cm": 9.10677550048436
+  },
+  "video": null,
+  "video_frames": null,
+  "center_correction_uses_simulator_ground_truth": true,
+  "camera_perception_used": false,
+  "dwaq_checkpoint_sha256": "5042017a558b98ab24a3784d1f960383ee42015d79b67b24b74f6b6a117759c1",
+  "flat_policy_sha256": null
+}
