@@ -1,0 +1,47 @@
+[
+  {
+    "case": "r15_t31_w160_y0",
+    "outcome": "goal",
+    "video": "success_rise15cm_tread31cm_width160cm_offset+0cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r18_t31_w160_y0",
+    "outcome": "goal",
+    "video": "success_rise18cm_tread31cm_width160cm_offset+0cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r15_t31_w070_y0",
+    "outcome": "goal",
+    "video": "success_rise15cm_tread31cm_width70cm_offset+0cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r15_t40_w160_y0",
+    "outcome": "goal",
+    "video": "success_rise15cm_tread40cm_width160cm_offset+0cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r20_t31_w160_y0",
+    "outcome": "time_limit",
+    "video": "time-limit_rise20cm_tread31cm_width160cm_offset+0cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r15_t25_w160_ym10",
+    "outcome": "fall",
+    "video": "fall_rise15cm_tread25cm_width160cm_offset-10cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r18_t31_w160_yp10",
+    "outcome": "stair_exit",
+    "video": "stair-exit_rise18cm_tread31cm_width160cm_offset+10cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r15_t20_w160_ym10",
+    "outcome": "time_limit",
+    "video": "time-limit_rise15cm_tread20cm_width160cm_offset-10cm_sim-truth-centering.mp4"
+  },
+  {
+    "case": "r15_t31_w160_y0_no_center",
+    "outcome": "stair_exit",
+    "video": "stair-exit_rise15cm_tread31cm_width160cm_offset+0cm_no-centering.mp4"
+  }
+]

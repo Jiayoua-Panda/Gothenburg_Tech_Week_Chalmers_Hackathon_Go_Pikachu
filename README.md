@@ -64,6 +64,13 @@ The standalone page is exported with the visualize skill's `scripts/render.py`:
 python3 /path/to/visualize/scripts/render.py web/stairlab.fragment.html index.html --title "StairLab — Industrial Humanoid Learning" --force
 ```
 
+## MuJoCo evaluations
+
+- [Unitree V0 walking playback](g1_step_playback/README.md) and [test-course results](g1_course/outputs/v0/segment_results.csv): the official pretrained walking policy, evaluated without new training.
+- [G1-DWAQ stair replays](artifacts/stair-replays/README.md): a separate third-party stair policy on custom corridor–stair–corridor scenes. Four videos include one successful route and three failures; the successful route used simulator ground-truth position and heading for steering, without camera perception.
+
+These use different policies and test scenes, so their results are not a controlled policy comparison.
+
 ## Docs
 
 - [SKF challenge brief](SKF_Analyze%20and%20compare%20learning%20methods%20suitable%20for%20industrial%20humanoids.pdf)

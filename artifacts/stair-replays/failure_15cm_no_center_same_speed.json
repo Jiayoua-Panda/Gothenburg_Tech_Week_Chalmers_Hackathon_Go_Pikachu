@@ -1,0 +1,18 @@
+{
+  "case": "failure_15cm_no_center_same_speed",
+  "scene": "skf-corridor-stairs-corridor.xml",
+  "policy": "third-party G1DWAQ_Lab model_9999.pt",
+  "speed_command_mps": 0.3,
+  "center_correction_uses_simulator_ground_truth": false,
+  "camera_perception_used": false,
+  "visual_only_wall_alpha": 0.08,
+  "outcome": "stair_exit",
+  "sim_time_s": 8.37999999999991,
+  "final_xyz_m": [
+    1.8104148173396712,
+    1.0025060526236143,
+    0.8187204131382882
+  ],
+  "video_fps": 20,
+  "video_frames": 189
+}
