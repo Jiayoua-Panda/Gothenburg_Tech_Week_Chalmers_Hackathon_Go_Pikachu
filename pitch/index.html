@@ -54,7 +54,7 @@ canvas { display: block; }
 
 <!-- 1 · Every factory has stairs -->
 <section class="scene" data-start="0" data-holds="3.6"
-  data-notes="Every factory has stairs. SKF asked how to make training humanoids for industry easier. We are team Go Pikachu, and everything you will see is our own simulation of a Unitree G1.">
+  data-notes="Every factory has stairs. SKF asked: how do we make training humanoids easier? We are Go Pikachu. Everything you see is our own simulation of a Unitree G1.">
   <canvas class="el" data-draw="hero" data-w="1920" data-h="1080" data-in="0" data-out="5.2" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
   <div class="el eyebrow" data-in="0.9" data-out="5.0" style="left:150px; top:360px">Industrial humanoids · SKF</div>
   <div class="el l" data-in="1.3" data-out="5.0" style="left:150px; top:420px">Every factory</div>
@@ -63,7 +63,7 @@ canvas { display: block; }
 
 <!-- 2 · The fall -->
 <section class="scene" data-start="5.6" data-holds="5.2"
-  data-notes="This is Unitree's own walking policy, trained on flat ground. A 15 centimetre stair: the toe hits the riser and it falls. Zero percent on stairs across our 220-run test.">
+  data-notes="Unitree's own walking policy, trained on flat ground, meets a 15 centimetre stair. The toe hits the riser. Zero percent on stairs, across 220 runs.">
   <div class="el frame bleed" data-in="0" data-out="6.4" data-fx="zoom" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px">
     <video src="media/v0_fall.mp4" muted playsinline preload="auto"></video>
   </div>
@@ -75,7 +75,7 @@ canvas { display: block; }
 
 <!-- 3 · Thesis -->
 <section class="scene" data-start="12.3" data-holds="2.4,5.6"
-  data-notes="The usual answer: retrain a policy for every task and every site. GPU weeks, new data, and a new safety case every time. || Our answer: train less, and test everything.">
+  data-notes="The usual answer: retrain for every task and every site. Weeks of GPU time and new data, every time. || Our answer: train less, test everything.">
   <div class="el m full" data-in="0.3" data-out="3.0" style="top:400px">Retrain for every task?</div>
   <div class="el m full muted" data-in="1.0" data-out="3.0" style="top:510px">For every site?</div>
   <div class="el xl full" data-in="3.4" data-out="7.2" style="top:330px">Train less.</div>
@@ -84,14 +84,14 @@ canvas { display: block; }
 
 <!-- 4 · System -->
 <section class="scene" data-start="19.8" data-holds="5.6"
-  data-notes="Five parts. A factory map and fixed cameras tell the robot where it is. An on-board height scan picks the skill. Pretrained skills are reused. Safety stays classical. Every skill passes the same tests, and only what fails goes back into training.">
+  data-notes="Five parts. Map and cameras say where the robot is. A height scan picks the skill. Skills are pretrained and reused. Safety stays classical. Everything passes the same tests; only what fails goes back to training.">
   <div class="el eyebrow full" data-in="0.2" data-out="7.4" style="top:200px">The Humanoid Skill Factory</div>
   <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.1" data-out="7.4" data-fx="fade" style="left:0;top:290px"></canvas>
 </section>
 
 <!-- 5 · It sees the step -->
 <section class="scene" data-start="27.6" data-holds="4.2"
-  data-notes="The height scan sees the step and hands over from the fast flat-ground skill to a stair skill, and back. From 36 to 99 percent over the same 220 runs, with no new training.">
+  data-notes="The height scan sees the step and switches from the flat-ground skill to a stair skill, and back. 36 to 99 percent, same 220 runs, no new training.">
   <div class="el l" data-in="0.2" data-out="6.6" style="left:150px; top:120px">It sees <span class="grad">the step.</span></div>
   <div class="el frame" data-in="0.6" data-out="6.6" data-fx="zoom" style="left:150px; top:330px; width:1120px; height:630px">
     <video src="media/switch_tour.mp4" muted loop playsinline preload="auto" style="transform:scale(1.28); transform-origin:40% 100%"></video>
@@ -103,7 +103,7 @@ canvas { display: block; }
 
 <!-- 6 · A real route -->
 <section class="scene" data-start="34.6" data-holds="4.6,8.8"
-  data-notes="Then a real route: a switchback up to a mezzanine, five turns, twelve steps down. The robot never sees the stairs. It follows the factory map, with fixed cameras telling it where it is. || 22 of 25 starts reach the goal. All three misses happen in the same place, the long descent. That is exactly where training should go.">
+  data-notes="A real route: up to a mezzanine, five turns, twelve steps down. The robot follows the factory map; fixed cameras tell it where it is. || 22 of 25 starts reach the goal. All three misses are on the long descent.">
   <div class="el l" data-in="0.2" data-out="5.4" style="left:150px; top:150px">A real route.</div>
   <canvas class="el" data-draw="route" data-w="1180" data-h="820" data-in="0.1" data-out="5.4" data-fx="fade" style="left:640px; top:170px"></canvas>
   <div class="el m" data-in="1.6" data-out="5.4" style="left:150px; top:430px">19.9 m</div>
@@ -117,9 +117,18 @@ canvas { display: block; }
   <div class="el s" data-in="7.0" data-out="10.8" style="left:160px; top:910px; color:#ddd">reach the goal · all 3 misses on the long descent</div>
 </section>
 
-<!-- 7 · Cameras -->
-<section class="scene" data-start="45.6" data-holds="1.8,6.2"
-  data-notes="If cameras guide the robot, how good must they be? || Ordinary. From 1025 simulated runs: up to 10 centimetres of noise, 2 hertz and 300 milliseconds is as good as a perfect camera. Left, camera only at 1 hertz: it walks off the flight. Right, add the robot's own odometry: it arrives. That is a purchase spec.">
+<!-- 7 · Two faults: scan alone vs map alone vs both (four-stage comparison on demo4) -->
+<section class="scene" data-start="45.8" data-holds="4.8,8.8"
+  data-notes="We added two faults on purpose: a pallet missing from the map, and a step under glare the scan can't see. Scan alone falls at the glare, map alone at the pallet. || Together they cover each other: every segment passes.">
+  <div class="el l" data-in="0.2" data-out="5.2" style="left:150px; top:100px">Alone, each one <span class="grad">fails.</span></div>
+  <div class="el l" data-in="5.6" data-out="10.4" style="left:150px; top:100px">Together, <span class="green">none do.</span></div>
+  <canvas class="el" data-draw="faults" data-w="1620" data-h="560" data-in="0.4" data-out="10.4" data-fx="fade" style="left:150px; top:320px"></canvas>
+  <div class="el s" data-in="1.2" data-out="10.4" style="left:150px; top:930px">46.7 m test course · 15 segments · 10 random starts each</div>
+</section>
+
+<!-- 8 · Cameras -->
+<section class="scene" data-start="56.4" data-holds="1.8,6.2"
+  data-notes="How good must the cameras be? || Ordinary. Across 1025 runs, 10 centimetres, 2 hertz and 300 milliseconds is as good as perfect. Add the robot's odometry and even 1 hertz arrives. That is a purchase spec.">
   <div class="el m full" data-in="0.2" data-out="2.4" style="top:460px">How good must the cameras be?</div>
   <div class="el l full" data-in="2.8" data-out="8.8" style="top:110px"><span class="grad">Ordinary</span> is enough.</div>
   <div class="el frame" data-in="3.2" data-out="8.8" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
@@ -130,9 +139,9 @@ canvas { display: block; }
   <div class="el s full" data-in="5.2" data-out="8.8" style="top:950px">tolerated error, from 1025 simulated runs</div>
 </section>
 
-<!-- 8 · Safety -->
-<section class="scene" data-start="53.9" data-holds="5.0"
-  data-notes="Safety. Told to stop, the learned policy still creeps 27 centimetres. So stopping stays classical: a speed and separation monitor with the ISO/TS 15066 distance. Contacts with a person went from 44 to 0.">
+<!-- 9 · Safety -->
+<section class="scene" data-start="64.7" data-holds="5.0"
+  data-notes="Told to stop, the learned policy still creeps 27 centimetres. So stopping stays classical, with the ISO distance. Contacts with a person: 44 to 0.">
   <div class="el m full" data-in="0.2" data-out="7.4" style="top:120px">A learned stop <span class="grad">isn't a stop.</span></div>
   <div class="el frame" data-in="1.2" data-out="7.4" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
     <video src="media/safety_pair.mp4" muted loop playsinline preload="auto" style="transform:scale(1.12); transform-origin:50% 100%"></video>
@@ -141,9 +150,9 @@ canvas { display: block; }
   <div class="el s full" data-in="3.6" data-out="7.4" style="top:950px">contacts with a person · classical ISO/TS 15066 monitor</div>
 </section>
 
-<!-- 9 · Tests decide the training -->
-<section class="scene" data-start="61.8" data-holds="2.8,10.0"
-  data-notes="The tests also found the load limit: 8 kilograms on the chest works, a 5 kilogram backpack does not. || So we fine-tuned for loads on the Chalmers GPUs and re-ran the same tests. Heavy loads improved: 6 goals out of 25 became 14 to 20. But with no load it collapsed, 22 down to 3 or fewer. The reward went up, and the tests caught the regression before deployment.">
+<!-- 10 · Tests decide the training -->
+<section class="scene" data-start="72.6" data-holds="2.8,10.0"
+  data-notes="The tests found the load limit: 8 kilograms on the chest works, a backpack doesn't. || So we fine-tuned for loads on Chalmers GPUs. With 8 kilograms, 6 of 25 became 20. With no load, 22 fell to 3. The same tests caught it before deployment.">
   <div class="el m full" data-in="0.2" data-out="12.2" style="top:120px">The tests decide <span class="grad">what to train.</span></div>
   <div class="el frame" data-in="0.8" data-out="4.2" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
     <video src="media/payload_pair.mp4" muted loop playsinline preload="auto"></video>
@@ -158,9 +167,9 @@ canvas { display: block; }
   <div class="el s" data-in="8.8" data-out="12.2" style="left:1400px; top:790px; color:var(--text); font-size:36px; font-weight:600">Caught before<br>deployment.</div>
 </section>
 
-<!-- 10 · A new site -->
-<section class="scene" data-start="74.6" data-holds="3.4"
-  data-notes="Onboarding a new site becomes: scan it, install cameras to spec, run the tests, and train only what fails. Next step: one real SKF route, as a pilot or thesis.">
+<!-- 11 · A new site -->
+<section class="scene" data-start="85.4" data-holds="3.4"
+  data-notes="A new site becomes: scan it, install cameras to spec, run the tests, train only what fails. Next: one real SKF route, as a pilot.">
   <div class="el eyebrow full" data-in="0.1" data-out="5.6" style="top:190px">A new site</div>
   <div class="el m full" data-in="0.3" data-out="5.6" style="top:270px">Scan it.</div>
   <div class="el m full" data-in="0.9" data-out="5.6" style="top:385px">Install cameras to spec.</div>
@@ -168,8 +177,8 @@ canvas { display: block; }
   <div class="el l full grad" data-in="2.2" data-out="5.6" style="top:650px">Train only what fails.</div>
 </section>
 
-<!-- 11 · End -->
-<section class="scene" data-start="80.6" data-holds="3.2"
+<!-- 12 · End -->
+<section class="scene" data-start="91.4" data-holds="3.2"
   data-notes="Train less, test everything. Thank you.">
   <canvas class="el" data-draw="heroEnd" data-w="1920" data-h="1080" data-in="0" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
   <div class="el xl" data-in="0.6" style="left:150px; top:330px">Train less.</div>
@@ -434,6 +443,55 @@ function drawRoute(ctx, W, H, local, amb) {
   }
 }
 
+// Pass rate per segment on demo4 (g1_course/outputs/s2_eyes, s3_map, s4_both): each source alone vs both.
+const FAULTS = {
+  rows: [
+    { name: "Scan only", sub: "robot's own height scan", v: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, .9, .9, 1], pct: 92, at: 0.3 },
+    { name: "Map only", sub: "factory map + cameras", v: [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1], pct: 93, at: 1.1 },
+    { name: "Scan + map", sub: "either one can call a stair", v: Array(15).fill(1), pct: 100, at: 5.4 },
+  ],
+  cols: [{ i: 7, name: "pallet", sub: "not on map" }, { i: 10, name: "glare step", sub: "scan blind" }],
+};
+function drawFaults(ctx, W, H, local, amb) {
+  const pitch = 74, cell = 58, x0 = 300, cx = i => x0 + cell / 2 + i * pitch, cy = r => 190 + r * 120;
+  const pulse = 0.5 + 0.5 * Math.sin(amb * 4);
+  const kb = ease((local - 2.2) / 0.6);
+  for (const c of FAULTS.cols) {
+    if (kb <= 0) break;
+    ctx.save(); ctx.globalAlpha = kb;
+    ctx.fillStyle = "rgba(255,69,58,0.08)"; rrect(ctx, cx(c.i) - 38, 122, 76, 376, 16); ctx.fill();
+    label(ctx, c.name, cx(c.i), 58, 28, COL.red, 700);
+    label(ctx, c.sub, cx(c.i), 92, 22, COL.grey, 500);
+    ctx.restore();
+  }
+  FAULTS.rows.forEach((row, r) => {
+    const kr = ease((local - row.at) / 0.6);
+    if (kr <= 0) return;
+    ctx.save(); ctx.globalAlpha = kr;
+    label(ctx, row.name, 0, cy(r) + 2, 40, COL.text, 700, "left");
+    label(ctx, row.sub, 0, cy(r) + 36, 22, COL.grey, 500, "left");
+    ctx.restore();
+    row.v.forEach((v, i) => {
+      const k = ease((local - row.at - 0.2 - i * 0.04) / 0.35);
+      if (k <= 0) return;
+      const s = cell * (0.7 + 0.3 * k);
+      ctx.save(); ctx.globalAlpha = k;
+      ctx.fillStyle = v >= 1 ? "rgba(48,209,88,0.88)" : v > 0 ? "rgba(48,209,88,0.42)" : COL.red;
+      rrect(ctx, cx(i) - s / 2, cy(r) - s / 2, s, s, 12); ctx.fill(); ctx.restore();
+    });
+    const kp = ease((local - row.at - 0.9) / 0.6);
+    if (kp > 0) { ctx.save(); ctx.globalAlpha = kp; label(ctx, row.pct + "%", W, cy(r) + 22, 64, row.pct === 100 ? COL.green : COL.text, 700, "right"); ctx.restore(); }
+    // rings: red where a source alone fails, green where the combination covers it
+    const kg = ease((local - (r === 2 ? 6.3 : 2.5)) / 0.5);
+    if (kg <= 0) return;
+    row.v.forEach((v, i) => {
+      if (r < 2 ? v > 0 : !FAULTS.cols.some(c => c.i === i)) return;
+      ctx.save(); ctx.globalAlpha = kg; ctx.strokeStyle = r < 2 ? COL.red : COL.green; ctx.lineWidth = 3;
+      rrect(ctx, cx(i) - 36 - 4 * pulse, cy(r) - 36 - 4 * pulse, 72 + 8 * pulse, 72 + 8 * pulse, 18); ctx.stroke(); ctx.restore();
+    });
+  });
+}
+
 // Before vs after fine-tuning, full route with a chest load.
 function drawChart(ctx, W, H, local, amb) {
   const c = local;
@@ -474,7 +532,7 @@ function drawChart(ctx, W, H, local, amb) {
   const kn = ease((c - 3.9) / 0.6);
   if (kn > 0) { ctx.globalAlpha = kn; label(ctx, "dashed: second training seed", x1 + 30, 16, 22, COL.grey, 500, "right"); ctx.globalAlpha = 1; }
 }
-const DRAW = { hero: drawHero, heroEnd: (c, W, H, l, a) => drawHero(c, W, H, l, a, 0.8, 0.6, 0.78), pipe: drawPipe, route: drawRoute, chart: drawChart };
+const DRAW = { hero: drawHero, heroEnd: (c, W, H, l, a) => drawHero(c, W, H, l, a, 0.8, 0.6, 0.78), pipe: drawPipe, route: drawRoute, faults: drawFaults, chart: drawChart };
 
 /* =================== timeline engine =================== */
 const stage = document.getElementById("stage");
@@ -564,7 +622,7 @@ function render(now) {
   document.getElementById("notes-body").textContent = " " + note.text;
   if (timerStart) {
     const sec = Math.floor((now - timerStart) / 1000), el = document.getElementById("timer");
-    el.textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; el.classList.toggle("over", sec >= 300);
+    el.textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; el.classList.toggle("over", sec >= 180);
   }
   requestAnimationFrame(render);
 }
