@@ -82,7 +82,7 @@ Font stack: `"SF Pro Display", "Segoe UI Variable Display", "Segoe UI", "Inter",
 - Easing: ease-out cubic for entrances, ease-in-out cubic for lines drawing and numbers counting.
 - Durations: 0.9 s in, 0.7 s out. Long fades (1.0–1.6 s) only for full-screen media and the hero.
 - Stagger lines of one statement by **0.5–0.6 s**. A caption follows its number by ~0.5 s.
-- About **0.4 s of black** between scenes.
+- Scenes **overlap by 0.3–0.5 s**: the next one starts while the last one is still fading out.
 - Nothing moves while the speaker talks, except slow ambient loops (scan dots, a pulsing ring, a walking marker).
 
 ## Scene grammar
@@ -97,7 +97,7 @@ Each scene in `index.html` is a `<section class="scene">` on one timeline:
 </section>
 ```
 
-- `data-start`: scene start in seconds on the global timeline. Next scene starts about 0.4 s after this one's last element has faded out.
+- `data-start`: scene start in seconds on the global timeline, 0.3–0.5 s before the previous scene's last element has faded out.
 - `data-in` / `data-out`: element times relative to the scene start. `data-fx`, `data-din`, `data-dout` override effect and durations.
 - `data-holds`: where the film pauses for the speaker (relative seconds, comma-separated). One hold per beat.
 - `data-notes`: speaker notes, one per hold, separated by `||`.
@@ -106,7 +106,9 @@ Each scene in `index.html` is a `<section class="scene">` on one timeline:
 
 **Adding a scene:** pick the one idea, write the headline in five words, pick the one number and its sample size, choose one visual (video, drawing, or nothing), set holds where you would pause, write the notes, then shift `data-start` of every later scene.
 
-Controls while presenting: → / space / click = next beat, ← = back, **N** notes, **T** timer (turns red at 5:00), **F** fullscreen, **R** restart, `?t=45` jumps to 45 s for rehearsal.
+**Time budget: 3 minutes.** Speaker notes are the script; at a calm pace (about 2.3 words per second) the whole film holds about **360 words**. Adding a scene means cutting words elsewhere.
+
+Controls while presenting: → / space / click = next beat, ← = back, **N** notes, **T** timer (turns red at 3:00), **F** fullscreen, **R** restart, `?t=45` jumps to 45 s for rehearsal.
 
 ## Words
 
