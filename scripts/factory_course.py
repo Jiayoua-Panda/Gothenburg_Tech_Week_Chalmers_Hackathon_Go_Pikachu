@@ -226,6 +226,9 @@ MATERIALS = {
 }
 
 
+VISUAL_OFFSET = {"step": 0.0, "floor": 0.001, "start": 0.001, "corner": 0.002}  # metres, by box-name prefix
+
+
 def scene_xml(course: Course) -> str:
     xs = [b.center[0] for b in course.boxes] + [0.0]
     ys = [b.center[1] for b in course.boxes] + [0.0]
@@ -234,10 +237,17 @@ def scene_xml(course: Course) -> str:
     materials = "\n".join(f'    <material name="{n}" rgba="{c}" />' for n, c in MATERIALS.items())
     geoms = []
     for box in course.boxes:
-        contact = "" if box.collide else ' contype="0" conaffinity="0"'
+        (x, y, z), (hx, hy, hz) = box.center, box.half
+        if box.collide:
+            # Collision geometry, hidden (group 3 is not rendered by default).
+            geoms.append(f'    <geom name="{box.name}" type="box" size="{hx:.4f} {hy:.4f} {hz:.4f}" '
+                         f'pos="{x:.4f} {y:.4f} {z:.4f}" group="3" rgba="0 0 0 0" />')
+        # Visual-only copy, grown by a category-dependent millimetre so that overlapping blocks
+        # (corner landings over corridor slabs) never share a face and do not z-fight.
+        grow = VISUAL_OFFSET.get(box.name.split("_")[0], 0.0)
         geoms.append(
-            f'    <geom name="{box.name}" type="box" size="{box.half[0]:.4f} {box.half[1]:.4f} {box.half[2]:.4f}" '
-            f'pos="{box.center[0]:.4f} {box.center[1]:.4f} {box.center[2]:.4f}" material="{box.material}"{contact} />'
+            f'    <geom name="{box.name}_vis" type="box" size="{hx + grow:.4f} {hy + grow:.4f} {hz + grow / 2:.4f}" '
+            f'pos="{x:.4f} {y:.4f} {z + grow / 2:.4f}" material="{box.material}" contype="0" conaffinity="0" />'
         )
     return f"""<mujoco model="factory course {course.name}">
   <include file="g1_29dof_rev_1_0_daf.xml" />

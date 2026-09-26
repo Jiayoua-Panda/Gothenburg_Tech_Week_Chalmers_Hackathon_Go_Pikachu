@@ -81,7 +81,9 @@ python scripts/run_factory_course.py --course l4_factory_route --recovery --vide
 python scripts/summarize_factory_course.py            # matrix.csv, results.md, overview maps
 ```
 
-Each run takes 1–7 s of CPU time without video. The 108-run matrix ran as a Slurm job on the Chalmers Minerva cluster; videos were rendered on a GPU node with `MUJOCO_GL=egl`. The runner stubs out `pynput` because it needs an X display and is only used for keyboard control. Every run JSON records the checkpoint hash and the hashes of both course scripts.
+Each run takes 1–7 s of CPU time without video. The 108-run matrix ran as a Slurm job on the Chalmers Minerva cluster; videos were rendered on a GPU node with `MUJOCO_GL=egl`. The runner stubs out `pynput` because it needs an X display and is only used for keyboard control. Every run JSON records the checkpoint hash and the hashes of both course scripts. The runner pins PyTorch to one thread: with multi-threaded matrix maths, last-bit differences grow into a different trajectory. The same L4 run took 75.22 s single-threaded and 75.88 s multi-threaded. Single-threaded runs are bit-identical on repeat.
+
+Scene geometry is written twice: hidden collision boxes (group 3) and visual-only copies grown by 1–2 mm per category. Without that, corner landings and corridor slabs share faces and flicker (z-fighting) in the videos. The physics is unchanged: trajectories are byte-identical with and without the visual copies.
 
 ## Limits
 

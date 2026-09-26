@@ -259,6 +259,9 @@ def main() -> None:
     parser.add_argument("--source-root", type=Path, default=Path("/tmp/skf-g1-dwaq/TienKung-Lab"))
     args = parser.parse_args()
 
+    # Multi-threaded matmuls are not bit-reproducible, and the gait amplifies last-bit differences
+    # into different trajectories; one thread makes every run exactly repeatable.
+    torch.set_num_threads(1)
     course = COURSES[args.course]()
     max_time = args.max_time_s or 3 * course.total_length / args.stair_speed + 30
     localizer = Localizer(args.loc_sigma_cm / 100, math.radians(args.loc_yaw_sigma_deg), args.loc_rate_hz,

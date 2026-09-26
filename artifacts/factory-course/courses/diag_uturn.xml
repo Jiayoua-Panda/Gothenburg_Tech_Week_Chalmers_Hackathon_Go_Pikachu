@@ -15,12 +15,12 @@
   </asset>
   <worldbody>
     <light pos="1.00 0.60 6" dir="0 0 -1" directional="true" />
-    <geom name="floor_1" type="box" size="1.0000 0.6000 0.0020" pos="1.0000 0.0000 0.0020" material="walkway" contype="0" conaffinity="0" />
-    <geom name="corner_2" type="box" size="0.6000 0.6000 0.0020" pos="2.0000 0.0000 0.0020" material="walkway" contype="0" conaffinity="0" />
-    <geom name="floor_3" type="box" size="0.6000 0.6000 0.0020" pos="2.0000 0.6000 0.0020" material="walkway" contype="0" conaffinity="0" />
-    <geom name="corner_4" type="box" size="0.6000 0.6000 0.0020" pos="2.0000 1.2000 0.0020" material="walkway" contype="0" conaffinity="0" />
-    <geom name="floor_5" type="box" size="1.0000 0.6000 0.0020" pos="1.0000 1.2000 0.0020" material="walkway" contype="0" conaffinity="0" />
-    <geom name="goal_pad" type="box" size="0.3000 0.3000 0.0030" pos="0.3000 1.2000 0.0030" material="goal" contype="0" conaffinity="0" />
-    <geom name="start_pad" type="box" size="0.3000 0.3000 0.0030" pos="0.0000 0.0000 0.0030" material="start" contype="0" conaffinity="0" />
+    <geom name="floor_1_vis" type="box" size="1.0010 0.6010 0.0025" pos="1.0000 0.0000 0.0025" material="walkway" contype="0" conaffinity="0" />
+    <geom name="corner_2_vis" type="box" size="0.6020 0.6020 0.0030" pos="2.0000 0.0000 0.0030" material="walkway" contype="0" conaffinity="0" />
+    <geom name="floor_3_vis" type="box" size="0.6010 0.6010 0.0025" pos="2.0000 0.6000 0.0025" material="walkway" contype="0" conaffinity="0" />
+    <geom name="corner_4_vis" type="box" size="0.6020 0.6020 0.0030" pos="2.0000 1.2000 0.0030" material="walkway" contype="0" conaffinity="0" />
+    <geom name="floor_5_vis" type="box" size="1.0010 0.6010 0.0025" pos="1.0000 1.2000 0.0025" material="walkway" contype="0" conaffinity="0" />
+    <geom name="goal_pad_vis" type="box" size="0.3000 0.3000 0.0030" pos="0.3000 1.2000 0.0030" material="goal" contype="0" conaffinity="0" />
+    <geom name="start_pad_vis" type="box" size="0.3010 0.3010 0.0035" pos="0.0000 0.0000 0.0035" material="start" contype="0" conaffinity="0" />
   </worldbody>
 </mujoco>
