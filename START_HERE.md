@@ -1,8 +1,8 @@
-# 👉 先看这里：工厂路线实验（2026-09-26 凌晨）
+# 👉 先看这里：工厂路线实验（2026-09-26）
 
 > English one-page summary of the whole team's approach and results (incl. these experiments): [analysis/final_approach.md](analysis/final_approach.md)
 
-> 作者：Zhichao（zhou-zhichao），和 Claude 一起做的。所有结果都是 MuJoCo 仿真，用的是已有的 G1-DWAQ 爬楼梯策略（第三方权重，不是我们训练的），**除了最后的微调，没有训练任何新模型**。
+> 作者：Zhichao（zhou-zhichao）；前期实验与 Claude 协作，微调复测由 Codex 接续完成。以下成功次数均来自 MuJoCo 仿真；微调训练在 Isaac Lab 完成。前三项使用第三方 G1-DWAQ 权重，没有重新训练；第四项从该权重继续训练（奖励函数未改，配置见 [`training/g1-dwaq-finetune/`](training/g1-dwaq-finetune/)）。
 > 代码在 `scripts/`，结果、视频、详细说明在 [`artifacts/factory-course/`](artifacts/factory-course/)。
 
 ## 一句话
@@ -25,7 +25,7 @@
 | 1 | **复杂工厂路线**：拐角、180° 回头楼梯、1.8 m 夹层、12 级下楼梯，全程 19.9 m、5 个弯 | 完美定位下，完整路线 25 个起点中 **22 个走到终点（88%）**；失败的 3 次全在下楼梯 | [factory-course/README.md](artifacts/factory-course/README.md) |
 | 2 | **摄像头误差**：给位置加噪声、偏差、低刷新率、延迟，共 1025 次仿真 | 位置误差 ≤10 cm、偏差 ≤20 cm、≥2 Hz、延迟 ≤300 ms 时，和完美摄像头没有明显差别；**加上机器人自己的里程计融合后，1 Hz、1 秒延迟也能走完** | [localization-sweep/README.md](artifacts/factory-course/localization-sweep/README.md) |
 | 3 | **搬箱子（不重新训练）**：手端 / 贴前胸 / 背在后背，0–15 kg | 手端箱子时策略几乎走不动（手臂被锁住，它没练过）；**贴在前胸、手臂自由时，上楼梯能带约 8 kg**；背在后背时 2 kg 就爬不上楼梯 | [payload-sweep/README.md](artifacts/factory-course/payload-sweep/README.md) |
-| 4 | **微调（正在跑）**：在现有模型上加"胸前负重 0–12 kg + 重心前移"训练；另一版再多练下楼梯 | 在 Minerva 集群的 L40S 上训练中，预计上午出结果，然后用同样的场景复测 | 本文件底部 |
+| 4 | **微调并复测**：负重、额外下楼梯等设置，共 6 次训练 | L4 胸前 8 kg：负重版两个种子为 **14/25、20/25**（原模型 6/25）；但无负重仅 **0/25、3/25**（原模型 22/25），不能直接当通用策略 | [本文件底部](#微调结果2026-09-26)、[逐次结果](artifacts/factory-course/finetune-results.csv) |
 
 **只看视频的话**：先看 [L4 完整路线成功](artifacts/factory-course/runs/l4_factory_route_v30_rec_y+0cm_yaw+0_ideal.mp4)，再看摄像头误差的两组对比（[1 Hz 纯摄像头失败](artifacts/factory-course/localization-sweep/videos/l4_factory_route_v30_rec_align_y-5cm_yaw-5_s0cm_y0deg_1hz_0ms_b0cm_seed6.mp4) vs [加里程计融合成功](artifacts/factory-course/localization-sweep/videos/l4_factory_route_v30_rec_align_y-5cm_yaw-5_s0cm_y0deg_1hz_0ms_b0cm_fused_seed6.mp4)）和 [payload-sweep/videos/](artifacts/factory-course/payload-sweep/videos/)。
 
@@ -37,6 +37,7 @@
 - **瓶颈不在摄像头，在策略**：普通水平的摄像头（5 cm / 10 Hz / 200 ms）就够了，再提升摄像头也解决不了下楼梯的问题。
 - **手臂锁死比重量更致命**：同样的箱子，端在手里（手臂锁住）2 kg 就不行；绑在胸前、手臂自由，8 kg 还能上楼梯。因为这个策略训练时练过躯干 ±5 kg 的重量，但手臂一直是自由的。
 - **重心位置很关键**：背包式（重心往后）爬不上楼梯；胸前（重心往前）反而有利于上楼。
+- **微调有明显取舍**：重载完整路线可以改善，但同一模型在无负重或轻载下常卡在上楼梯；即使训练奖励变好，也不能代替完整路线的复测。
 - 为了不让策略被锁住的手臂搞乱，我们给策略看"虚拟的自由手臂"（实际手臂是锁着的）。这个技巧让手端箱子能走了，相当于把上半身和下半身的控制分开，思路和 FALCON 论文里的双智能体类似。
 
 ## 演讲可以讲的故事线（建议）
@@ -45,7 +46,7 @@
 2. **方案**：混合方案 = 已知工厂地图 + 固定摄像头定位（+ 机器人自身里程计）+ 现成的爬楼梯策略 + 我们写的路线跟随和监督逻辑（卡住后退重试、上楼梯前先对正）。
 3. **证据**：完整路线 88% 成功；给出摄像头规格；给出负重上限；每一项都有视频。
 4. **为什么失败**：下楼梯扭身、手臂锁死、重心位置。这些都指向**需要什么样的训练**。
-5. **下一步训练流程**：用胸前负重 + 重心随机化 + 更多下楼梯地形去微调，然后用同一套仿真测试验证。这正是 SKF 要的"训练 → 测试 → 成功标准"的流程，而且测试套件已经做好了。
+5. **训练 → 测试 → 失败分析**：已做负重、重心和下楼梯地形微调，再用原测试套件复测。重载有改善，轻载和无负重严重退化；下一轮应把各负重档位的完整路线成功次数都列入验收标准。
 
 ## 怎么复现 / 继续做
 
@@ -60,9 +61,22 @@
   ```
 - 每次运行都会记录代码和模型的哈希值，结果可以逐字节复现（脚本里已固定 PyTorch 单线程）。
 
-## 微调状态（持续更新）
+## 微调结果（2026-09-26）
 
-- 在 Minerva 上用 Isaac Lab 从 `model_9999.pt` 继续训练 2000 轮，两个版本在 neptune 节点上各占一块 L40S 同时跑：
-  - `ft_payload`：躯干 +0–12 kg，重心向前 0–12 cm。
-  - `ft_payload_descent`：同上，加上两倍比例的下楼梯地形。
-- 训练完后导出到 MuJoCo，用同样的 L1 / L2 / L4 和胸前负重测试对比。结果会更新在这里。
+在 Minerva 上从第三方 `model_9999.pt` 继续训练，每次新增 2000 轮，最终检查点均为 `model_11998.pt`。`ft_payload` 给躯干增加 0–12 kg 并把重心向前随机移动 0–12 cm；`ft_payload_descent` 再提高下楼梯地形比例。两者各跑种子 42 和 7。另外，`ft_descent` 只增加下楼梯地形，`ft_payload_heavy` 把负重扩到 0–20 kg、前移扩到 0–15 cm，各跑种子 42。六次训练均写出了最终检查点；训练进程曾卡在 Isaac Sim 的退出阶段，在确认检查点和复测结果后已取消作业、释放 GPU。
+
+同一套路线、控制器和完美定位，均开启卡住后退重试与上楼梯前对正。L4 使用相同的 25 个起点（横向 −10 到 +10 cm、朝向 −5° 到 +5° 的 5×5 网格）；表中为走到终点的次数，**不是实物成功率，也不是独立随机试验的统计估计**。箱子绑在胸前，手臂仍由策略控制。
+
+| 策略（训练种子） | 无负重 | 胸前 2 kg | 胸前 5 kg | 胸前 8 kg | 胸前 12 kg |
+|---|---:|---:|---:|---:|---:|
+| 原模型 | 22/25 | 15/25 | 10/25 | 6/25 | 1/25 |
+| `ft_payload`（42） | 0/25 | 7/25 | 13/25 | 14/25 | 15/25 |
+| `ft_payload`（7） | 3/25 | 8/25 | 15/25 | **20/25** | **18/25** |
+| `ft_payload_descent`（42） | 0/25 | 0/25 | 0/25 | 3/25 | 11/25 |
+| `ft_payload_descent`（7） | 0/25 | 0/25 | 1/25 | 11/25 | 18/25 |
+| `ft_descent`（42） | 0/25 | 22/25 | 21/25 | 13/25 | 0/25 |
+| `ft_payload_heavy`（42） | 0/25 | 0/25 | 0/25 | 0/25 | 0/25 |
+
+**结论**：负重微调确实提高了部分重载完整路线的表现，但明显牺牲了无负重和轻载表现。`ft_payload` 两个种子在 8 kg 下相差 6/25；加入更多下楼梯地形也没有稳定修复问题。原模型的直接下楼梯测试为 7/9，`ft_payload` 两个种子为 9/9，而两个 `ft_payload_descent` 种子仍为 7/9。L2 上楼梯胸前 8 kg 时，原模型 8/9，`ft_payload` 两个种子为 4/9、7/9；因此不能只挑 L4 重载的最好数字宣布模型已可用。
+
+[1253 次逐次结果 CSV](artifacts/factory-course/finetune-results.csv) 包含原模型与六个微调检查点：每个版本共 179 次配对复测（L1 胸前 12 kg：9 次；L2 胸前 2/5/8/12 kg：各 9 次；直接下楼梯无负重：9 次；L4 无负重与胸前 2/5/8/12 kg：各 25 次），记录结果、失败位置、模型 SHA-256 和代码哈希。检查点保存在 Minerva 的 `/data/users/zhichaoz/skf/isaac/G1DWAQ_Lab/TienKung-Lab/logs/g1_dwaq/`；用 `scripts/run_factory_course.py --checkpoint /path/to/model_11998.pt` 可复测。下一轮训练需要同时保住无负重、轻载、重载和下楼梯表现，再谈通用工厂路线策略。

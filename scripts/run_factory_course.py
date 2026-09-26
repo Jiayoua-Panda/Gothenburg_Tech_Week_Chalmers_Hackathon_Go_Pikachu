@@ -297,6 +297,8 @@ def main() -> None:
     parser.add_argument("--tag", default="", help="extra run-name suffix")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "artifacts/factory-course/runs")
     parser.add_argument("--source-root", type=Path, default=Path("/tmp/skf-g1-dwaq/TienKung-Lab"))
+    parser.add_argument("--checkpoint", type=Path,
+                        help="policy checkpoint; defaults to the original G1-DWAQ model_9999.pt")
     args = parser.parse_args()
 
     # Multi-threaded matmuls are not bit-reproducible, and the gait amplifies last-bit differences
@@ -322,7 +324,7 @@ def main() -> None:
 
     source_root = args.source_root.expanduser().resolve()
     source_models = source_root / "legged_lab/assets/unitree/g1/mjcf"
-    checkpoint = source_root / CHECKPOINT_RELATIVE
+    checkpoint = args.checkpoint.expanduser().resolve() if args.checkpoint else source_root / CHECKPOINT_RELATIVE
     # The runner imports pynput for its interactive keyboard, which needs an X display; it is unused here.
     sys.modules.setdefault("pynput", types.SimpleNamespace(keyboard=None))
     module = load_runner(source_root / "legged_lab/scripts/sim2sim_g1_dwaq.py")
@@ -557,7 +559,7 @@ def main() -> None:
             "seed": args.seed,
         },
         "camera_images_used": False,
-        "policy": "G1DWAQ_Lab model_9999.pt (third-party, blind)",
+        "policy": f"G1DWAQ_Lab {checkpoint.name} ({'fine-tuned' if args.checkpoint else 'third-party'}, blind)",
         "checkpoint_sha256": sha256(checkpoint),
         "code_sha256": {name: sha256(Path(__file__).with_name(name))[:12]
                         for name in ("run_factory_course.py", "factory_course.py")},
