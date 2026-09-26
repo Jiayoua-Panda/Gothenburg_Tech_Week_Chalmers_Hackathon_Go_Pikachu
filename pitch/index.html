@@ -201,7 +201,22 @@ canvas { display: block; }
   <div class="el s" data-in="17.4" style="left:1340px; top:870px; color:var(--text)">up and down the stairs</div>
 </section>
 
-<!-- 9 · After V1.0: the tests decide what to train next (real route + loads) -->
+<!-- 8c · Before fine-tuning: 8 kg on the chest, the same policy walks off the descending flight.
+     payload_fail.mp4 = base model_9999.pt, L4, start y 0 cm / yaw +2.5°, sim 38 s → end at 2×; leaves the path at video 3.3 s.
+     Rendered on Minerva from the finetune-results.csv setup (base run: path_exit, segment 9 stairs_down). -->
+<section class="scene" data-holds="6.4"
+  data-notes="Then we strapped 8 kilos to its chest. Before any training, the same policy walks off the side of the stairs on the way down. Only 6 of 25 runs reach the goal.">
+  <div class="el frame bleed" data-in="0" data-out="7.6" data-fx="zoom" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px">
+    <video src="media/payload_fail.mp4" muted playsinline preload="auto"></video>
+  </div>
+  <div class="el eyebrow" data-in="0.5" data-out="4.8" style="left:110px; top:90px; color:#fff; text-shadow:0 2px 20px rgba(0,0,0,.5)">Before fine-tuning · 8 kg on the chest · the real factory route · 2× speed</div>
+  <div class="el" data-in="5.0" data-out="7.6" data-fx="fade" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px; background:rgba(0,0,0,.72)"></div>
+  <div class="el xl full red" data-in="5.3" data-out="7.6" style="top:140px; font-size:300px">6 / 25</div>
+  <div class="el s full" data-in="5.8" data-out="7.6" style="top:470px">reach the goal with 8 kg · 15 of the 19 misses on the stairs down</div>
+</section>
+
+<!-- 9 · After V1.0: the tests decide what to train next (real route + loads)
+     payload_ft.mp4 = ft_payload_s7 model_11998.pt, same start and load as payload_fail.mp4, sim 48 s → goal at 2×. -->
 <section class="scene"
   data-notes="After V1.0, the tests show us the next challenges. On a real factory route with switchback stairs, 22 of 25 reach the goal; all misses are on the long descent. Carrying loads was the other gap, so we fine-tuned for it. With 8 kilos, 6 became 20. Without a load, 22 fell to 3. Caught before deployment.">
   <div class="el eyebrow" data-in="0.1" style="left:150px; top:70px">After V1.0 · the tests decide what to train next</div>
@@ -214,8 +229,8 @@ canvas { display: block; }
   <div class="el green" data-in="1.1" style="left:148px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em">22 / 25</div>
   <div class="el s" data-in="1.8" style="left:150px; top:890px; width:780px">reach the goal · <span class="red">all 3 misses on the long descent</span><br>next to train: long stairs down</div>
   <div class="el frame" data-in="0.6" data-fx="zoom" style="left:990px; top:270px; width:780px; height:439px">
-    <video src="media/payload_pair.mp4" muted loop playsinline preload="auto" style="object-position:0% 50%"></video>
-    <span class="vl l0">8 kg on the chest</span>
+    <video src="media/payload_ft.mp4" muted loop playsinline preload="auto"></video>
+    <span class="vl l0">8 kg on the chest · after fine-tuning</span>
   </div>
   <div class="el" data-in="0.9" style="left:990px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Carrying loads <span class="muted" style="font-size:30px">· fine-tuned on GPUs</span></div>
   <div class="el" data-in="1.1" style="left:988px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em"><span class="muted">6 →</span> <span class="green">20</span> <span class="muted">&nbsp;·&nbsp; 22 →</span> <span class="red">3</span></div>
