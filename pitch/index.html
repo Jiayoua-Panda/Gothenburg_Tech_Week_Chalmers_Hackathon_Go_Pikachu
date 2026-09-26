@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Train Less, Test Everything</title>
+<style>
+:root {
+  --bg: #000;
+  --text: #f5f5f7;
+  --grey: #86868b;
+  --dim: #48484a;
+  --amber: #ffb020;
+  --green: #30d158;
+  --red: #ff453a;
+  --font: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: #000; color: var(--text); font-family: var(--font); overflow: hidden; cursor: none; }
+body.cursor { cursor: default; }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.scene { position: absolute; inset: 0; visibility: hidden; }
+.el { position: absolute; opacity: 0; will-change: opacity, transform, filter; }
+.full { left: 0; right: 0; text-align: center; }
+.xl { font-size: 190px; font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+.l { font-size: 124px; font-weight: 700; letter-spacing: -.045em; line-height: 1.02; }
+.m { font-size: 84px; font-weight: 700; letter-spacing: -.035em; line-height: 1.06; }
+.s { font-size: 32px; font-weight: 500; color: var(--grey); letter-spacing: -.01em; line-height: 1.35; }
+.eyebrow { font-size: 30px; font-weight: 600; color: var(--grey); letter-spacing: .01em; }
+.grad { background: linear-gradient(90deg, #ffd166 0%, #ff9f43 45%, #ff5e62 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .14em; }
+span.grad { display: inline-block; }
+.green { color: var(--green); }
+.red { color: var(--red); }
+.muted { color: var(--grey); }
+.frame { border-radius: 30px; overflow: hidden; background: #0a0a0a; box-shadow: 0 50px 140px -30px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,.07); }
+.frame.bleed { border-radius: 0; box-shadow: none; }
+.frame video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.vl { position: absolute; top: 22px; font-size: 24px; font-weight: 600; padding: 9px 16px; border-radius: 999px; background: rgba(0,0,0,.6); backdrop-filter: blur(10px); color: var(--text); }
+.vl.l0 { left: 22px; } .vl.r0 { right: 22px; }
+.fadeb { background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.2) 45%, rgba(0,0,0,.92) 100%); }
+canvas { display: block; }
+#bar { position: fixed; left: 0; bottom: 0; height: 3px; background: rgba(255,255,255,.35); width: 0; z-index: 5; }
+#hint { position: fixed; left: 0; right: 0; bottom: 34px; text-align: center; font: 500 15px var(--font); color: #555; letter-spacing: .08em; transition: opacity .6s; z-index: 5; }
+#notes { position: fixed; left: 0; right: 0; bottom: 0; display: none; padding: 16px 28px 20px; background: rgba(12,12,14,.95); border-top: 1px solid #333; font: 400 19px/1.5 var(--font); color: #ddd; z-index: 6; cursor: default; }
+#notes.on { display: block; }
+#notes b { color: var(--amber); font-weight: 600; font-size: 14px; letter-spacing: .1em; display: block; margin-bottom: 4px; }
+#timer { position: fixed; top: 14px; right: 18px; font: 600 20px var(--font); color: #888; display: none; z-index: 6; }
+#timer.on { display: block; }
+#timer.over { color: var(--red); }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 · Every factory has stairs -->
+<section class="scene" data-start="0" data-holds="3.6"
+  data-notes="Every factory has stairs. SKF asked how to make training humanoids for industry easier. We are team Go Pikachu, and everything you will see is our own simulation of a Unitree G1.">
+  <canvas class="el" data-draw="hero" data-w="1920" data-h="1080" data-in="0" data-out="5.2" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
+  <div class="el eyebrow" data-in="0.9" data-out="5.0" style="left:150px; top:360px">Industrial humanoids · SKF</div>
+  <div class="el l" data-in="1.3" data-out="5.0" style="left:150px; top:420px">Every factory</div>
+  <div class="el l grad" data-in="1.8" data-out="5.0" style="left:150px; top:552px">has stairs.</div>
+</section>
+
+<!-- 2 · The fall -->
+<section class="scene" data-start="5.6" data-holds="5.2"
+  data-notes="This is Unitree's own walking policy, trained on flat ground. A 15 centimetre stair: the toe hits the riser and it falls. Zero percent on stairs across our 220-run test.">
+  <div class="el frame bleed" data-in="0" data-out="6.4" data-fx="zoom" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px">
+    <video src="media/v0_fall.mp4" muted playsinline preload="auto"></video>
+  </div>
+  <div class="el eyebrow" data-in="0.5" data-out="3.6" style="left:110px; top:90px; color:#fff; text-shadow:0 2px 20px rgba(0,0,0,.5)">A flat-ground walking policy meets a 15 cm stair.</div>
+  <div class="el" data-in="4.0" data-out="6.4" data-fx="fade" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px; background:rgba(0,0,0,.72)"></div>
+  <div class="el xl full" data-in="4.3" data-out="6.4" style="top:140px; font-size:300px">0%</div>
+  <div class="el s full" data-in="4.8" data-out="6.4" style="top:470px">on stairs, across 220 test runs</div>
+</section>
+
+<!-- 3 · Thesis -->
+<section class="scene" data-start="12.3" data-holds="2.4,5.6"
+  data-notes="The usual answer: retrain a policy for every task and every site. GPU weeks, new data, and a new safety case every time. || Our answer: train less, and test everything.">
+  <div class="el m full" data-in="0.3" data-out="3.0" style="top:400px">Retrain for every task?</div>
+  <div class="el m full muted" data-in="1.0" data-out="3.0" style="top:510px">For every site?</div>
+  <div class="el xl full" data-in="3.4" data-out="7.2" style="top:330px">Train less.</div>
+  <div class="el xl full grad" data-in="4.0" data-out="7.2" style="top:530px">Test everything.</div>
+</section>
+
+<!-- 4 · System -->
+<section class="scene" data-start="19.8" data-holds="5.6"
+  data-notes="Five parts. A factory map and fixed cameras tell the robot where it is. An on-board height scan picks the skill. Pretrained skills are reused. Safety stays classical. Every skill passes the same tests, and only what fails goes back into training.">
+  <div class="el eyebrow full" data-in="0.2" data-out="7.4" style="top:200px">The Humanoid Skill Factory</div>
+  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.1" data-out="7.4" data-fx="fade" style="left:0;top:290px"></canvas>
+</section>
+
+<!-- 5 · It sees the step -->
+<section class="scene" data-start="27.6" data-holds="4.2"
+  data-notes="The height scan sees the step and hands over from the fast flat-ground skill to a stair skill, and back. From 36 to 99 percent over the same 220 runs, with no new training.">
+  <div class="el l" data-in="0.2" data-out="6.6" style="left:150px; top:120px">It sees <span class="grad">the step.</span></div>
+  <div class="el frame" data-in="0.6" data-out="6.6" data-fx="zoom" style="left:150px; top:330px; width:1120px; height:630px">
+    <video src="media/switch_tour.mp4" muted loop playsinline preload="auto" style="transform:scale(1.28); transform-origin:40% 100%"></video>
+  </div>
+  <div class="el s" data-in="1.6" data-out="6.6" style="left:1370px; top:430px">Pass rate, 220 runs</div>
+  <div class="el xl green" data-in="1.8" data-out="6.6" data-count="36,99" data-cat="2.0" data-cdur="1.8" data-suffix="%" style="left:1360px; top:480px">36%</div>
+  <div class="el s" data-in="3.0" data-out="6.6" style="left:1370px; top:690px">36% with one policy.<br>No new training.</div>
+</section>
+
+<!-- 6 · A real route -->
+<section class="scene" data-start="34.6" data-holds="4.6,8.8"
+  data-notes="Then a real route: a switchback up to a mezzanine, five turns, twelve steps down. The robot never sees the stairs. It follows the factory map, with fixed cameras telling it where it is. || 22 of 25 starts reach the goal. All three misses happen in the same place, the long descent. That is exactly where training should go.">
+  <div class="el l" data-in="0.2" data-out="5.4" style="left:150px; top:150px">A real route.</div>
+  <canvas class="el" data-draw="route" data-w="1180" data-h="820" data-in="0.1" data-out="5.4" data-fx="fade" style="left:640px; top:170px"></canvas>
+  <div class="el m" data-in="1.6" data-out="5.4" style="left:150px; top:430px">19.9 m</div>
+  <div class="el m" data-in="2.1" data-out="5.4" style="left:150px; top:540px">5 turns</div>
+  <div class="el m" data-in="2.6" data-out="5.4" style="left:150px; top:650px">1.8 m <span class="muted">high</span></div>
+  <div class="el frame bleed" data-in="5.2" data-out="10.8" data-fx="zoom" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px">
+    <video src="media/factory_route.mp4" muted loop playsinline preload="auto"></video>
+  </div>
+  <div class="el fadeb" data-in="6.0" data-out="10.8" data-fx="fade" style="left:0;top:0;width:1920px;height:1080px"></div>
+  <div class="el xl green" data-in="6.4" data-out="10.8" style="left:150px; top:700px">22 / 25</div>
+  <div class="el s" data-in="7.0" data-out="10.8" style="left:160px; top:910px; color:#ddd">reach the goal · all 3 misses on the long descent</div>
+</section>
+
+<!-- 7 · Cameras -->
+<section class="scene" data-start="45.6" data-holds="1.8,6.2"
+  data-notes="If cameras guide the robot, how good must they be? || Ordinary. From 1025 simulated runs: up to 10 centimetres of noise, 2 hertz and 300 milliseconds is as good as a perfect camera. Left, camera only at 1 hertz: it walks off the flight. Right, add the robot's own odometry: it arrives. That is a purchase spec.">
+  <div class="el m full" data-in="0.2" data-out="2.4" style="top:460px">How good must the cameras be?</div>
+  <div class="el l full" data-in="2.8" data-out="8.8" style="top:110px"><span class="grad">Ordinary</span> is enough.</div>
+  <div class="el frame" data-in="3.2" data-out="8.8" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
+    <video src="media/camera_pair.mp4" muted loop playsinline preload="auto"></video>
+    <span class="vl l0">camera only · 1 Hz</span><span class="vl r0">+ odometry · 1 Hz</span>
+  </div>
+  <div class="el m full" data-in="4.6" data-out="8.8" style="top:830px">10 cm <span class="muted">·</span> 2 Hz <span class="muted">·</span> 300 ms</div>
+  <div class="el s full" data-in="5.2" data-out="8.8" style="top:950px">tolerated error, from 1025 simulated runs</div>
+</section>
+
+<!-- 8 · Safety -->
+<section class="scene" data-start="53.9" data-holds="5.0"
+  data-notes="Safety. Told to stop, the learned policy still creeps 27 centimetres. So stopping stays classical: a speed and separation monitor with the ISO/TS 15066 distance. Contacts with a person went from 44 to 0.">
+  <div class="el m full" data-in="0.2" data-out="7.4" style="top:120px">A learned stop <span class="grad">isn't a stop.</span></div>
+  <div class="el frame" data-in="1.2" data-out="7.4" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
+    <video src="media/safety_pair.mp4" muted loop playsinline preload="auto" style="transform:scale(1.12); transform-origin:50% 100%"></video>
+  </div>
+  <div class="el l full" data-in="3.0" data-out="7.4" style="top:810px">44 <span class="muted">→</span> <span class="green">0</span></div>
+  <div class="el s full" data-in="3.6" data-out="7.4" style="top:950px">contacts with a person · classical ISO/TS 15066 monitor</div>
+</section>
+
+<!-- 9 · Tests decide the training -->
+<section class="scene" data-start="61.8" data-holds="2.8,10.0"
+  data-notes="The tests also found the load limit: 8 kilograms on the chest works, a 5 kilogram backpack does not. || So we fine-tuned for loads on the Chalmers GPUs and re-ran the same tests. Heavy loads improved: 6 goals out of 25 became 14 to 20. But with no load it collapsed, 22 down to 3 or fewer. The reward went up, and the tests caught the regression before deployment.">
+  <div class="el m full" data-in="0.2" data-out="12.2" style="top:120px">The tests decide <span class="grad">what to train.</span></div>
+  <div class="el frame" data-in="0.8" data-out="4.2" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
+    <video src="media/payload_pair.mp4" muted loop playsinline preload="auto"></video>
+    <span class="vl l0">8 kg on the chest</span><span class="vl r0">5 kg backpack</span>
+  </div>
+  <div class="el s full" data-in="1.8" data-out="4.2" style="top:830px"><span class="green">reaches the top</span> &nbsp;·&nbsp; <span class="red">stuck at the first step</span></div>
+  <canvas class="el" data-draw="chart" data-w="1180" data-h="640" data-in="4.4" data-out="12.2" data-fx="fade" style="left:120px; top:300px"></canvas>
+  <div class="el s" data-in="6.9" data-out="12.2" style="left:1400px; top:380px">8 kg load</div>
+  <div class="el m green" data-in="6.9" data-out="12.2" style="left:1396px; top:420px">6 → 20</div>
+  <div class="el s" data-in="7.8" data-out="12.2" style="left:1400px; top:580px">no load</div>
+  <div class="el m red" data-in="7.8" data-out="12.2" style="left:1396px; top:620px">22 → 3</div>
+  <div class="el s" data-in="8.8" data-out="12.2" style="left:1400px; top:790px; color:var(--text); font-size:36px; font-weight:600">Caught before<br>deployment.</div>
+</section>
+
+<!-- 10 · A new site -->
+<section class="scene" data-start="74.6" data-holds="3.4"
+  data-notes="Onboarding a new site becomes: scan it, install cameras to spec, run the tests, and train only what fails. Next step: one real SKF route, as a pilot or thesis.">
+  <div class="el eyebrow full" data-in="0.1" data-out="5.6" style="top:190px">A new site</div>
+  <div class="el m full" data-in="0.3" data-out="5.6" style="top:270px">Scan it.</div>
+  <div class="el m full" data-in="0.9" data-out="5.6" style="top:385px">Install cameras to spec.</div>
+  <div class="el m full" data-in="1.5" data-out="5.6" style="top:500px">Run the tests.</div>
+  <div class="el l full grad" data-in="2.2" data-out="5.6" style="top:650px">Train only what fails.</div>
+</section>
+
+<!-- 11 · End -->
+<section class="scene" data-start="80.6" data-holds="3.2"
+  data-notes="Train less, test everything. Thank you.">
+  <canvas class="el" data-draw="heroEnd" data-w="1920" data-h="1080" data-in="0" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
+  <div class="el xl" data-in="0.6" style="left:150px; top:330px">Train less.</div>
+  <div class="el xl grad" data-in="1.1" style="left:150px; top:520px">Test everything.</div>
+  <div class="el s" data-in="1.8" style="left:156px; top:740px">Team Go Pikachu · SKF track · GTW × Chalmers Hackathon 2026</div>
+  <div class="el" data-in="2.4" style="left:156px; top:1000px; font-size:18px; color:#555">All results in MuJoCo simulation of a Unitree G1. Stair skill: third-party G1-DWAQ (BSD-3). Code, data and videos in our repository.</div>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="hint">PRESS → TO PLAY</div>
+<div id="notes"><b>SPEAKER NOTES · N</b><span id="notes-body"></span></div>
+<div id="timer">0:00</div>
+
+<script>
+(() => {
+"use strict";
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = t => t * t * (3 - 2 * t);
+const ease = t => { t = clamp(t); return 1 - Math.pow(1 - t, 3); };
+const easeIO = t => { t = clamp(t); return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+const FONT = getComputedStyle(document.documentElement).getPropertyValue("--font");
+const COL = { text: "#f5f5f7", grey: "#86868b", dim: "#48484a", amber: "#ffb020", green: "#30d158", red: "#ff453a" };
+function rrect(ctx, x, y, w, h, r) {
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+function label(ctx, s, x, y, size, color, weight = 600, align = "center") {
+  ctx.font = `${weight} ${size}px ${FONT}`; ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline = "alphabetic"; ctx.fillText(s, x, y);
+}
+
+/* =================== drawings =================== */
+
+// A G1 climbing endless stairs. Legs are solved with two-link IK every frame.
+function robotOnStairs(ctx, W, H, t, ax, ay) {
+  const T = 84, R = 40, L1 = 104, L2 = 104, HIP = 160, P = 0.95;
+  const st = t / P, s = Math.floor(st), p = st - s, e = smooth(p);
+  const tread = n => ({ x: n * T + T * 0.42, y: n * R });
+  const a = tread(s), b = tread(s + 2), c = tread(s + 1);
+  const swing = { x: lerp(a.x, b.x, e), y: lerp(a.y, b.y, e) + Math.sin(Math.PI * p) * R * 1.25 };
+  const hip = { x: (c.x + swing.x) / 2 + 10, y: c.y + HIP + R * e + Math.sin(Math.PI * 2 * p) * 3 };
+  const camX = hip.x - W * ax, camY = hip.y - H * (1 - ay);
+  const X = x => x - camX, Y = y => H - (y - camY);
+
+  const n0 = Math.floor(camX / T) - 2, n1 = n0 + Math.ceil(W / T) + 4;
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, "#1a1a1d"); g.addColorStop(1, "#060607");
+  ctx.beginPath(); ctx.moveTo(X(n0 * T), H + 10);
+  for (let n = n0; n <= n1; n++) { ctx.lineTo(X(n * T), Y(n * R)); ctx.lineTo(X((n + 1) * T), Y(n * R)); }
+  ctx.lineTo(X((n1 + 1) * T), H + 10); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+  for (let n = n0; n <= n1; n++) {
+    ctx.strokeStyle = "rgba(245,245,247,0.42)"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(n * T), Y(n * R)); ctx.lineTo(X((n + 1) * T), Y(n * R)); ctx.stroke();
+    ctx.strokeStyle = "rgba(245,245,247,0.10)";
+    ctx.beginPath(); ctx.moveTo(X((n + 1) * T), Y(n * R)); ctx.lineTo(X((n + 1) * T), Y((n + 1) * R)); ctx.stroke();
+  }
+  // on-board height scan in front of the feet
+  ctx.save(); ctx.globalAlpha = 0.07; ctx.fillStyle = COL.amber;
+  ctx.beginPath(); ctx.moveTo(X(hip.x + 24), Y(hip.y + 186));
+  ctx.lineTo(X(hip.x + 300), Y(Math.floor((hip.x + 300) / T) * R)); ctx.lineTo(X(hip.x + 30), Y(Math.floor((hip.x + 30) / T) * R));
+  ctx.closePath(); ctx.fill(); ctx.restore();
+  for (let i = 0; i < 16; i++) {
+    const x = hip.x + 30 + i * 17, y = Math.floor(x / T) * R;
+    const k = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * 6 - i * 0.55));
+    ctx.fillStyle = `rgba(255,176,32,${k})`; ctx.beginPath(); ctx.arc(X(x), Y(y) - 7, 4, 0, Math.PI * 2); ctx.fill();
+  }
+
+  const leg = foot => {
+    const ank = { x: foot.x, y: foot.y + 12 }, dx = ank.x - hip.x, dy = ank.y - hip.y;
+    const d = Math.min(Math.hypot(dx, dy), L1 + L2 - 0.5), th = Math.atan2(dy, dx);
+    const al = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
+    const k1 = { x: hip.x + L1 * Math.cos(th + al), y: hip.y + L1 * Math.sin(th + al) };
+    const k2 = { x: hip.x + L1 * Math.cos(th - al), y: hip.y + L1 * Math.sin(th - al) };
+    return { knee: k1.x > k2.x ? k1 : k2, ank };
+  };
+  const swingA = s % 2 === 0, legs = [leg(swingA ? swing : c), leg(swingA ? c : swing)];
+  const lean = 0.16, sh = { x: hip.x + Math.sin(lean) * 150, y: hip.y + Math.cos(lean) * 150 };
+  const armSw = Math.sin(Math.PI * (st % 2)) * (swingA ? 1 : -1) * 0.45;
+  const seg = (p1, p2, w, col) => { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(X(p1.x), Y(p1.y)); ctx.lineTo(X(p2.x), Y(p2.y)); ctx.stroke(); };
+  const dot = (p, r, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), r, 0, Math.PI * 2); ctx.fill(); };
+  const drawLeg = (L, far) => {
+    seg(hip, L.knee, 22, far ? "#3a3a3c" : "#f5f5f7"); seg(L.knee, L.ank, 18, far ? "#2c2c2e" : "#c7c7cc");
+    ctx.save(); ctx.translate(X(L.ank.x), Y(L.ank.y)); ctx.fillStyle = far ? "#1c1c1e" : "#3a3a3c"; rrect(ctx, -14, 2, 50, 12, 5); ctx.fill(); ctx.restore();
+    dot(L.knee, 7, "#000");
+  };
+  const arm = (dir, far) => {
+    const a1 = -Math.PI / 2 + lean + dir * armSw, el = { x: sh.x + Math.cos(a1) * 78, y: sh.y + Math.sin(a1) * 78 };
+    const a2 = a1 + 0.5, hand = { x: el.x + Math.cos(a2) * 70, y: el.y + Math.sin(a2) * 70 };
+    seg(sh, el, 15, far ? "#2c2c2e" : "#e5e5ea"); seg(el, hand, 13, far ? "#1c1c1e" : "#aeaeb2");
+  };
+  arm(-1, true); drawLeg(legs[1], true);
+  ctx.save(); ctx.shadowColor = "rgba(255,176,32,0.18)"; ctx.shadowBlur = 40; seg(hip, sh, 40, "#f5f5f7"); ctx.restore();
+  ctx.save(); ctx.translate(X((hip.x + sh.x) / 2), Y((hip.y + sh.y) / 2)); ctx.rotate(lean);
+  ctx.fillStyle = "#1c1c1e"; rrect(ctx, -8, -32, 16, 54, 6); ctx.fill(); ctx.fillStyle = COL.amber; ctx.fillRect(-4, -24, 8, 8); ctx.restore();
+  drawLeg(legs[0], false); dot(hip, 10, "#000");
+  const hd = { x: sh.x + Math.sin(lean) * 46, y: sh.y + Math.cos(lean) * 46 };
+  seg(sh, hd, 14, "#d1d1d6");
+  ctx.save(); ctx.translate(X(hd.x), Y(hd.y)); ctx.rotate(lean);
+  ctx.fillStyle = "#f5f5f7"; rrect(ctx, -24, -30, 48, 50, 16); ctx.fill();
+  ctx.fillStyle = "#000"; rrect(ctx, -4, -20, 30, 18, 8); ctx.fill();
+  ctx.fillStyle = `rgba(255,176,32,${0.55 + 0.45 * Math.sin(t * 3)})`; ctx.fillRect(4, -14, 16, 5); ctx.restore();
+  arm(1, false);
+}
+function drawHero(ctx, W, H, local, amb, ax = 0.66, m0 = 0.40, m1 = 0.66) {
+  const k = 1.45;
+  ctx.save(); ctx.scale(k, k); robotOnStairs(ctx, W / k, H / k, amb + 2, ax, 0.46); ctx.restore();
+  ctx.save(); ctx.globalCompositeOperation = "destination-in";
+  let g = ctx.createLinearGradient(0, 0, W, 0);
+  g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(m0, "rgba(0,0,0,0)"); g.addColorStop(m1, "rgba(0,0,0,1)"); g.addColorStop(1, "rgba(0,0,0,1)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(0.18, "rgba(0,0,0,1)"); g.addColorStop(0.8, "rgba(0,0,0,1)"); g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+}
+
+// Five parts in a row, then the failure loop back into training.
+function drawPipe(ctx, W, H, local, amb) {
+  const names = ["Map", "Scan", "Skills", "Safety", "Tests"];
+  const subs = ["where am I", "which skill now", "pretrained, reused", "classical, certifiable", "the same for every skill"];
+  const cy = 170, r = 84, gap = 330, x0 = W / 2 - 2 * gap;
+  const cx = i => x0 + i * gap;
+  const kl = easeIO((local - 0.4) / 2.0);
+  ctx.strokeStyle = "rgba(245,245,247,0.16)"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(cx(0), cy); ctx.lineTo(lerp(cx(0), cx(4), kl), cy); ctx.stroke();
+  names.forEach((n, i) => {
+    const k = ease((local - 0.5 - i * 0.32) / 0.8);
+    if (k <= 0) return;
+    ctx.save(); ctx.globalAlpha = k; ctx.translate(cx(i), cy + (1 - k) * 24);
+    ctx.fillStyle = "#0e0e10"; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = i === 4 ? "rgba(48,209,88,0.8)" : "rgba(245,245,247,0.22)"; ctx.lineWidth = 2; ctx.stroke();
+    glyph(ctx, i, amb);
+    label(ctx, n, 0, r + 70, 44, COL.text, 700);
+    label(ctx, subs[i], 0, r + 112, 24, COL.grey, 500);
+    ctx.restore();
+  });
+  // loop: tests → skills
+  const kL = easeIO((local - 2.6) / 1.2);
+  if (kL > 0) {
+    const sx = cx(4), ex = cx(2), pts = [];
+    for (let i = 0; i <= 60; i++) { const u = i / 60; pts.push([lerp(sx, ex, u), (cy + r + 150) + Math.sin(Math.PI * u) * 110]); }
+    const n = Math.floor(pts.length * kL);
+    ctx.strokeStyle = COL.red; ctx.lineWidth = 4; ctx.setLineDash([2, 12]); ctx.lineCap = "round"; ctx.lineDashOffset = -amb * 30;
+    ctx.beginPath(); ctx.moveTo(sx, cy + r + 130); ctx.lineTo(sx, pts[0][1]);
+    pts.slice(0, n).forEach(([x, y]) => ctx.lineTo(x, y));
+    if (kL >= 1) ctx.lineTo(ex, cy + r + 130);
+    ctx.stroke(); ctx.setLineDash([]);
+    if (kL >= 1) { ctx.fillStyle = COL.red; ctx.beginPath(); ctx.moveTo(ex, cy + r + 124); ctx.lineTo(ex - 11, cy + r + 144); ctx.lineTo(ex + 11, cy + r + 144); ctx.fill(); }
+    const kt = ease((local - 3.4) / 0.8);
+    ctx.save(); ctx.globalAlpha = kt; label(ctx, "train only what fails", (sx + ex) / 2, cy + r + 310 + (1 - kt) * 16, 34, COL.red, 700); ctx.restore();
+  }
+}
+function glyph(ctx, i, t) {
+  ctx.strokeStyle = COL.text; ctx.fillStyle = COL.text; ctx.lineWidth = 3; ctx.lineJoin = "round"; ctx.lineCap = "round";
+  if (i === 0) { // floor plan with a location pin
+    rrect(ctx, -34, -30, 68, 60, 8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-34, 2); ctx.lineTo(4, 2); ctx.moveTo(4, -30); ctx.lineTo(4, 30); ctx.stroke();
+    ctx.fillStyle = COL.amber; ctx.beginPath(); ctx.arc(18, -12 + Math.sin(t * 3) * 2, 7, 0, Math.PI * 2); ctx.fill();
+  } else if (i === 1) { // height-scan dots
+    for (let a = 0; a < 5; a++) for (let b = 0; b < 4; b++) {
+      const k = 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(t * 5 - a * 0.9));
+      ctx.fillStyle = `rgba(255,176,32,${k})`; ctx.beginPath(); ctx.arc(-32 + a * 16, -22 + b * 15 + (a > 2 ? -8 : 0), 4, 0, Math.PI * 2); ctx.fill();
+    }
+  } else if (i === 2) { // stacked skills
+    for (let k = 0; k < 3; k++) { rrect(ctx, -32 + k * 6, -26 + k * 16, 58, 22, 6); ctx.stroke(); }
+  } else if (i === 3) { // shield
+    ctx.beginPath(); ctx.moveTo(0, -34); ctx.lineTo(28, -22); ctx.lineTo(26, 6); ctx.quadraticCurveTo(20, 26, 0, 36);
+    ctx.quadraticCurveTo(-20, 26, -26, 6); ctx.lineTo(-28, -22); ctx.closePath(); ctx.stroke();
+    ctx.fillStyle = COL.amber; ctx.fillRect(-4, -12, 8, 22);
+  } else { // test gate: check mark
+    ctx.strokeStyle = COL.green; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-22, 2); ctx.lineTo(-6, 18); ctx.lineTo(24, -16); ctx.stroke();
+  }
+}
+
+// The L4 factory route, built like scripts/factory_course.py, in isometric view.
+const ROUTE = (() => {
+  const WID = 1.2, RISE = 0.15, TREAD = 0.31;
+  let x = 0, y = 0, h = 0, z = 0;
+  const boxes = [], segs = [];
+  const dir = () => [Math.round(Math.cos(h * Math.PI / 180)), Math.round(Math.sin(h * Math.PI / 180))];
+  const box = (cx, cy, along, across, top, kind, idx = 0) => {
+    const horiz = Math.abs(Math.cos(h * Math.PI / 180)) > 0.5;
+    const hx = horiz ? along / 2 : across / 2, hy = horiz ? across / 2 : along / 2;
+    boxes.push({ x0: cx - hx, x1: cx + hx, y0: cy - hy, y1: cy + hy, top, kind, idx });
+  };
+  const B = {
+    flat(L) {
+      const [dx, dy] = dir(), n = Math.ceil(L / 0.4);
+      for (let i = 0; i < n; i++) { const s = (i + 0.5) * L / n; box(x + dx * s, y + dy * s, L / n, WID, z, "floor"); }
+      segs.push({ kind: "flat", x, y, dx, dy, L, z0: z, z1: z }); x += dx * L; y += dy * L; return B;
+    },
+    stairs(n, up = true) {
+      const [dx, dy] = dir(), z1 = up ? z + n * RISE : z - n * RISE;
+      for (let i = 1; i <= n; i++) box(x + dx * (i - 0.5) * TREAD, y + dy * (i - 0.5) * TREAD, TREAD, WID, up ? z + i * RISE : z - (i - 1) * RISE, up ? "up" : "down", i);
+      segs.push({ kind: up ? "up" : "down", x, y, dx, dy, L: n * TREAD, z0: z, z1 }); x += dx * n * TREAD; y += dy * n * TREAD; z = z1; return B;
+    },
+    turn(d) { box(x, y, WID, WID, z, "corner"); segs.push({ kind: "turn", x, y, L: 0, z0: z, z1: z }); h = (h + d) % 360; return B; },
+  };
+  B.flat(2).stairs(6).flat(0.6).turn(90).flat(WID).turn(90).flat(0.6).stairs(6).flat(0.6).turn(-90).flat(2.5).turn(-90).flat(1)
+    .stairs(12, false).flat(2).turn(90).flat(2);
+  let acc = 0;
+  for (const s of segs) { s.t0 = acc; s.dur = s.kind === "turn" ? 0.5 : s.L / (s.kind === "flat" ? 1.4 : 0.7); acc += s.dur; }
+  return { boxes, segs, total: acc, end: { x, y, z } };
+})();
+function routeAt(t) {
+  for (const s of ROUTE.segs) if (t < s.t0 + s.dur) {
+    const f = clamp((t - s.t0) / s.dur);
+    return s.kind === "turn" ? { x: s.x, y: s.y, z: s.z0 } : { x: s.x + s.dx * s.L * f, y: s.y + s.dy * s.L * f, z: lerp(s.z0, s.z1, f) };
+  }
+  return { ...ROUTE.end, done: true };
+}
+function drawRoute(ctx, W, H, local, amb) {
+  const c30 = Math.cos(Math.PI / 6), s30 = 0.5;
+  let mnx = 1e9, mxx = -1e9, mny = 1e9, mxy = -1e9;
+  for (const b of ROUTE.boxes) for (const [px, py] of [[b.x0, b.y0], [b.x1, b.y0], [b.x0, b.y1], [b.x1, b.y1]]) for (const pz of [0, b.top + 1.3]) {
+    const u = (px + py) * c30, v = (px - py) * s30 - pz;
+    mnx = Math.min(mnx, u); mxx = Math.max(mxx, u); mny = Math.min(mny, v); mxy = Math.max(mxy, v);
+  }
+  const S = Math.min((W - 40) / (mxx - mnx), (H - 40) / (mxy - mny));
+  const ox = 20 - mnx * S + ((W - 40) - (mxx - mnx) * S) / 2, oy = 20 - mny * S + ((H - 40) - (mxy - mny) * S) / 2;
+  const P = (x, y, z) => [ox + (x + y) * c30 * S, oy + ((x - y) * s30 - z) * S];  // viewer at (+x, -y, +z)
+  const poly = (pts, fill) => { ctx.beginPath(); pts.forEach(([x, y, z], i) => { const [u, v] = P(x, y, z); i ? ctx.lineTo(u, v) : ctx.moveTo(u, v); }); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); };
+  const walkT = Math.max(0, amb - 1.2) % (ROUTE.total + 1.5);
+  const r = routeAt(walkT), pulse = 0.5 + 0.5 * Math.sin(amb * 4);
+  const items = ROUTE.boxes.map((b, i) => ({ d: (b.x0 + b.x1 - b.y0 - b.y1) / 2, b, i }));
+  items.push({ d: r.x - r.y + 0.25, robot: true });
+  items.sort((p, q) => p.d - q.d);
+  for (const it of items) {
+    if (it.robot) {
+      if (local < 1.0) continue;
+      const [u, v] = P(r.x, r.y, r.z), hp = 1.2 * S;
+      ctx.fillStyle = "rgba(255,176,32,0.18)"; ctx.beginPath(); ctx.ellipse(u, v, 30 + 6 * pulse, 15 + 3 * pulse, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.save(); ctx.shadowColor = "rgba(255,176,32,0.6)"; ctx.shadowBlur = 24;
+      ctx.fillStyle = "#f5f5f7"; rrect(ctx, u - 8, v - hp, 16, hp - 2, 8); ctx.fill();
+      ctx.fillStyle = COL.amber; ctx.beginPath(); ctx.arc(u, v - hp - 9, 9, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      continue;
+    }
+    const b = it.b, kb = ease((local - 0.1 - it.i * 0.012) / 0.6);
+    if (kb <= 0) continue;
+    const top = Math.max(b.top, 0.004) * kb, stair = b.kind === "up" || b.kind === "down";
+    let tc = stair ? "#e5e5ea" : (b.top < 0.01 ? "#2c2c2e" : "#8e8e93");
+    if (b.kind === "down" && b.idx >= 3 && b.idx <= 5) tc = `rgba(255,69,58,${0.75 + 0.25 * pulse})`;
+    if (top > 0.01) {
+      poly([[b.x1, b.y0, 0], [b.x1, b.y1, 0], [b.x1, b.y1, top], [b.x1, b.y0, top]], stair ? "#636366" : "#3a3a3c");
+      poly([[b.x0, b.y0, 0], [b.x1, b.y0, 0], [b.x1, b.y0, top], [b.x0, b.y0, top]], stair ? "#48484a" : "#242426");
+    }
+    poly([[b.x0, b.y0, top], [b.x1, b.y0, top], [b.x1, b.y1, top], [b.x0, b.y1, top]], tc);
+  }
+  if (local >= 1.0) {
+    ctx.strokeStyle = COL.amber; ctx.lineWidth = 3; ctx.beginPath();
+    for (let q = 0, first = true; q <= walkT; q += 0.05, first = false) { const p = routeAt(q); const [u, v] = P(p.x, p.y, p.z + 0.02); first ? ctx.moveTo(u, v) : ctx.lineTo(u, v); }
+    ctx.stroke();
+  }
+  const kl = ease((local - 3.0) / 0.8);
+  if (kl > 0) {
+    ctx.save(); ctx.globalAlpha = kl;
+    const [fu, fv] = P(4.09, 3.7, 1.35);
+    label(ctx, "all 3 misses", fu + 150, fv - 90, 32, COL.red, 700, "left");
+    ctx.strokeStyle = COL.red; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(fu + 10, fv - 10); ctx.lineTo(fu + 140, fv - 98); ctx.stroke();
+    ctx.restore();
+  }
+}
+
+// Before vs after fine-tuning, full route with a chest load.
+function drawChart(ctx, W, H, local, amb) {
+  const c = local;
+  const xs = ["0 kg", "2 kg", "5 kg", "8 kg", "12 kg"];
+  const x0 = 90, x1 = W - 170, y0 = 60, y1 = H - 90;
+  const px = i => x0 + i * (x1 - x0) / 4, py = v => y1 - v / 25 * (y1 - y0);
+  ctx.strokeStyle = "rgba(245,245,247,0.14)"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x0 - 30, y1); ctx.lineTo(x1 + 30, y1); ctx.stroke();
+  ctx.setLineDash([4, 10]); ctx.beginPath(); ctx.moveTo(x0 - 30, py(25)); ctx.lineTo(x1 + 30, py(25)); ctx.stroke(); ctx.setLineDash([]);
+  xs.forEach((s, i) => label(ctx, s, px(i), y1 + 50, 26, COL.grey, 600));
+  label(ctx, "Full factory route, chest load · goals out of 25", x0 - 34, 16, 24, COL.grey, 500, "left");
+  const series = [
+    { v: [22, 15, 10, 6, 1], col: "#8e8e93", w: 5, d0: 0.3, name: "before" },
+    { v: [0, 7, 13, 14, 15], col: "rgba(255,176,32,0.45)", w: 3, d0: 1.5, dash: [6, 10], name: "" },
+    { v: [3, 8, 15, 20, 18], col: COL.amber, w: 6, d0: 1.0, name: "after" },
+  ];
+  for (const s of series) {
+    const k = easeIO((c - s.d0) / 1.6), n = 4 * k;
+    if (k <= 0) continue;
+    ctx.strokeStyle = s.col; ctx.lineWidth = s.w; ctx.lineJoin = "round"; ctx.lineCap = "round"; ctx.setLineDash(s.dash || []);
+    ctx.beginPath();
+    for (let i = 0; i <= Math.ceil(n); i++) {
+      const f = Math.min(i, n), i0 = Math.floor(f), i1 = Math.min(i0 + 1, 4), fr = f - i0;
+      const xx = lerp(px(i0), px(i1), fr), yy = py(lerp(s.v[i0], s.v[i1], fr));
+      i ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy);
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    if (!s.dash) s.v.forEach((v, i) => { if (i <= n + 1e-6) { ctx.fillStyle = s.col; ctx.beginPath(); ctx.arc(px(i), py(v), 7, 0, Math.PI * 2); ctx.fill(); } });
+    if (k >= 1 && s.name) label(ctx, s.name, px(4) + 22, py(s.v[4]) + 9, 28, s.col, 700, "left");
+  }
+  const ring = (i, v, col, at) => {
+    const k = ease((c - at) / 0.5); if (k <= 0) return;
+    ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.globalAlpha = k;
+    ctx.beginPath(); ctx.arc(px(i), py(v), 18 + 6 * (0.5 + 0.5 * Math.sin(amb * 4)), 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1;
+  };
+  ring(3, 20, COL.green, 2.5); ring(3, 6, COL.green, 2.5);
+  ring(0, 3, COL.red, 3.4); ring(0, 22, COL.red, 3.4);
+  const kn = ease((c - 3.9) / 0.6);
+  if (kn > 0) { ctx.globalAlpha = kn; label(ctx, "dashed: second training seed", x1 + 30, 16, 22, COL.grey, 500, "right"); ctx.globalAlpha = 1; }
+}
+const DRAW = { hero: drawHero, heroEnd: (c, W, H, l, a) => drawHero(c, W, H, l, a, 0.8, 0.6, 0.78), pipe: drawPipe, route: drawRoute, chart: drawChart };
+
+/* =================== timeline engine =================== */
+const stage = document.getElementById("stage");
+let scale = 1;
+const scenes = [...document.querySelectorAll(".scene")].map(el => {
+  const start = +el.dataset.start;
+  const items = [...el.querySelectorAll("[data-in]")].map(e => ({
+    el: e, tin: +e.dataset.in, tout: e.dataset.out ? +e.dataset.out : Infinity, fx: e.dataset.fx || "up",
+    din: +(e.dataset.din || 0.9), dout: +(e.dataset.dout || 0.7), vis: false, since: 0,
+    video: e.querySelector("video"), draw: e.dataset.draw ? DRAW[e.dataset.draw] : null,
+    ctx: e.tagName === "CANVAS" ? e.getContext("2d") : null, w: +e.dataset.w, h: +e.dataset.h,
+    count: e.dataset.count ? e.dataset.count.split(",").map(Number) : null,
+  }));
+  const end = start + Math.max(...items.map(i => i.tout + i.dout));
+  const holds = (el.dataset.holds || "").split(",").filter(Boolean).map(h => start + +h);
+  const notes = (el.dataset.notes || "").split("||").map(s => s.trim());
+  return { el, start, end, items, holds, notes };
+});
+const HOLDS = scenes.flatMap(s => s.holds).sort((a, b) => a - b);
+const NOTES = scenes.flatMap(s => s.holds.map((h, i) => ({ h, text: s.notes[i] || s.notes[0] })));
+const END = HOLDS[HOLDS.length - 1];
+
+function sizeCanvases() {
+  const k = Math.max(1, scale * (devicePixelRatio || 1));
+  for (const s of scenes) for (const it of s.items) if (it.ctx) {
+    it.el.width = Math.round(it.w * k); it.el.height = Math.round(it.h * k);
+    it.el.style.width = it.w + "px"; it.el.style.height = it.h + "px"; it.k = k;
+  }
+}
+function fit() {
+  scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.transform = `translate(${(innerWidth - 1920 * scale) / 2}px, ${(innerHeight - 1080 * scale) / 2}px) scale(${scale})`;
+  sizeCanvases();
+}
+
+let T = 0, playing = false, target = HOLDS[0], last = performance.now(), started = false, timerStart = 0;
+function play() {
+  if (T >= END - 1e-6) return;
+  target = HOLDS.find(h => h > T + 1e-6) ?? END;
+  playing = true; started = true;
+  document.getElementById("hint").style.opacity = 0;
+  if (!timerStart) timerStart = performance.now();
+}
+function next() { if (playing) { T = target; playing = false; } else play(); }
+function prev() { playing = false; const p = [...HOLDS].reverse().find(h => h < T - 1e-6); T = p ?? 0; }
+
+function render(now) {
+  const dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (playing) { T += dt; if (T >= target) { T = target; playing = false; } }
+  for (const s of scenes) {
+    const on = started && T >= s.start && T <= s.end + 1e-6;
+    s.el.style.visibility = on ? "visible" : "hidden";
+    const local = T - s.start;
+    for (const it of s.items) {
+      const ai = on ? ease((local - it.tin) / it.din) : 0;
+      const ao = on ? ease((local - it.tout) / it.dout) : 0;
+      const a = ai * (1 - ao), vis = a > 0.001;
+      if (vis !== it.vis) {
+        it.vis = vis; it.since = now;
+        if (it.video) {
+          if (vis) { it.video.muted = true; it.video.currentTime = 0; it.video.play().catch(() => {}); }
+          else it.video.pause();
+        }
+      }
+      if (!vis) { if (it.el.style.opacity !== "0") it.el.style.opacity = 0; continue; }
+      it.el.style.opacity = a;
+      if (it.fx === "up") {
+        it.el.style.transform = `translateY(${(1 - ai) * 36 - ao * 18}px)`;
+        const blur = (1 - ai) * 12 + ao * 8;
+        it.el.style.filter = blur > 0.2 ? `blur(${blur}px)` : "none";
+      } else if (it.fx === "zoom") {
+        const drift = 1 + 0.035 * clamp((local - it.tin) / 12);
+        it.el.style.transform = `scale(${(1.06 - 0.06 * ai) * drift + ao * 0.02})`;
+      }
+      if (it.count) {
+        const v = lerp(it.count[0], it.count[1], easeIO((local - +it.el.dataset.cat) / +it.el.dataset.cdur));
+        it.el.textContent = Math.round(v) + (it.el.dataset.suffix || "");
+      }
+      if (it.ctx) {
+        it.ctx.setTransform(it.k, 0, 0, it.k, 0, 0); it.ctx.clearRect(0, 0, it.w, it.h);
+        it.draw(it.ctx, it.w, it.h, local - it.tin, (now - it.since) / 1000);
+      }
+    }
+  }
+  document.getElementById("bar").style.width = (T / END * 100) + "%";
+  const note = NOTES.find(n => n.h >= T - 1e-6) || NOTES[NOTES.length - 1];
+  document.getElementById("notes-body").textContent = " " + note.text;
+  if (timerStart) {
+    const sec = Math.floor((now - timerStart) / 1000), el = document.getElementById("timer");
+    el.textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; el.classList.toggle("over", sec >= 300);
+  }
+  requestAnimationFrame(render);
+}
+
+addEventListener("keydown", e => {
+  const k = e.key;
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(k)) { e.preventDefault(); next(); }
+  else if (["ArrowLeft", "PageUp", "Backspace"].includes(k)) { e.preventDefault(); prev(); }
+  else if (k === "f" || k === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+  else if (k === "n" || k === "N") document.getElementById("notes").classList.toggle("on");
+  else if (k === "t" || k === "T") document.getElementById("timer").classList.toggle("on");
+  else if (k === "r" || k === "R") { T = 0; playing = false; started = false; timerStart = 0; document.getElementById("hint").style.opacity = 1; }
+});
+addEventListener("click", e => { if (e.target.closest("#notes")) return; e.clientX < innerWidth * 0.2 ? prev() : next(); });
+let mouseTimer = 0;
+addEventListener("mousemove", () => { document.body.classList.add("cursor"); clearTimeout(mouseTimer); mouseTimer = setTimeout(() => document.body.classList.remove("cursor"), 1500); });
+addEventListener("resize", fit);
+fit();
+// ?t=seconds jumps the timeline (for rehearsal)
+const jump = parseFloat(new URLSearchParams(location.search).get("t"));
+if (jump >= 0) { T = jump; started = true; document.getElementById("hint").style.opacity = 0; }
+requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>
