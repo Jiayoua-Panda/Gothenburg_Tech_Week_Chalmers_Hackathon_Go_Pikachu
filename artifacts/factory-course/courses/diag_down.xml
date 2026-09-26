@@ -1,0 +1,46 @@
+<mujoco model="factory course diag_down">
+  <include file="g1_29dof_rev_1_0_daf.xml" />
+  <statistic center="3.25 0.00 0.8" extent="7.1" />
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global offwidth="1280" offheight="720" />
+  </visual>
+  <asset>
+    <material name="stairs" rgba="0.62 0.64 0.66 1" />
+    <material name="landing" rgba="0.45 0.50 0.56 1" />
+    <material name="walkway" rgba="0.30 0.34 0.40 1" />
+    <material name="goal" rgba="0.20 0.75 0.35 1" />
+    <material name="start" rgba="0.25 0.50 0.90 1" />
+  </asset>
+  <worldbody>
+    <light pos="3.25 0.00 6" dir="0 0 -1" directional="true" />
+    <geom name="floor_1" type="box" size="1.0000 0.6000 0.7500" pos="1.0000 0.0000 0.7500" group="3" rgba="0 0 0 0" />
+    <geom name="floor_1_vis" type="box" size="1.0010 0.6010 0.7505" pos="1.0000 0.0000 0.7505" material="landing" contype="0" conaffinity="0" />
+    <geom name="step_2" type="box" size="0.1550 0.6000 0.7500" pos="2.1550 0.0000 0.7500" group="3" rgba="0 0 0 0" />
+    <geom name="step_2_vis" type="box" size="0.1550 0.6000 0.7500" pos="2.1550 0.0000 0.7500" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_3" type="box" size="0.1550 0.6000 0.6750" pos="2.4650 0.0000 0.6750" group="3" rgba="0 0 0 0" />
+    <geom name="step_3_vis" type="box" size="0.1550 0.6000 0.6750" pos="2.4650 0.0000 0.6750" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_4" type="box" size="0.1550 0.6000 0.6000" pos="2.7750 0.0000 0.6000" group="3" rgba="0 0 0 0" />
+    <geom name="step_4_vis" type="box" size="0.1550 0.6000 0.6000" pos="2.7750 0.0000 0.6000" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_5" type="box" size="0.1550 0.6000 0.5250" pos="3.0850 0.0000 0.5250" group="3" rgba="0 0 0 0" />
+    <geom name="step_5_vis" type="box" size="0.1550 0.6000 0.5250" pos="3.0850 0.0000 0.5250" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_6" type="box" size="0.1550 0.6000 0.4500" pos="3.3950 0.0000 0.4500" group="3" rgba="0 0 0 0" />
+    <geom name="step_6_vis" type="box" size="0.1550 0.6000 0.4500" pos="3.3950 0.0000 0.4500" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_7" type="box" size="0.1550 0.6000 0.3750" pos="3.7050 0.0000 0.3750" group="3" rgba="0 0 0 0" />
+    <geom name="step_7_vis" type="box" size="0.1550 0.6000 0.3750" pos="3.7050 0.0000 0.3750" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_8" type="box" size="0.1550 0.6000 0.3000" pos="4.0150 0.0000 0.3000" group="3" rgba="0 0 0 0" />
+    <geom name="step_8_vis" type="box" size="0.1550 0.6000 0.3000" pos="4.0150 0.0000 0.3000" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_9" type="box" size="0.1550 0.6000 0.2250" pos="4.3250 0.0000 0.2250" group="3" rgba="0 0 0 0" />
+    <geom name="step_9_vis" type="box" size="0.1550 0.6000 0.2250" pos="4.3250 0.0000 0.2250" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_10" type="box" size="0.1550 0.6000 0.1500" pos="4.6350 0.0000 0.1500" group="3" rgba="0 0 0 0" />
+    <geom name="step_10_vis" type="box" size="0.1550 0.6000 0.1500" pos="4.6350 0.0000 0.1500" material="stairs" contype="0" conaffinity="0" />
+    <geom name="step_11" type="box" size="0.1550 0.6000 0.0750" pos="4.9450 0.0000 0.0750" group="3" rgba="0 0 0 0" />
+    <geom name="step_11_vis" type="box" size="0.1550 0.6000 0.0750" pos="4.9450 0.0000 0.0750" material="stairs" contype="0" conaffinity="0" />
+    <geom name="floor_12_vis" type="box" size="1.0010 0.6010 0.0025" pos="6.1000 0.0000 0.0025" material="walkway" contype="0" conaffinity="0" />
+    <geom name="goal_pad_vis" type="box" size="0.3000 0.3000 0.0030" pos="6.8000 0.0000 0.0030" material="goal" contype="0" conaffinity="0" />
+    <geom name="start_apron" type="box" size="0.3000 0.6000 0.7500" pos="-0.3000 -0.0000 0.7500" group="3" rgba="0 0 0 0" />
+    <geom name="start_apron_vis" type="box" size="0.3010 0.6010 0.7505" pos="-0.3000 -0.0000 0.7505" material="landing" contype="0" conaffinity="0" />
+    <geom name="start_pad_vis" type="box" size="0.3010 0.3010 0.0035" pos="0.0000 0.0000 1.5035" material="start" contype="0" conaffinity="0" />
+  </worldbody>
+</mujoco>
