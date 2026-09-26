@@ -1,0 +1,47 @@
+{
+  "name": "l1_corner",
+  "description": "Ground-floor corridor with one 90\u00b0 left corner",
+  "width_m": 1.2,
+  "path_length_m": 6.0,
+  "turns": 1,
+  "stair_flights": 0,
+  "risers": 0,
+  "max_height_m": 0.0,
+  "goal_xyz_m": [
+    3.0,
+    3.0,
+    0.0
+  ],
+  "segments": [
+    {
+      "kind": "flat",
+      "start": [
+        0.0,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 3.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        3.0,
+        0.0
+      ],
+      "heading_deg": 90.0,
+      "length": 3.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    }
+  ]
+}

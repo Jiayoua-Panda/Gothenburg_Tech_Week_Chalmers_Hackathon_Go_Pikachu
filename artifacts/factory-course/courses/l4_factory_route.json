@@ -1,0 +1,197 @@
+{
+  "name": "l4_factory_route",
+  "description": "Full route: corridor, switchback up to mezzanine, two corners, straight flight down, ground-floor corridor to goal",
+  "width_m": 1.2,
+  "path_length_m": 19.94,
+  "turns": 5,
+  "stair_flights": 3,
+  "risers": 24,
+  "max_height_m": 1.8,
+  "goal_xyz_m": [
+    8.12,
+    5.7,
+    0.0
+  ],
+  "segments": [
+    {
+      "kind": "flat",
+      "start": [
+        0.0,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 2.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "stairs_up",
+      "start": [
+        2.0,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 1.8599999999999999,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.8999999999999999,
+      "steps": 6,
+      "rise": 0.15,
+      "tread": 0.31
+    },
+    {
+      "kind": "flat",
+      "start": [
+        3.86,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 0.6,
+      "width": 1.2,
+      "z_start": 0.8999999999999999,
+      "z_end": 0.8999999999999999,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        4.46,
+        0.0
+      ],
+      "heading_deg": 90.0,
+      "length": 1.2,
+      "width": 1.2,
+      "z_start": 0.8999999999999999,
+      "z_end": 0.8999999999999999,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        4.46,
+        1.2
+      ],
+      "heading_deg": 180.0,
+      "length": 0.6,
+      "width": 1.2,
+      "z_start": 0.8999999999999999,
+      "z_end": 0.8999999999999999,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "stairs_up",
+      "start": [
+        3.86,
+        1.2
+      ],
+      "heading_deg": 180.0,
+      "length": 1.8599999999999999,
+      "width": 1.2,
+      "z_start": 0.8999999999999999,
+      "z_end": 1.7999999999999998,
+      "steps": 6,
+      "rise": 0.15,
+      "tread": 0.31
+    },
+    {
+      "kind": "flat",
+      "start": [
+        2.0,
+        1.2000000000000002
+      ],
+      "heading_deg": 180.0,
+      "length": 0.6,
+      "width": 1.2,
+      "z_start": 1.7999999999999998,
+      "z_end": 1.7999999999999998,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        1.4,
+        1.2000000000000002
+      ],
+      "heading_deg": 90.0,
+      "length": 2.5,
+      "width": 1.2,
+      "z_start": 1.7999999999999998,
+      "z_end": 1.7999999999999998,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        1.4000000000000001,
+        3.7
+      ],
+      "heading_deg": 0.0,
+      "length": 1.0,
+      "width": 1.2,
+      "z_start": 1.7999999999999998,
+      "z_end": 1.7999999999999998,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "stairs_down",
+      "start": [
+        2.4000000000000004,
+        3.7
+      ],
+      "heading_deg": 0.0,
+      "length": 3.7199999999999998,
+      "width": 1.2,
+      "z_start": 1.7999999999999998,
+      "z_end": 0.0,
+      "steps": 12,
+      "rise": 0.15,
+      "tread": 0.31
+    },
+    {
+      "kind": "flat",
+      "start": [
+        6.12,
+        3.7
+      ],
+      "heading_deg": 0.0,
+      "length": 2.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        8.120000000000001,
+        3.7
+      ],
+      "heading_deg": 90.0,
+      "length": 2.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    }
+  ]
+}

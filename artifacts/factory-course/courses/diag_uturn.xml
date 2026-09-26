@@ -1,0 +1,26 @@
+<mujoco model="factory course diag_uturn">
+  <include file="g1_29dof_rev_1_0_daf.xml" />
+  <statistic center="1.00 0.60 0.8" extent="4.0" />
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global offwidth="1280" offheight="720" />
+  </visual>
+  <asset>
+    <material name="stairs" rgba="0.62 0.64 0.66 1" />
+    <material name="landing" rgba="0.45 0.50 0.56 1" />
+    <material name="walkway" rgba="0.30 0.34 0.40 1" />
+    <material name="goal" rgba="0.20 0.75 0.35 1" />
+    <material name="start" rgba="0.25 0.50 0.90 1" />
+  </asset>
+  <worldbody>
+    <light pos="1.00 0.60 6" dir="0 0 -1" directional="true" />
+    <geom name="floor_1" type="box" size="1.0000 0.6000 0.0020" pos="1.0000 0.0000 0.0020" material="walkway" contype="0" conaffinity="0" />
+    <geom name="corner_2" type="box" size="0.6000 0.6000 0.0020" pos="2.0000 0.0000 0.0020" material="walkway" contype="0" conaffinity="0" />
+    <geom name="floor_3" type="box" size="0.6000 0.6000 0.0020" pos="2.0000 0.6000 0.0020" material="walkway" contype="0" conaffinity="0" />
+    <geom name="corner_4" type="box" size="0.6000 0.6000 0.0020" pos="2.0000 1.2000 0.0020" material="walkway" contype="0" conaffinity="0" />
+    <geom name="floor_5" type="box" size="1.0000 0.6000 0.0020" pos="1.0000 1.2000 0.0020" material="walkway" contype="0" conaffinity="0" />
+    <geom name="goal_pad" type="box" size="0.3000 0.3000 0.0030" pos="0.3000 1.2000 0.0030" material="goal" contype="0" conaffinity="0" />
+    <geom name="start_pad" type="box" size="0.3000 0.3000 0.0030" pos="0.0000 0.0000 0.0030" material="start" contype="0" conaffinity="0" />
+  </worldbody>
+</mujoco>

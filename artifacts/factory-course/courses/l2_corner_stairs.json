@@ -1,0 +1,92 @@
+{
+  "name": "l2_corner_stairs",
+  "description": "Corner, straight 10-riser flight (15/31 cm), landing, right corner, mezzanine corridor",
+  "width_m": 1.2,
+  "path_length_m": 11.1,
+  "turns": 2,
+  "stair_flights": 1,
+  "risers": 10,
+  "max_height_m": 1.5,
+  "goal_xyz_m": [
+    5.0,
+    6.1,
+    1.5
+  ],
+  "segments": [
+    {
+      "kind": "flat",
+      "start": [
+        0.0,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 2.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        2.0,
+        0.0
+      ],
+      "heading_deg": 90.0,
+      "length": 1.5,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "stairs_up",
+      "start": [
+        2.0,
+        1.5
+      ],
+      "heading_deg": 90.0,
+      "length": 3.1,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 1.5,
+      "steps": 10,
+      "rise": 0.15,
+      "tread": 0.31
+    },
+    {
+      "kind": "flat",
+      "start": [
+        2.0,
+        4.6
+      ],
+      "heading_deg": 90.0,
+      "length": 1.5,
+      "width": 1.2,
+      "z_start": 1.5,
+      "z_end": 1.5,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "flat",
+      "start": [
+        2.0,
+        6.1
+      ],
+      "heading_deg": 0.0,
+      "length": 3.0,
+      "width": 1.2,
+      "z_start": 1.5,
+      "z_end": 1.5,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    }
+  ]
+}

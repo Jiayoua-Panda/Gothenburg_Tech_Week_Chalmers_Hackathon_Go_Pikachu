@@ -1,0 +1,62 @@
+{
+  "name": "diag_down",
+  "description": "Diagnostic: 1.5 m mezzanine, straight 10-riser descent",
+  "width_m": 1.2,
+  "path_length_m": 7.1,
+  "turns": 0,
+  "stair_flights": 1,
+  "risers": 10,
+  "max_height_m": 1.5,
+  "goal_xyz_m": [
+    7.1,
+    0.0,
+    0.0
+  ],
+  "segments": [
+    {
+      "kind": "flat",
+      "start": [
+        0.0,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 2.0,
+      "width": 1.2,
+      "z_start": 1.5,
+      "z_end": 1.5,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    },
+    {
+      "kind": "stairs_down",
+      "start": [
+        2.0,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 3.1,
+      "width": 1.2,
+      "z_start": 1.5,
+      "z_end": 0.0,
+      "steps": 10,
+      "rise": 0.15,
+      "tread": 0.31
+    },
+    {
+      "kind": "flat",
+      "start": [
+        5.1,
+        0.0
+      ],
+      "heading_deg": 0.0,
+      "length": 2.0,
+      "width": 1.2,
+      "z_start": 0.0,
+      "z_end": 0.0,
+      "steps": 0,
+      "rise": 0.0,
+      "tread": 0.0
+    }
+  ]
+}

@@ -31,6 +31,8 @@ python3 /path/to/visualize/scripts/render.py web/stairlab.fragment.html index.ht
 - [Unitree V0 walking playback](g1_step_playback/README.md) and [test-course results](g1_course/outputs/v0/segment_results.csv): the official pretrained walking policy, evaluated without new training.
 - [G1-DWAQ stair replays](artifacts/stair-replays/README.md): a separate third-party stair policy on custom corridor–stair–corridor scenes. Four videos include one successful route and three failures; the successful route used simulator ground-truth position and heading for steering, without camera perception.
 
+- [Factory route course](artifacts/factory-course/README.md): the G1-DWAQ policy with a waypoint route follower on multi-segment layouts (corners, switchback stairs, a 12-riser descent). With ideal external localization and stall recovery, the 19.9 m full route reached the goal from 9/9 start conditions; the main remaining failure is drifting off descending flights.
+
 These use different policies and test scenes, so their results are not a controlled policy comparison.
 
 ## Docs

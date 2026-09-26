@@ -1,0 +1,42 @@
+<mujoco model="factory course l3_switchback">
+  <include file="g1_29dof_rev_1_0_daf.xml" />
+  <statistic center="2.23 1.95 0.8" extent="4.5" />
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global offwidth="1280" offheight="720" />
+  </visual>
+  <asset>
+    <material name="stairs" rgba="0.62 0.64 0.66 1" />
+    <material name="landing" rgba="0.45 0.50 0.56 1" />
+    <material name="walkway" rgba="0.30 0.34 0.40 1" />
+    <material name="goal" rgba="0.20 0.75 0.35 1" />
+    <material name="start" rgba="0.25 0.50 0.90 1" />
+  </asset>
+  <worldbody>
+    <light pos="2.23 1.95 6" dir="0 0 -1" directional="true" />
+    <geom name="floor_1" type="box" size="1.0000 0.6000 0.0020" pos="1.0000 0.0000 0.0020" material="walkway" contype="0" conaffinity="0" />
+    <geom name="step_2" type="box" size="0.1550 0.6000 0.0750" pos="2.1550 0.0000 0.0750" material="stairs" />
+    <geom name="step_3" type="box" size="0.1550 0.6000 0.1500" pos="2.4650 0.0000 0.1500" material="stairs" />
+    <geom name="step_4" type="box" size="0.1550 0.6000 0.2250" pos="2.7750 0.0000 0.2250" material="stairs" />
+    <geom name="step_5" type="box" size="0.1550 0.6000 0.3000" pos="3.0850 0.0000 0.3000" material="stairs" />
+    <geom name="step_6" type="box" size="0.1550 0.6000 0.3750" pos="3.3950 0.0000 0.3750" material="stairs" />
+    <geom name="step_7" type="box" size="0.1550 0.6000 0.4500" pos="3.7050 0.0000 0.4500" material="stairs" />
+    <geom name="floor_8" type="box" size="0.3000 0.6000 0.4500" pos="4.1600 0.0000 0.4500" material="landing" />
+    <geom name="corner_9" type="box" size="0.6000 0.6000 0.4500" pos="4.4600 0.0000 0.4500" material="landing" />
+    <geom name="floor_10" type="box" size="0.6000 0.6000 0.4500" pos="4.4600 0.6000 0.4500" material="landing" />
+    <geom name="corner_11" type="box" size="0.6000 0.6000 0.4500" pos="4.4600 1.2000 0.4500" material="landing" />
+    <geom name="floor_12" type="box" size="0.3000 0.6000 0.4500" pos="4.1600 1.2000 0.4500" material="landing" />
+    <geom name="step_13" type="box" size="0.1550 0.6000 0.5250" pos="3.7050 1.2000 0.5250" material="stairs" />
+    <geom name="step_14" type="box" size="0.1550 0.6000 0.6000" pos="3.3950 1.2000 0.6000" material="stairs" />
+    <geom name="step_15" type="box" size="0.1550 0.6000 0.6750" pos="3.0850 1.2000 0.6750" material="stairs" />
+    <geom name="step_16" type="box" size="0.1550 0.6000 0.7500" pos="2.7750 1.2000 0.7500" material="stairs" />
+    <geom name="step_17" type="box" size="0.1550 0.6000 0.8250" pos="2.4650 1.2000 0.8250" material="stairs" />
+    <geom name="step_18" type="box" size="0.1550 0.6000 0.9000" pos="2.1550 1.2000 0.9000" material="stairs" />
+    <geom name="floor_19" type="box" size="0.3000 0.6000 0.9000" pos="1.7000 1.2000 0.9000" material="landing" />
+    <geom name="corner_20" type="box" size="0.6000 0.6000 0.9000" pos="1.4000 1.2000 0.9000" material="landing" />
+    <geom name="floor_21" type="box" size="0.6000 1.5000 0.9000" pos="1.4000 2.7000 0.9000" material="landing" />
+    <geom name="goal_pad" type="box" size="0.3000 0.3000 0.0030" pos="1.4000 3.9000 1.8030" material="goal" contype="0" conaffinity="0" />
+    <geom name="start_pad" type="box" size="0.3000 0.3000 0.0030" pos="0.0000 0.0000 0.0030" material="start" contype="0" conaffinity="0" />
+  </worldbody>
+</mujoco>
