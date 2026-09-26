@@ -73,6 +73,24 @@ lr 1e-3 (adaptive, desired KL 0.01), γ 0.99, λ 0.95, clip 0.2, entropy 0.01, 5
 Checkpoints (7.9 MB each) stay on Minerva under
 `/data/users/zhichaoz/skf/isaac/G1DWAQ_Lab/TienKung-Lab/logs/g1_dwaq/`.
 
+## Cost and time
+
+Measured on Minerva from checkpoint timestamps (`model_10000.pt` → `model_11998.pt`) and `sacct`:
+
+| Run | Node | Wall clock (2000 iterations, ≈197 M env steps) |
+|---|---|---|
+| `ft_payload`, `ft_payload_heavy`, `ft_descent`, `ft_payload_descent` | neptune, one L40S each | 2 h 30 min – 2 h 31 min |
+| `ft_payload_s7`, `ft_payload_descent_s7` | uranus, one L40S each | 3 h 25 min |
+
+- All six ran in parallel: 04:26 → 08:15, **under 4 h wall clock, 16.9 GPU-hours** in total.
+- At the median on-demand L40S price of **$1.50 per GPU-hour** (getdeploying.com, September 2026) that is **≈ $25**, or ≈ $4–5 per run.
+- Retesting all seven policies (base + six) on four MuJoCo courses, **1253 runs, 19.4 h of simulated walking**, took
+  **6 min 21 s on 16 CPU cores** (Slurm job 268006, `ft-eval`).
+- Not measured by us: the base checkpoint (10 000 iterations) was trained by the G1-DWAQ authors. At our iteration
+  time (≈4.5 s) it would be ≈12.5 h on one L40S.
+
+The compute is cheap; the risk is the regression (no load 22/25 → 3/25), which only the full retest catches.
+
 ## Reproduce
 
 1. Clone G1DWAQ_Lab at `bebb0ea` and apply [`skf_finetune.diff`](skf_finetune.diff) (or copy [`g1_dwaq_config.py`](g1_dwaq_config.py) to
