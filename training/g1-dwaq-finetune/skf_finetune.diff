@@ -1,0 +1,38 @@
+diff --git a/TienKung-Lab/legged_lab/envs/g1/g1_dwaq_config.py b/TienKung-Lab/legged_lab/envs/g1/g1_dwaq_config.py
+index 37aa4b6..e40b283 100644
+--- a/TienKung-Lab/legged_lab/envs/g1/g1_dwaq_config.py
++++ b/TienKung-Lab/legged_lab/envs/g1/g1_dwaq_config.py
+@@ -306,6 +306,33 @@ class G1DwaqEnvCfg(BaseEnvCfg):
+         # 关节阻尼/摩擦随机化 - 暂时禁用
+         # 外力扰动 - 暂时禁用
+ 
++        # ========== SKF hackathon fine-tuning variants (env var SKF_FT) ==========
++        # payload:          torso mass +0..12 kg and torso CoM shifted 0..12 cm forward, i.e. a load
++        #                   carried on the chest; arms stay under the policy.
++        # payload_descent:  as payload, plus twice the share of descending-stair terrain.
++        import copy
++        import os
++        skf_ft = os.environ.get("SKF_FT", "")
++        self.commands.debug_vis = False  # velocity arrows only matter in the GUI and stalled headless startup
++        if skf_ft in ("payload", "payload_descent", "payload_heavy"):
++            heavy = skf_ft == "payload_heavy"
++            self.domain_rand.events.add_base_mass.params["mass_distribution_params"] = (0.0, 20.0 if heavy else 12.0)
++            self.domain_rand.events.randomize_com = EventTerm(
++                func=isaaclab_events.randomize_rigid_body_com,
++                mode="startup",
++                params={
++                    "asset_cfg": SceneEntityCfg("robot", body_names=".*torso.*"),
++                    "com_range": {"x": (0.0, 0.15 if heavy else 0.12), "y": (-0.02, 0.02), "z": (-0.02, 0.05)},
++                },
++            )
++        if skf_ft in ("payload_descent", "descent"):
++            terrain = copy.deepcopy(ROUGH_TERRAINS_CFG)
++            for name, sub in terrain.sub_terrains.items():
++                sub.proportion = sub.proportion * (2.0 if name.startswith("stairs_down") else 0.75)
++            self.scene.terrain_generator = terrain
++        elif skf_ft not in ("", "payload", "payload_heavy"):
++            raise ValueError(f"unknown SKF_FT={skf_ft!r}")
++
+ 
+ @configclass  
+ class G1DwaqAgentCfg(BaseAgentCfg):
