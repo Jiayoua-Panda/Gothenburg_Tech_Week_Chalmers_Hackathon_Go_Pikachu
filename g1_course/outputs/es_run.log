@@ -1,0 +1,46 @@
+(7_w,14)-aCMA-ES (mu_w=4.3,w_1=36%) in dimension 11 (seed=432761, Fri Sep 25 23:50:55 2026)
+gen   0  best 0.434  mean 0.318  best-ever 0.434  (222 s)  A:100%  C1:0%  C2:25%  D1:0%  H1:0%  F1:25%  B2:0%
+gen   1  best 0.495  mean 0.358  best-ever 0.495  (242 s)  A:100%  C1:0%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen   2  best 0.548  mean 0.376  best-ever 0.548  (233 s)  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:50%  B2:0%
+gen   3  best 0.537  mean 0.389  best-ever 0.548  (291 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen   4  best 0.571  mean 0.383  best-ever 0.571  (641 s)  A:100%  C1:25%  C2:25%  D1:0%  H1:0%  F1:75%  B2:0%
+gen   5  best 0.540  mean 0.444  best-ever 0.571  (1170 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen   6  best 0.578  mean 0.466  best-ever 0.578  (1068 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen   7  best 0.528  mean 0.426  best-ever 0.578  (2659 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen   8  best 0.705  mean 0.460  best-ever 0.705  (154 s)  A:100%  C1:50%  C2:50%  D1:0%  H1:0%  F1:100%  B2:0%
+gen   9  best 0.643  mean 0.469  best-ever 0.705  (122 s)  A:100%  C1:75%  C2:25%  D1:0%  H1:0%  F1:50%  B2:0%
+gen  10  best 0.595  mean 0.476  best-ever 0.705  (114 s)  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:50%  B2:0%
+gen  11  best 0.514  mean 0.463  best-ever 0.705  (133 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  12  best 0.539  mean 0.445  best-ever 0.705  (115 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  13  best 0.552  mean 0.457  best-ever 0.705  (129 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  14  best 0.513  mean 0.464  best-ever 0.705  (121 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  15  best 0.623  mean 0.499  best-ever 0.705  (130 s)  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  16  best 0.603  mean 0.486  best-ever 0.705  (126 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  17  best 0.613  mean 0.464  best-ever 0.705  (111 s)  A:100%  C1:25%  C2:25%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  18  best 0.522  mean 0.464  best-ever 0.705  (127 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  19  best 0.605  mean 0.482  best-ever 0.705  (114 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  20  best 0.605  mean 0.477  best-ever 0.705  (119 s)  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  21  best 0.638  mean 0.500  best-ever 0.705  (123 s)  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  22  best 0.619  mean 0.525  best-ever 0.705  (132 s)  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  23  best 0.554  mean 0.449  best-ever 0.705  (114 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  24  best 0.657  mean 0.525  best-ever 0.705  (114 s)  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  25  best 0.566  mean 0.515  best-ever 0.705  (112 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  26  best 0.544  mean 0.486  best-ever 0.705  (115 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  27  best 0.583  mean 0.485  best-ever 0.705  (110 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  28  best 0.550  mean 0.447  best-ever 0.705  (111 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  29  best 0.554  mean 0.454  best-ever 0.705  (165 s)  A:100%  C1:100%  C2:0%  D1:0%  H1:0%  F1:25%  B2:0%
+gen  30  best 0.651  mean 0.501  best-ever 0.705  (148 s)  A:100%  C1:100%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  31  best 0.630  mean 0.487  best-ever 0.705  (99 s)  A:100%  C1:100%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  32  best 0.613  mean 0.465  best-ever 0.705  (110 s)  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:50%  B2:25%
+gen  33  best 0.578  mean 0.446  best-ever 0.705  (127 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  34  best 0.682  mean 0.482  best-ever 0.705  (131 s)  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  35  best 0.564  mean 0.464  best-ever 0.705  (131 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  36  best 0.618  mean 0.497  best-ever 0.705  (129 s)  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  37  best 0.617  mean 0.495  best-ever 0.705  (115 s)  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  38  best 0.595  mean 0.481  best-ever 0.705  (122 s)  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  39  best 0.617  mean 0.539  best-ever 0.705  (122 s)  A:100%  C1:25%  C2:25%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  40  best 0.599  mean 0.502  best-ever 0.705  (135 s)  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+gen  41  best 0.678  mean 0.556  best-ever 0.705  (134 s)  A:100%  C1:100%  C2:0%  D1:0%  H1:0%  F1:75%  B2:0%
+gen  42  best 0.712  mean 0.511  best-ever 0.712  (133 s)  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:100%  B2:0%
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:475: UserWarning: resource_tracker: There appear to be 6 leaked semaphore objects to clean up at shutdown: {'/mp-rq172k6o', '/mp-l0u4vzwj', '/mp-aeejasn1', '/mp-jqahub3s', '/mp-s4qu8tuv', '/mp-reufub1z'}
+  warnings.warn(

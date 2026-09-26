@@ -1,0 +1,9 @@
+segment,status
+A warm-up,PASS
+F1 cross 5deg,PASS
+F2 cross 10deg,PASS
+G1 rough 2cm,PASS
+G2 rough 4cm,PASS
+H1 stairs 15deg,PASS
+H2 stairs 30deg,PASS
+I narrow 0.6m,PASS

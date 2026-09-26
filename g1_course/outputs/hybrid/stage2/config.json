@@ -1,0 +1,38 @@
+{
+  "train": [
+    "A warm-up",
+    "C1 step 5cm",
+    "C2 step 10cm",
+    "D1 up 10/30",
+    "H1 stairs 15deg",
+    "F1 cross 5deg"
+  ],
+  "weights": {
+    "C2 step 10cm": 2.0,
+    "D1 up 10/30": 2.0,
+    "H1 stairs 15deg": 1.5,
+    "F1 cross 5deg": 0.5
+  },
+  "init": "/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/stage1_best_params.json",
+  "start": {
+    "slow_gain": 0.4294,
+    "v_min": 0.3121,
+    "k_y": 2.574,
+    "k_slope": 5.9606,
+    "k_yaw": 2.4219,
+    "yaw_slope": 1.5144,
+    "hip": 0.0434,
+    "knee": 0.6375,
+    "ankle": 0.2066,
+    "t_swing": 0.199,
+    "trigger": 0.4815,
+    "w_toe": 0.0,
+    "reach": 0.0,
+    "t_reach": 0.35,
+    "push": 0.0,
+    "boost": 0.0
+  },
+  "popsize": 14,
+  "trials": 4,
+  "sigma": 0.25
+}

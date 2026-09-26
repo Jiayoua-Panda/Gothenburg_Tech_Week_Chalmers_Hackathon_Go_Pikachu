@@ -1,0 +1,5 @@
+mode,trials,robot_moving_contact,person_into_stopped_robot,contact_while_driving,contact_during_stop,max_robot_close_1s_during_stop,fell,reached_goal,median_min_dist,p5_min_dist,mean_creep_in_stop,mean_time,stop_dist,slow_dist,position_hold
+off,50,32,12,44,0,0.0,0,50,0.1745,0.0309,0.0,26.539999999999996,0.8,2.0,False
+stop,50,15,9,0,24,0.3,0,50,0.503,0.059449999999999996,0.26940000000000003,30.598000000000003,0.8,2.0,False
+hold,50,19,1,0,20,0.299,0,50,0.6465000000000001,0.010600000000000002,0.05170000000000001,31.070799999999995,0.8,2.0,True
+iso,50,8,3,0,11,0.117,0,50,1.1395,0.14479999999999998,0.06894,32.916,1.67,2.87,True

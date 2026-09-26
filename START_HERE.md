@@ -1,5 +1,7 @@
 # 👉 先看这里：工厂路线实验（2026-09-26 凌晨）
 
+> English one-page summary of the whole team's approach and results (incl. these experiments): [analysis/final_approach.md](analysis/final_approach.md)
+
 > 作者：Zhichao（zhou-zhichao），和 Claude 一起做的。所有结果都是 MuJoCo 仿真，用的是已有的 G1-DWAQ 爬楼梯策略（第三方权重，不是我们训练的），**除了最后的微调，没有训练任何新模型**。
 > 代码在 `scripts/`，结果、视频、详细说明在 [`artifacts/factory-course/`](artifacts/factory-course/)。
 

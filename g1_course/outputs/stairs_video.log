@@ -1,0 +1,29 @@
+Sat Sep 26 03:14:35 CEST 2026 tour video start
+  A warm-up        PASS   t= 13.4s
+  B1 up 5deg       PASS   t= 22.9s
+  B1 down 5deg     PASS   t= 33.9s
+  B2 up 10deg      PASS   t= 51.9s
+  B2 down 10deg    PASS   t= 61.0s
+  B3 up 15deg      STUCK  t= 72.5s  x=15.99
+  B3 down 15deg    PASS   t= 83.9s
+  C1 step 5cm      PASS   t= 92.6s
+  C2 step 10cm     PASS   t=100.1s
+  C3 step 15cm     PASS   t=107.0s
+  D1 up 10/30      PASS   t=115.7s
+  D2 up 15/25      STUCK  t=123.8s  x=28.82
+  E1 down 15/30    PASS   t=133.4s
+  E2 down 10/30    PASS   t=141.4s
+巡回：通过 12/14 段，总用时 141.4 s
+视频：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/switch/course_tour.mp4
+Sat Sep 26 03:54:19 CEST 2026 TOUR VIDEO DONE
+  A warm-up        PASS   t= 11.7s
+  F1 cross 5deg    PASS   t= 21.3s
+  F2 cross 10deg   PASS   t= 36.0s
+  G1 rough 2cm     PASS   t= 48.0s
+  G2 rough 4cm     PASS   t= 59.7s
+  H1 stairs 15deg  PASS   t= 78.6s
+  H2 stairs 30deg  PASS   t= 97.7s
+  I narrow 0.6m    PASS   t=111.6s
+巡回：通过 8/8 段，总用时 111.6 s
+视频：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/switch/3d/course_tour.mp4
+Sat Sep 26 08:50:28 CEST 2026 TOUR 3D DONE
