@@ -63,6 +63,27 @@ canvas { display: block; }
   <div class="el l grad" data-in="1.8" data-out="5.0" style="left:150px; top:552px">Test everything.</div>
 </section>
 
+<!-- 2 · Background: the SKF challenge -->
+<section class="scene"
+  data-notes="The challenge from SKF: how can we make the training of humanoids in an industrial setting easier and more efficient? Compare the learning methods, build one locomotion task end to end in simulation, and judge it on industrial criteria.">
+  <div class="el eyebrow" data-in="0.1" style="left:150px; top:130px">The challenge · SKF × Gothenburg Tech Week Chalmers Hackathon 2026</div>
+  <div class="el l" data-in="0.3" style="left:150px; top:190px">Make training <span class="grad">easier.</span></div>
+  <div class="el s" data-in="0.6" style="left:150px; top:360px; width:1620px; color:var(--text)">How can we make the training of humanoids in an industrial setting easier and more efficient?</div>
+  <div class="el" data-in="1.0" style="left:150px; top:500px; width:500px">
+    <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Compare</div>
+    <div class="s" style="margin-top:18px">learning methods for industrial humanoids: manual programming, imitation, reinforcement learning, sim-to-real, foundation models</div>
+  </div>
+  <div class="el" data-in="1.4" style="left:710px; top:500px; width:500px">
+    <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Build</div>
+    <div class="s" style="margin-top:18px">one locomotion task end to end, in simulation: walking up stairs on a Unitree G1</div>
+  </div>
+  <div class="el" data-in="1.8" style="left:1270px; top:500px; width:500px">
+    <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Judge</div>
+    <div class="s" style="margin-top:18px">on industrial criteria: data effort, training time, safety, repeatability, adaptability, compute, explainability, maturity</div>
+  </div>
+  <div class="el" data-in="2.6" style="left:150px; top:880px; font-size:44px; font-weight:700; letter-spacing:-.02em">Deliver: <span class="grad">code, simulation, results, and why it worked or failed.</span></div>
+</section>
+
 <!-- 分 · small brain deep dive: V0 → V0.5 → V1.0 → train ====================== -->
 
 <!-- 4 · V0: the fall -->
@@ -84,18 +105,18 @@ canvas { display: block; }
   <div class="el l full" data-in="0.3" data-out="7.0" style="top:190px">No single method <span class="grad">fits.</span></div>
   <div class="el" data-in="1.0" data-out="7.0" style="left:150px; top:470px; width:500px">
     <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Manual programming</div>
-    <div class="s" style="margin-top:18px; color:var(--text)">+ certifiable, repeatable</div>
-    <div class="s" style="color:var(--grey)">− breaks when anything changes</div>
+    <div class="s green" style="margin-top:18px">+ certifiable, repeatable</div>
+    <div class="s red">− breaks when anything changes</div>
   </div>
   <div class="el" data-in="1.4" data-out="7.0" style="left:710px; top:470px; width:500px">
     <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Reinforcement learning</div>
-    <div class="s" style="margin-top:18px; color:var(--text)">+ adapts, needs no human data</div>
-    <div class="s" style="color:var(--grey)">− hard to explain and certify</div>
+    <div class="s green" style="margin-top:18px">+ adapts, needs no human data</div>
+    <div class="s red">− hard to explain and certify</div>
   </div>
   <div class="el" data-in="1.8" data-out="7.0" style="left:1270px; top:470px; width:500px">
     <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Foundation models</div>
-    <div class="s" style="margin-top:18px; color:var(--text)">+ flexible, understands language</div>
-    <div class="s" style="color:var(--grey)">− immature, heavy compute</div>
+    <div class="s green" style="margin-top:18px">+ flexible, understands language</div>
+    <div class="s red">− immature, heavy compute</div>
   </div>
   <div class="el full" data-in="2.8" data-out="7.0" style="top:760px; font-size:44px; font-weight:700; letter-spacing:-.02em">So layer them: learned skills to move, and choose skills based on perception.</div>
   <div class="el s full" data-in="3.2" data-out="7.0" style="top:930px; font-size:24px">also compared: teleoperation · imitation learning · sim-to-real · human feedback</div>
@@ -149,23 +170,24 @@ canvas { display: block; }
 </section>
 
 <!-- 9 · After V1.0: the tests decide what to train next (real route + loads) -->
-<section class="scene" data-holds="3.6,7.6"
-  data-notes="After V1.0, the tests tell us what to train next. On a real factory route with switchback stairs, 22 of 25 reach the goal; all misses are on the long descent. || Carrying loads was the other gap, so we fine-tuned for it. With 8 kilos, 6 became 20. Without a load, 22 fell to 3. Caught before deployment.">
-  <div class="el eyebrow" data-in="0.1" data-out="9.0" style="left:150px; top:70px">After V1.0 · the tests decide what to train next</div>
-  <div class="el m" data-in="0.2" data-out="9.0" style="left:150px; top:115px">Train only <span class="grad">what fails.</span></div>
-  <div class="el frame" data-in="0.6" data-out="9.0" data-fx="zoom" style="left:150px; top:270px; width:780px; height:439px">
+<section class="scene"
+  data-notes="After V1.0, the tests show us the next challenges. On a real factory route with switchback stairs, 22 of 25 reach the goal; all misses are on the long descent. Carrying loads was the other gap, so we fine-tuned for it. With 8 kilos, 6 became 20. Without a load, 22 fell to 3. Caught before deployment.">
+  <div class="el eyebrow" data-in="0.1" style="left:150px; top:70px">After V1.0 · the tests decide what to train next</div>
+  <div class="el m" data-in="0.2" style="left:150px; top:115px">More <span class="grad">challenges.</span></div>
+  <!-- 左右两部分同时出现 -->
+  <div class="el frame" data-in="0.6" data-fx="zoom" style="left:150px; top:270px; width:780px; height:439px">
     <video src="media/factory_route.mp4" muted loop playsinline preload="auto"></video>
   </div>
-  <div class="el" data-in="0.9" data-out="9.0" style="left:150px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">A real route <span class="muted" style="font-size:30px">· switchback stairs, 1.8 m up</span></div>
-  <div class="el green" data-in="1.1" data-out="9.0" style="left:148px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em">22 / 25</div>
-  <div class="el s" data-in="1.8" data-out="9.0" style="left:150px; top:890px; width:780px">reach the goal · <span class="red">all 3 misses on the long descent</span><br>next to train: long stairs down</div>
-  <div class="el frame" data-in="4.2" data-out="9.0" data-fx="zoom" style="left:990px; top:270px; width:780px; height:439px">
+  <div class="el" data-in="0.9" style="left:150px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">A real route <span class="muted" style="font-size:30px">· switchback stairs, 1.8 m up</span></div>
+  <div class="el green" data-in="1.1" style="left:148px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em">22 / 25</div>
+  <div class="el s" data-in="1.8" style="left:150px; top:890px; width:780px">reach the goal · <span class="red">all 3 misses on the long descent</span><br>next to train: long stairs down</div>
+  <div class="el frame" data-in="0.6" data-fx="zoom" style="left:990px; top:270px; width:780px; height:439px">
     <video src="media/payload_pair.mp4" muted loop playsinline preload="auto" style="object-position:0% 50%"></video>
     <span class="vl l0">8 kg on the chest</span>
   </div>
-  <div class="el" data-in="4.5" data-out="9.0" style="left:990px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Carrying loads <span class="muted" style="font-size:30px">· fine-tuned on GPUs</span></div>
-  <div class="el" data-in="4.7" data-out="9.0" style="left:988px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em"><span class="muted">6 →</span> <span class="green">20</span> <span class="muted">&nbsp;·&nbsp; 22 →</span> <span class="red">3</span></div>
-  <div class="el s" data-in="5.4" data-out="9.0" style="left:990px; top:890px; width:780px">with 8 kg · <span class="red">without a load</span> · out of 25<br><span style="color:var(--text); font-weight:600">caught before deployment</span></div>
+  <div class="el" data-in="0.9" style="left:990px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Carrying loads <span class="muted" style="font-size:30px">· fine-tuned on GPUs</span></div>
+  <div class="el" data-in="1.1" style="left:988px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em"><span class="muted">6 →</span> <span class="green">20</span> <span class="muted">&nbsp;·&nbsp; 22 →</span> <span class="red">3</span></div>
+  <div class="el s" data-in="1.8" style="left:990px; top:890px; width:780px">with 8 kg · <span class="red">without a load</span> · out of 25<br><span style="color:var(--text); font-weight:600">caught before deployment</span></div>
 </section>
 
 <!-- 总 · back to the whole picture: big brain, skill library, cyber brain ========= -->
