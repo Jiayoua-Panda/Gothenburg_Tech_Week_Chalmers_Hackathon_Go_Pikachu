@@ -29,6 +29,8 @@ Full results are in [`comparison.csv`](comparison.csv), each run's JSON, and its
 - [G1-DWAQ → V0 at 0.8 m/s](hybrid_cmd80cmps_center_rise15cm_tread31cm_width160cm.mp4)
 - [G1-DWAQ only at 0.8 m/s](dwaq-fast_cmd80cmps_center_rise15cm_tread31cm_width160cm.mp4)
 
+For a closer comparison, [this text-free split-screen clip](upper_corridor_left_hybrid_right_dwaq_fast_cmd80cmps_no_text.mp4) starts both sides at pelvis x ≈ 7.0 m. **Left is the hybrid; right is faster G1-DWAQ.** The independent gait phases are not synchronized, so a different foot position in one frame is not evidence of a better gait. The [measured upper-corridor plot](upper_corridor_metrics_cmd80cmps.png) shows the specific differences behind the summary: the hybrid's forward speed fluctuates less, its pelvis height varies slightly less, and it returns closer to the centerline in this run. The visual difference in the original full-route videos is subtle. Recreate the plot with `python scripts/plot_stair_policy_switch.py` (requires Matplotlib).
+
 ## Reproduce
 
 Use the setup in the [stair geometry sweep](../stair-sweep/README.md) for the G1-DWAQ source, checkpoint, MuJoCo, PyTorch, and FFmpeg. Install `onnxruntime` and `pyyaml` for the flat policy. The source checkout used here was G1DWAQ_Lab commit `bebb0ea`; the checkpoint SHA-256 was `5042017a558b98ab24a3784d1f960383ee42015d79b67b24b74f6b6a117759c1`, and the V0 ONNX SHA-256 was `610c27e463a8f666aa50a06346678c00b4df3859f10b54bcc1f817c28251406f`.
