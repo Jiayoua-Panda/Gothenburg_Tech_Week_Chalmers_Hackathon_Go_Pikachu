@@ -46,6 +46,19 @@ The presets are not distinguishable from each other or from the single-factor po
 
 **Suggested specification for this route:** position σ ≤ 10 cm, systematic offset ≤ 20 cm, ≥ 2 Hz and ≤ 300 ms, or ≥ 1 Hz and ≤ 1 s latency with on-board odometry fusion. These are the largest *tested* values that were not clearly worse, not measured thresholds. A deployment spec should keep a margin below them.
 
+## Videos
+
+Re-renders of individual sweep runs (same start, same seed, same outcome as in the sweep), in [`videos/`](videos/). No text is burned into the picture. The robot walks on its *estimated* pose, so with a poor camera, what you see is it steering by stale or wrong information.
+
+| Video | Camera | Outcome |
+| --- | --- | --- |
+| [1 Hz, camera only](videos/l4_factory_route_v30_rec_align_y-5cm_yaw-5_s0cm_y0deg_1hz_0ms_b0cm_seed6.mp4) | perfect fixes, once per second | leaves the flight after the U-turn landing, 36 s |
+| [1 Hz, camera + odometry](videos/l4_factory_route_v30_rec_align_y-5cm_yaw-5_s0cm_y0deg_1hz_0ms_b0cm_fused_seed6.mp4) | same, odometry between fixes | goal, 78 s |
+| [1 s latency, camera only](videos/l4_factory_route_v30_rec_align_y+5cm_yaw-2.5_s0cm_y0deg_0hz_1000ms_b0cm_seed17.mp4) | perfect fixes, 1 s old | walks off the first corner landing while turning, 25 s |
+| [1 s latency, camera + odometry](videos/l4_factory_route_v30_rec_align_y+5cm_yaw-2.5_s0cm_y0deg_0hz_1000ms_b0cm_fused_seed17.mp4) | same, odometry covers the delay | goal, 80 s |
+| [30 cm noise](videos/l4_factory_route_v30_rec_align_y-10cm_yaw-2.5_s30cm_y0deg_0hz_0ms_b0cm_seed2.mp4) | σ 30 cm, 50 Hz | leaves the first flight, 12 s |
+| ["typical" camera + odometry](videos/l4_factory_route_v30_rec_align_y+0cm_yaw+0_s5cm_y3deg_10hz_200ms_b5cm_fused_seed13.mp4) | 5 cm, 3°, 10 Hz, 200 ms, 5 cm bias | goal, 101 s |
+
 ## Caveats
 
 - Tested in one simulated route with one policy and one stair geometry.
