@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Train Less, Test Everything</title>
+<title>Reuse Skills, Test Everything</title>
 <style>
 :root {
   --bg: #000;
@@ -54,13 +54,13 @@ canvas { display: block; }
 
 <!-- 总 · the whole picture ============================================== -->
 
-<!-- 1 · Train less. Test everything. -->
+<!-- 1 · Reuse skills. Test everything. -->
 <section class="scene" data-holds="3.6"
-  data-notes="Train less, test everything. SKF asked us: how do we make training humanoids easier and more efficient? We are Go Pikachu.">
-  <canvas class="el" data-draw="hero" data-w="1920" data-h="1080" data-in="0" data-out="5.2" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
-  <div class="el eyebrow" data-in="0.9" data-out="5.0" style="left:150px; top:360px">Industrial humanoids · SKF</div>
-  <div class="el l" data-in="1.3" data-out="5.0" style="left:150px; top:420px">Train less.</div>
-  <div class="el l grad" data-in="1.8" data-out="5.0" style="left:150px; top:552px">Test everything.</div>
+  data-notes="Reuse skills, test everything. SKF asked us: how do we make training humanoids easier and more efficient? We are Go Pikachu.">
+  <canvas class="el" data-draw="hero" data-w="1920" data-h="1080" data-in="0" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
+  <div class="el eyebrow" data-in="0.9" style="left:150px; top:360px">Industrial humanoids · SKF</div>
+  <div class="el l" data-in="1.3" style="left:150px; top:420px">Reuse skills.</div>
+  <div class="el l grad" data-in="1.8" style="left:150px; top:552px">Test everything.</div>
 </section>
 
 <!-- 2 · Background: the SKF challenge -->
@@ -101,25 +101,25 @@ canvas { display: block; }
 <!-- 5 · Which learning method? (the comparison SKF asked for) -->
 <section class="scene" data-holds="5.0"
   data-notes="We compared seven learning methods on SKF's criteria. What is certifiable does not adapt; what adapts is hard to certify. So we layer them, starting from trained skills.">
-  <div class="el eyebrow full" data-in="0.1" data-out="7.0" style="top:130px">Seven learning methods · SKF's eight criteria</div>
-  <div class="el l full" data-in="0.3" data-out="7.0" style="top:190px">No single method <span class="grad">fits.</span></div>
-  <div class="el" data-in="1.0" data-out="7.0" style="left:150px; top:470px; width:500px">
+  <div class="el eyebrow full" data-in="0.1" style="top:130px">Seven learning methods · SKF's eight criteria</div>
+  <div class="el l full" data-in="0.3" style="top:190px">No single method <span class="grad">fits.</span></div>
+  <div class="el" data-in="1.0" style="left:150px; top:470px; width:500px">
     <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Manual programming</div>
     <div class="s green" style="margin-top:18px">+ certifiable, repeatable</div>
     <div class="s red">− breaks when anything changes</div>
   </div>
-  <div class="el" data-in="1.4" data-out="7.0" style="left:710px; top:470px; width:500px">
+  <div class="el" data-in="1.4" style="left:710px; top:470px; width:500px">
     <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Reinforcement learning</div>
     <div class="s green" style="margin-top:18px">+ adapts, needs no human data</div>
     <div class="s red">− hard to explain and certify</div>
   </div>
-  <div class="el" data-in="1.8" data-out="7.0" style="left:1270px; top:470px; width:500px">
+  <div class="el" data-in="1.8" style="left:1270px; top:470px; width:500px">
     <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Foundation models</div>
     <div class="s green" style="margin-top:18px">+ flexible, understands language</div>
     <div class="s red">− immature, heavy compute</div>
   </div>
-  <div class="el full" data-in="2.8" data-out="7.0" style="top:760px; font-size:44px; font-weight:700; letter-spacing:-.02em">So layer them: learned skills to move, and choose skills based on perception.</div>
-  <div class="el s full" data-in="3.2" data-out="7.0" style="top:930px; font-size:24px">also compared: teleoperation · imitation learning · sim-to-real · human feedback</div>
+  <div class="el full" data-in="2.8" style="top:760px; font-size:44px; font-weight:700; letter-spacing:-.02em">So layer them: learned skills to move, and choose skills based on perception.</div>
+  <div class="el s full" data-in="3.2" style="top:930px; font-size:24px">also compared: teleoperation · imitation learning · sim-to-real · human feedback</div>
 </section>
 
 <!-- 6 · V0.5: two ways to choose the skill, compared (demo4 tour clips) -->
@@ -153,20 +153,23 @@ canvas { display: block; }
   <div class="el s" data-in="1.2" data-out="10.4" style="left:150px; top:930px">46.7 m test course · 15 segments · 10 random starts each · V0 as delivered: 21%</div>
 </section>
 
-<!-- 8b · V1.0: one continuous run over the whole demo4 course (2x highlights) -->
-<section class="scene" data-holds="13.0"
-  data-notes="Here is V1.0 on the whole course in one go: over the pallet the map doesn't know, stopping for the worker, over the glare step, up the stairs. 15 of 15.">
-  <div class="el eyebrow" data-in="0.1" data-out="15.4" style="left:150px; top:70px">V1.0 · one continuous run · 2× speed</div>
-  <div class="el m" data-in="0.2" data-out="15.4" style="left:150px; top:115px">The whole <span class="grad">process.</span></div>
-  <div class="el frame" data-in="0.4" data-out="15.4" data-fx="zoom" style="left:150px; top:270px; width:1120px; height:630px">
+<!-- 8b · V1.0: one continuous run over the whole demo4 course, full run at 8x
+     (g1_course/outputs/s4_both/demo4/course_tour.mp4, 175 s → 22 s). 右侧文字按视频里的时间出现：
+     视频从本页 0.4 s 开始播放，所以 data-in = 0.4 + 视频时间。 -->
+<section class="scene" data-holds="22.4"
+  data-notes="Here is V1.0 on the whole course in one go, at eight times speed: slopes and steps, over the pallet the map doesn't know, stopping for the worker, over the glare step, up and down the stairs. 15 of 15.">
+  <div class="el eyebrow" data-in="0.1" style="left:150px; top:70px">V1.0 · one continuous run · full course at 8× speed</div>
+  <div class="el m" data-in="0.2" style="left:150px; top:115px">The whole <span class="grad">process.</span></div>
+  <div class="el frame" data-in="0.4" data-fx="zoom" style="left:150px; top:270px; width:1120px; height:630px">
     <video src="media/v1_tour.mp4" muted playsinline preload="auto"></video>
   </div>
-  <div class="el m green" data-in="1.0" data-out="15.4" style="left:1336px; top:280px">15 / 15</div>
-  <div class="el s" data-in="1.3" data-out="15.4" style="left:1340px; top:380px">segments passed</div>
-  <div class="el s" data-in="1.4" data-out="15.4" style="left:1340px; top:500px; color:var(--text)">over the pallet<br><span class="muted">the map doesn't know</span></div>
-  <div class="el s" data-in="4.2" data-out="15.4" style="left:1340px; top:610px; color:var(--text)">stops for the worker<br><span class="muted">at 1.67 m, then goes on</span></div>
-  <div class="el s" data-in="7.0" data-out="15.4" style="left:1340px; top:720px; color:var(--text)">over the glare step<br><span class="muted">the scan can't see</span></div>
-  <div class="el s" data-in="10.0" data-out="15.4" style="left:1340px; top:830px; color:var(--text)">up the stairs</div>
+  <div class="el m green" data-in="1.0" style="left:1336px; top:280px">15 / 15</div>
+  <div class="el s" data-in="1.3" style="left:1340px; top:380px">segments passed</div>
+  <div class="el s" data-in="2.0" style="left:1340px; top:470px; color:var(--text)">slopes and steps<br><span class="muted">5–15°, 5–15 cm</span></div>
+  <div class="el s" data-in="10.8" style="left:1340px; top:570px; color:var(--text)">over the pallet<br><span class="muted">the map doesn't know</span></div>
+  <div class="el s" data-in="13.4" style="left:1340px; top:670px; color:var(--text)">stops for the worker<br><span class="muted">at 1.67 m, then goes on</span></div>
+  <div class="el s" data-in="16.4" style="left:1340px; top:770px; color:var(--text)">over the glare step<br><span class="muted">the scan can't see</span></div>
+  <div class="el s" data-in="17.4" style="left:1340px; top:870px; color:var(--text)">up and down the stairs</div>
 </section>
 
 <!-- 9 · After V1.0: the tests decide what to train next (real route + loads) -->
@@ -195,41 +198,41 @@ canvas { display: block; }
 <!-- 11 · Big brain: one pipeline for every skill -->
 <section class="scene" data-holds="5.4"
   data-notes="Zoom out: the big brain. Our loop becomes the factory pipeline: collect, build the scene, train, validate, deploy, with specs from our tests.">
-  <div class="el eyebrow full" data-in="0.1" data-out="7.4" style="top:130px">Big brain · the factory</div>
-  <div class="el l full" data-in="0.2" data-out="7.4" style="top:180px">One pipeline <span class="grad">for every skill.</span></div>
-  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.3" data-out="7.4" data-fx="fade" style="left:0;top:370px"></canvas>
+  <div class="el eyebrow full" data-in="0.1" style="top:130px">Big brain · the factory</div>
+  <div class="el l full" data-in="0.2" style="top:180px">One pipeline <span class="grad">for every skill.</span></div>
+  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.3" data-fx="fade" style="left:0;top:370px"></canvas>
 </section>
 
 <!-- 13 · Cyber brain: a factory that learns (vision) -->
 <section class="scene" data-holds="4.6"
   data-notes="And the cyber brain, our vision: a collective brain above the fleet. Every failure one robot meets becomes a test for all of them, and a training case for the next version.">
-  <div class="el eyebrow" data-in="0.1" data-out="6.6" style="left:150px; top:110px">Cyber brain · vision</div>
-  <div class="el l" data-in="0.2" data-out="6.6" style="left:150px; top:160px">A factory <span class="grad">that learns.</span></div>
-  <div class="el" data-in="0.6" data-out="6.6" style="left:150px; top:390px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Collective brain</span> <span class="s">&nbsp; hours · shared by the fleet · skill library, training, digital twins</span></div>
-  <div class="el" data-in="1.1" data-out="6.6" style="left:150px; top:520px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Edge brain</span> <span class="s">&nbsp; seconds · one per robot · task plan, local map</span></div>
-  <div class="el" data-in="1.6" data-out="6.6" style="left:150px; top:650px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Execute brain</span> <span class="s">&nbsp; milliseconds · on the robot · balance, safety stop</span></div>
-  <div class="el" data-in="2.6" data-out="6.6" style="left:150px; top:850px; font-size:44px; font-weight:700; letter-spacing:-.02em">One robot's <span class="red">failure</span> becomes every robot's test.</div>
+  <div class="el eyebrow" data-in="0.1" style="left:150px; top:110px">Cyber brain · vision</div>
+  <div class="el l" data-in="0.2" style="left:150px; top:160px">A factory <span class="grad">that learns.</span></div>
+  <div class="el" data-in="0.6" style="left:150px; top:390px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Collective brain</span> <span class="s">&nbsp; hours · shared by the fleet · skill library, training, digital twins</span></div>
+  <div class="el" data-in="1.1" style="left:150px; top:520px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Edge brain</span> <span class="s">&nbsp; seconds · one per robot · task plan, local map</span></div>
+  <div class="el" data-in="1.6" style="left:150px; top:650px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Execute brain</span> <span class="s">&nbsp; milliseconds · on the robot · balance, safety stop</span></div>
+  <div class="el" data-in="2.6" style="left:150px; top:850px; font-size:44px; font-weight:700; letter-spacing:-.02em">One robot's <span class="red">failure</span> becomes every robot's test.</div>
 </section>
 
 <!-- 13b · What a new skill costs (timings from Minerva, see training/g1-dwaq-finetune/README.md) -->
 <section class="scene" data-holds="4.2"
   data-notes="What does a new skill cost SKF? Our six load fine-tunes ran overnight in parallel: under four hours, 17 GPU hours, about 25 dollars at cloud prices. Retesting all of them, 1253 runs, took six minutes.">
-  <div class="el eyebrow" data-in="0.1" data-out="5.0" style="left:150px; top:150px">The cost of a new skill</div>
-  <div class="el l" data-in="0.3" data-out="5.0" style="left:150px; top:210px">One night.</div>
-  <div class="el l grad" data-in="0.8" data-out="5.0" style="left:150px; top:340px">About $25.</div>
-  <div class="el m" data-in="1.6" data-out="5.0" style="left:150px; top:620px">4 h</div>
-  <div class="el s" data-in="2.0" data-out="5.0" style="left:154px; top:730px; width:480px">to train 6 variants<br>in parallel, overnight</div>
-  <div class="el m" data-in="2.1" data-out="5.0" style="left:720px; top:620px">17 GPU-h</div>
-  <div class="el s" data-in="2.5" data-out="5.0" style="left:724px; top:730px; width:480px">one L40S each · $1.50 / h<br>median cloud price</div>
-  <div class="el m" data-in="2.6" data-out="5.0" style="left:1290px; top:620px">6 min</div>
-  <div class="el s" data-in="3.0" data-out="5.0" style="left:1294px; top:730px; width:480px">to retest all of them<br>1253 runs · 16 CPU cores</div>
+  <div class="el eyebrow" data-in="0.1" style="left:150px; top:150px">The cost of a new skill</div>
+  <div class="el l" data-in="0.3" style="left:150px; top:210px">One night.</div>
+  <div class="el l grad" data-in="0.8" style="left:150px; top:340px">About $25.</div>
+  <div class="el m" data-in="1.6" style="left:150px; top:620px">4 h</div>
+  <div class="el s" data-in="2.0" style="left:154px; top:730px; width:480px">to train 6 variants<br>in parallel, overnight</div>
+  <div class="el m" data-in="2.1" style="left:720px; top:620px">17 GPU-h</div>
+  <div class="el s" data-in="2.5" style="left:724px; top:730px; width:480px">one L40S each · $1.50 / h<br>median cloud price</div>
+  <div class="el m" data-in="2.6" style="left:1290px; top:620px">6 min</div>
+  <div class="el s" data-in="3.0" style="left:1294px; top:730px; width:480px">to retest all of them<br>1253 runs · 16 CPU cores</div>
 </section>
 
 <!-- 14 · End -->
 <section class="scene" data-holds="3.2"
-  data-notes="Train less, test everything. Next: one real SKF route, as a pilot. Thank you.">
+  data-notes="Reuse skills, test everything. Next: one real SKF route, as a pilot. Thank you.">
   <canvas class="el" data-draw="heroEnd" data-w="1920" data-h="1080" data-in="0" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
-  <div class="el xl" data-in="0.6" style="left:150px; top:300px">Train less.</div>
+  <div class="el xl" data-in="0.6" style="left:150px; top:300px">Reuse skills.</div>
   <div class="el xl grad" data-in="1.1" style="left:150px; top:490px">Test everything.</div>
   <div class="el" data-in="1.8" style="left:156px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Next: one real SKF route, as a pilot.</div>
   <div class="el s" data-in="2.2" style="left:156px; top:820px">Team Go Pikachu · SKF track · GTW × Chalmers Hackathon 2026</div>
@@ -601,7 +604,10 @@ const scenes = [...document.querySelectorAll(".scene")].map(el => {
     count: e.dataset.count ? e.dataset.count.split(",").map(Number) : null,
   }));
   let steps = (el.dataset.holds || "").split(",").filter(Boolean).map(Number);
-  if (!steps.length) steps = [Math.max(...items.map(i => i.tin + i.din))];
+  if (!steps.length) steps = [0];
+  // 最后一步至少等到本页留到最后的元素都完整出现，免得停在半透明
+  const k = steps.length - 1;
+  steps[k] = Math.max(steps[k], ...items.filter(i => i.tout > steps[k]).map(i => i.tin + i.din));
   const notes = (el.dataset.notes || "").split("||").map(s => s.trim());
   return { el, items, steps, notes };
 });
