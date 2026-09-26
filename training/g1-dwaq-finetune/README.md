@@ -55,7 +55,7 @@ The CoM shift models a load carried on the chest; the arms stay under the policy
 | `gait_phase_contact` | `gait_phase_contact` | 0.2 | stance phase < 0.55 |
 | `feet_swing_height` | `feet_swing_height` | −0.2 | target 0.08 m |
 
-The exact values actually used by each run are also recorded in `runs/*/env.yaml` (section `rewards`).
+The exact values actually used by each run are also recorded in `runs/*/env.yaml` (section `reward`).
 
 ## Runs
 
