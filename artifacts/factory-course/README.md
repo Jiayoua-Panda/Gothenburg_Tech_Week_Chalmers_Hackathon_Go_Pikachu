@@ -2,13 +2,14 @@
 
 A MuJoCo simulation of a Unitree G1 following a planned route through a factory-style layout: ground-floor corridor, a switchback stair up to a 1.8 m mezzanine, two corners, a 12-riser straight flight down and a ground-floor corridor to the goal. The earlier experiments in this repository were a single straight corridor–stair–corridor; this adds turns, 180° landings, several flights in one route and descending stairs.
 
-**Assumption.** The factory has fixed cameras that track the robot and report its position and heading on a known floor plan. In this layer-1 experiment the reported pose is the **MuJoCo ground truth at 50 Hz**, i.e. an ideal camera system. No camera image is rendered or processed, and the locomotion policy itself stays blind. The `Localizer` in [`run_factory_course.py`](../../scripts/run_factory_course.py) already accepts noise, update-rate and latency settings for the next experiment (camera error tolerance).
+**Assumption.** The factory has fixed cameras that track the robot and report its position and heading on a known floor plan. In this layer-1 experiment the reported pose is the **MuJoCo ground truth at 50 Hz**, i.e. an ideal camera system. No camera image is rendered or processed, and the locomotion policy itself stays blind. How much camera error the route tolerates is measured in the follow-up [camera localization error sweep](localization-sweep/README.md).
 
 ## Controller
 
 - **Locomotion:** the third-party [G1DWAQ_Lab](https://github.com/liuyufei-nubot/G1DWAQ_Lab) `model_9999.pt` blind stair policy (commit `bebb0ea`, checkpoint SHA-256 in every run JSON) for the whole route. It was not trained in this project. Its training terrain includes stairs up and down (0–23 cm) and yaw-rate commands up to ±1.0 rad/s.
 - **Route follower** (ours): tracks each segment centreline with the same lateral/heading feedback as the earlier stair sweep. It uses 0.5 m/s on corridors and 0.3 m/s from 1 m before a flight until 0.5 m after it. It turns only on flat corner landings, never on a flight: stop at the corner point, rotate at a constant 1.0 rad/s, then hand back to walking within 9°.
 - **Stall recovery** (optional, `--recovery`): if route progress is under 5 cm in 4 s, walk backwards at 0.2 m/s for 1 s, then retry.
+- **Square-up before stairs** (optional, `--align`): within 35 cm of a flight's first riser, if the heading is off by more than 6°, stop and turn in place until it is within 3° (at most 3 s). Added after the camera-error sweep showed failures on the flight that follows the U-turn landing.
 
 ## Courses
 
@@ -29,19 +30,21 @@ All flights: 15 cm rise, 31 cm tread, 1.2 m walkway width (the tested-good geome
 
 Each cell is **9 deterministic runs**: start offsets −10 / 0 / +10 cm lateral × −5 / 0 / +5° heading. Outcomes: `path exit` means the pelvis left the walkway (|cross-track| > 60 cm, or it left the corner landing). `stuck` means less than 10 cm of route progress in 25 s. No run fell. Full per-run data is in [`runs/matrix.csv`](runs/matrix.csv) and [`runs/results.md`](runs/results.md).
 
-| Course | No stall recovery | With stall recovery | Mean time to goal (with recovery) |
-| --- | ---: | ---: | ---: |
-| `l1_corner` | 9/9 | 9/9 | 14.9 s |
-| `diag_uturn` | 9/9 | 9/9 | 16.6 s |
-| `l2_corner_stairs` | 9/9 | 8/9 (1 path exit on the up flight) | 39.6 s |
-| `l3_switchback` | 8/9 (1 stuck at first riser) | 9/9 | 51.7 s |
-| `l4_factory_route` | 6/9 (2 path exits on the down flight, 1 stuck at first riser) | **9/9** | 80.6 s |
-| `diag_down` | 7/9 (2 path exits on the down flight) | 7/9 (same) | 19.1 s |
-| **All** | **48/54** | **51/54** | |
+| Course | No stall recovery | Stall recovery | Recovery + square-up | Mean time to goal (recovery) |
+| --- | ---: | ---: | ---: | ---: |
+| `l1_corner` | 9/9 | 9/9 | 9/9 | 14.9 s |
+| `diag_uturn` | 9/9 | 9/9 | 9/9 | 16.6 s |
+| `l2_corner_stairs` | 9/9 | 8/9 (1 path exit on the up flight) | 7/9 (1 path exit, 1 stuck) | 39.6 s |
+| `l3_switchback` | 8/9 (1 stuck at first riser) | 9/9 | 9/9 | 51.7 s |
+| `l4_factory_route` | 6/9 (2 path exits on the down flight, 1 stuck at first riser) | **9/9** | 9/9 | 80.6 s |
+| `diag_down` | 7/9 (2 path exits on the down flight) | 7/9 (same) | 7/9 | 19.1 s |
+| **All** | **48/54** | **51/54** | **50/54** | |
 
 Mean absolute cross-track error with recovery was 7–8 cm on the stair courses and 10 cm on `diag_down`. The walkway half-width is 60 cm.
 
 How to read the recovery column: on `l4_factory_route` the back-off fired in 3 of 9 runs (2–3 times each). It directly cleared the first-riser stall. In the two runs that had left the walkway on the descent, it also fired earlier on the route, which changed the robot's timing, and the descent then succeeded. That descent improvement is therefore **not** a demonstrated effect of recovery: `diag_down`, which has no stalls, still fails 2/9 either way. Nine fixed starts per cell are not a success-rate estimate, and a one-run difference is within noise.
+
+**The 9/9 on L4 was partly luck.** On a finer 25-start grid (lateral −10/−5/0/5/10 cm × heading −5/−2.5/0/2.5/5°, [`grid25/`](grid25/)), L4 with an ideal camera reached the goal in **21/25** runs with stall recovery and **22/25** with recovery + square-up (3 path exits, all on the descent). With 2 cm camera noise it was 19/25 and 24/25. So the full route's success rate with a perfect camera is roughly 85–90%, and the remaining failures are the policy on the descending flight.
 
 ## What we learned about the policy (and fixed in the route follower)
 
