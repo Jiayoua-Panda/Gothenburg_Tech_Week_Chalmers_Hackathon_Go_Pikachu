@@ -84,6 +84,14 @@ canvas { display: block; }
   <div class="el" data-in="2.6" style="left:150px; top:880px; font-size:44px; font-weight:700; letter-spacing:-.02em">Deliver: <span class="grad">code, simulation, results, and why it worked or failed.</span></div>
 </section>
 
+<!-- 3 · The factory pipeline: every failure becomes a test -->
+<section class="scene" data-holds="5.4"
+  data-notes="Our approach is one factory pipeline: collect, build the scene, train, validate, deploy, with specs from our tests. One robot's failure becomes every robot's test.">
+  <div class="el eyebrow full" data-in="0.1" style="top:130px">The factory pipeline</div>
+  <div class="el m full" data-in="0.2" style="top:190px; font-size:76px">One robot's <span class="red">failure</span> becomes every robot's test.</div>
+  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.3" data-fx="fade" style="left:0;top:370px"></canvas>
+</section>
+
 <!-- 分 · small brain deep dive: V0 → V0.5 → V1.0 → train ====================== -->
 
 <!-- 4 · V0: the fall -->
@@ -191,27 +199,6 @@ canvas { display: block; }
   <div class="el" data-in="0.9" style="left:990px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Carrying loads <span class="muted" style="font-size:30px">· fine-tuned on GPUs</span></div>
   <div class="el" data-in="1.1" style="left:988px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em"><span class="muted">6 →</span> <span class="green">20</span> <span class="muted">&nbsp;·&nbsp; 22 →</span> <span class="red">3</span></div>
   <div class="el s" data-in="1.8" style="left:990px; top:890px; width:780px">with 8 kg · <span class="red">without a load</span> · out of 25<br><span style="color:var(--text); font-weight:600">caught before deployment</span></div>
-</section>
-
-<!-- 总 · back to the whole picture: big brain, skill library, cyber brain ========= -->
-
-<!-- 11 · Big brain: one pipeline for every skill -->
-<section class="scene" data-holds="5.4"
-  data-notes="Zoom out: the big brain. Our loop becomes the factory pipeline: collect, build the scene, train, validate, deploy, with specs from our tests.">
-  <div class="el eyebrow full" data-in="0.1" style="top:130px">Big brain · the factory</div>
-  <div class="el l full" data-in="0.2" style="top:180px">One pipeline <span class="grad">for every skill.</span></div>
-  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.3" data-fx="fade" style="left:0;top:370px"></canvas>
-</section>
-
-<!-- 13 · Cyber brain: a factory that learns (vision) -->
-<section class="scene" data-holds="4.6"
-  data-notes="And the cyber brain, our vision: a collective brain above the fleet. Every failure one robot meets becomes a test for all of them, and a training case for the next version.">
-  <div class="el eyebrow" data-in="0.1" style="left:150px; top:110px">Cyber brain · vision</div>
-  <div class="el l" data-in="0.2" style="left:150px; top:160px">A factory <span class="grad">that learns.</span></div>
-  <div class="el" data-in="0.6" style="left:150px; top:390px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Collective brain</span> <span class="s">&nbsp; hours · shared by the fleet · skill library, training, digital twins</span></div>
-  <div class="el" data-in="1.1" style="left:150px; top:520px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Edge brain</span> <span class="s">&nbsp; seconds · one per robot · task plan, local map</span></div>
-  <div class="el" data-in="1.6" style="left:150px; top:650px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Execute brain</span> <span class="s">&nbsp; milliseconds · on the robot · balance, safety stop</span></div>
-  <div class="el" data-in="2.6" style="left:150px; top:850px; font-size:44px; font-weight:700; letter-spacing:-.02em">One robot's <span class="red">failure</span> becomes every robot's test.</div>
 </section>
 
 <!-- 13b · What a new skill costs (timings from Minerva, see training/g1-dwaq-finetune/README.md) -->
