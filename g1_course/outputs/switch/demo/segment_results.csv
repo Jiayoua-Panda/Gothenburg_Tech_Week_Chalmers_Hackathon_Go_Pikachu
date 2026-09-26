@@ -1,0 +1,14 @@
+segment,trials,pass_rate,fell,off_track,timeout,mean_time_pass,fail_x_rel,fail_progress_rel,max_lateral_dev,stride_target,stride_mean,stride_err
+A warm-up,10,1.0,0,0,0,12.739999999999998,nan,nan,0.08091672939737185,nan,nan,nan
+B1 up 5deg,10,1.0,0,0,0,20.091999999999995,nan,nan,0.08638530228525464,nan,nan,nan
+B2 up 10deg,10,1.0,0,0,0,23.886,nan,nan,0.06420878028421952,nan,nan,nan
+B3 down 10deg,10,1.0,0,0,0,18.164,nan,nan,0.05634101135891567,nan,nan,nan
+C1 step 5cm,10,1.0,0,0,0,14.24,nan,nan,0.08142398556072969,nan,nan,nan
+C2 step 10cm,10,1.0,0,0,0,14.384,nan,nan,0.07047961054303083,nan,nan,nan
+C3 step 15cm,10,1.0,0,0,0,13.570000000000002,nan,nan,0.09840251809269904,nan,nan,nan
+F1 cross 5deg,10,1.0,0,0,0,18.462,nan,nan,0.13031990149534606,nan,nan,nan
+S person crossing,10,1.0,0,0,0,16.454,nan,nan,0.07672090804878848,nan,nan,nan
+D1 up 3x10cm,10,1.0,0,0,0,14.664000000000001,nan,nan,0.06832281319664973,nan,nan,nan
+D2 up 2x15cm,10,1.0,0,0,0,13.228,nan,nan,0.15223477258048151,nan,nan,nan
+E1 down 4x15cm,10,1.0,0,0,0,12.956,nan,nan,0.16516476139712605,nan,nan,nan
+H1 stairs 15deg,10,1.0,0,0,0,20.458000000000002,nan,nan,0.2050556993403275,nan,nan,nan

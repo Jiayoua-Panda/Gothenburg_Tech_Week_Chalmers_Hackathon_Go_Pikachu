@@ -79,6 +79,40 @@ COURSE_3D = [
 ]
 KINDS_3D = {"cross_slope", "rough", "angled_stairs"}
 
+# 三种状态对比用的演示路线：坡度 5° → 10°、台阶 5 / 10 / 15 cm、楼梯 10 / 15 cm、侧坡、斜楼梯，
+# 中间一段有人突然横穿通道（person=True，run_course.py --mode tour 会放一个人进来）。
+# 每个有名字的路段后面都跟 ≥ 1 m 平地：通过判定要求越过终点后再走 0.8 m。
+DEMO_COURSE = [
+    dict(kind="flat", length=2.0, name="A warm-up"),
+    dict(kind="flat", length=1.0),
+    dict(kind="ramp", angle=5, length=2.0, name="B1 up 5deg"),
+    dict(kind="flat", length=1.0),
+    dict(kind="ramp", angle=10, length=2.0, name="B2 up 10deg"),
+    dict(kind="flat", length=1.0),
+    dict(kind="ramp", angle=-10, length=3.0, name="B3 down 10deg"),  # 3 m 下 0.53 m，回到起点高度
+    dict(kind="flat", length=1.0),
+    dict(kind="block", height=0.05, length=1.0, name="C1 step 5cm"),
+    dict(kind="flat", length=1.0),
+    dict(kind="block", height=0.10, length=1.0, name="C2 step 10cm"),
+    dict(kind="flat", length=1.0),
+    dict(kind="block", height=0.15, length=1.0, name="C3 step 15cm"),
+    dict(kind="flat", length=1.0),
+    dict(kind="cross_slope", angle=5, length=2.5, name="F1 cross 5deg"),
+    dict(kind="flat", length=1.0),
+    dict(kind="flat", length=4.0, name="S person crossing", person=True),
+    dict(kind="flat", length=1.0),
+    dict(kind="stairs", rise=0.10, tread=0.30, n=3, name="D1 up 3x10cm"),
+    dict(kind="flat", length=1.0),
+    dict(kind="stairs", rise=0.15, tread=0.25, n=2, name="D2 up 2x15cm"),
+    dict(kind="flat", length=1.5),
+    dict(kind="stairs", rise=-0.15, tread=0.30, n=4, name="E1 down 4x15cm"),
+    dict(kind="flat", length=1.0),
+    dict(kind="angled_stairs", rise=0.10, tread=0.30, n=3, yaw=15, width=2.0, landing=0.6, name="H1 stairs 15deg"),
+    dict(kind="flat", length=1.5),
+    dict(kind="flat", length=2.0, name="finish"),
+]
+NAMED_COURSES = {"full": (FULL_COURSE, 0.0), "3d": (COURSE_3D, BASE_3D), "demo": (DEMO_COURSE, BASE_3D)}
+
 
 def _smoothstep(u):
     u = np.clip(u, 0.0, 1.0)
@@ -236,8 +270,9 @@ def standalone(spec) -> Course:
 
 
 def build_named(name: str) -> Course:
-    """"full" = 原始 2D 路线；"3d" = 侧倾坡 / 不平地面 / 斜向与窄楼梯。"""
-    return build(COURSE_3D, start_z=BASE_3D) if name == "3d" else build(FULL_COURSE)
+    """"full" = 原始 2D 路线；"3d" = 侧倾坡 / 不平地面 / 斜向与窄楼梯；"demo" = 三种状态对比用的混合路线。"""
+    spec_list, start_z = NAMED_COURSES[name]
+    return build(spec_list, start_z=start_z)
 
 
 def write_scene(course: Course, name: str, human: bool = False) -> pathlib.Path:

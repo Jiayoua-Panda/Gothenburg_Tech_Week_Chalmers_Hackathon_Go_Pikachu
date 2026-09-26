@@ -341,7 +341,15 @@ def stride_metrics(events, course: C.Course, seg_name):
 PASS_MARGIN = 0.8  # 路段之间的平地都 ≥ 1.0 m，0.8 m 仍在下一段起点之前
 
 # 注意：MuJoCo 渲染出来是 RGB，不是 OpenCV 习惯的 BGR
-STATUS_COLOR = {"PASS": (90, 220, 110), "FELL": (240, 70, 60), "STUCK": (255, 170, 40), "OFF": (200, 90, 240), "...": (200, 200, 200)}
+STATUS_COLOR = {"PASS": (90, 220, 110), "FELL": (240, 70, 60), "STUCK": (255, 170, 40), "OFF": (200, 90, 240),
+                "HIT": (255, 60, 150), "...": (200, 200, 200)}
+# 减速区的最低前进指令。DWAQ 低于约 0.2 m/s 只会原地踏步（START_HERE.md），实测 0.25 也会卡住：
+# 人离开后停在通道旁的减速圈里，机器人原地踏步等人、人不动 → 死锁。DWAQ 本来就只走 0.3 m/s，
+# 所以减速区对它不再减速，V0 从 0.5 减到 0.3；真正停下交给 STOP + 位置保持。
+SLOW_MIN_VX = 0.3
+# 与下面安全演示的 SAFETY_CONFIGS 一一对应
+SAFETY_LABELS = {"off": "safety: none", "stop": "safety: stop at 0.8 m", "hold": "safety: stop 0.8 m + hold",
+                 "iso": "safety: ISO 1.67 m + hold"}
 
 
 def draw_overlay(img, label, seg, x, cmd, t, board, banner=None):
@@ -370,11 +378,22 @@ def draw_overlay(img, label, seg, x, cmd, t, board, banner=None):
 def mode_tour(args):
     out = out_dir(args)
     course = C.build_named(args.course)
-    sim = make_sim(args.controller, C.write_scene(course, args.course), course)
-    controller = CONTROLLERS[args.controller]
     segs = [s for s in course.segments if s[0] != "finish"]
+    person_seg = next((s for s in segs if s[3].get("person")), None)
+    sim = make_sim(args.controller, C.write_scene(course, args.course, human=person_seg is not None), course)
+    controller = CONTROLLERS[args.controller]
     status = {s[0]: "..." for s in segs}
     label = CONTROLLER_LABELS[args.controller]
+    if person_seg is not None:
+        label = f"{label} | {SAFETY_LABELS[args.safety]}"
+
+    # 有人横穿的路段：机器人一进入这段，人就从侧面快步走到通道中间，停 3 s 再离开
+    dt = sim.policy.step_dt
+    cfg = SAFETY_CONFIGS[args.safety]
+    mon = SafetyMonitor(dt, enabled=cfg["monitor"], stop=cfg["stop"], slow=cfg["slow"])
+    hid = sim.model.body("human").mocapid[0] if person_seg is not None else None
+    person, anchor, zone, dist = None, None, "CLEAR", np.inf
+    hist_xy = []
 
     renderer = None if args.no_video else mujoco.Renderer(sim.model, args.height, args.width)
     cam = mujoco.MjvCamera()
@@ -382,7 +401,6 @@ def mode_tour(args):
     cam.trackbodyid = sim.pelvis
     cam.distance, cam.azimuth, cam.elevation = 3.4, 90.0, -10.0
 
-    dt = sim.policy.step_dt
     sink = None if renderer is None else VideoSink(out / "course_tour.mp4", fps=round(1 / dt))
     idx, t_total = 0, 0.0
     stuck_window = int(args.stuck_time / dt)
@@ -398,16 +416,54 @@ def mode_tour(args):
         add_footprints(renderer.scene, tracker.footprints)
         if args.show_scan:
             add_scan(renderer.scene, sim)
+        if person is not None and cfg["monitor"]:
+            add_zones(renderer.scene, sim, cfg["stop"], cfg["slow"])
         img = renderer.render().copy()
         x = sim.data.qpos[0]
         board = [(s[0], status[s[0]]) for s in segs]
         shown = f"{label} [{sim.skill_log[-1]}]" if getattr(sim, "skill_log", None) else label
+        if banner is None and person is not None:
+            if dist < CONTACT_DIST:
+                banner = ("COLLISION WITH PERSON", STATUS_COLOR["HIT"])
+            elif zone in ("SLOW", "STOP"):
+                banner = ({"SLOW": "PERSON NEAR - slowing down", "STOP": "PROTECTIVE STOP"}[zone], ZONE_COLOR[zone])
         draw_overlay(img, shown, course.segment_at(x) or "-", x, cmd, t_total, board, banner)
         sink.append(img)
 
     while idx < len(segs):
         name, x0, x1, _ = segs[idx]
         cmd = controller(sim, t_local, vx=args.speed, settle=1.0)
+        rxy = sim.data.qpos[:2].copy()
+        hist_xy.append(rxy)
+
+        if person_seg is not None:
+            if person is None and rxy[0] > person_seg[1] + 0.3:
+                person = Person(x=person_seg[1] + 2.8, t_start=t_total, speed=1.2, dwell=3.0, y0=2.5)
+            if person is not None:
+                pp = person.pos(t_total)
+                sim.data.mocap_pos[hid] = [pp[0], pp[1], course.ground(pp[0], pp[1])]
+                dist = float(np.linalg.norm(rxy - pp))
+                factor, zone, _ = mon.update(dist)
+                cmd[0] *= factor
+                if zone == "SLOW" and cmd[0] > 0:
+                    # 两个策略都会忽略 < 约 0.2 m/s 的前进指令、原地踏步；减速只减到这里，真正停下交给 STOP + 位置保持
+                    cmd[0] = max(cmd[0], SLOW_MIN_VX)
+                if zone == "STOP":
+                    anchor = rxy if anchor is None else anchor
+                    if cfg["hold"]:
+                        along = float((rxy - anchor) @ sim.heading()[:2])
+                        cmd[0] = float(np.clip(-HOLD_GAIN * along, -HOLD_VMAX, HOLD_VMAX))
+                    hist_x = []  # 故意停下等人，不算卡住
+                else:
+                    anchor = None
+                # 撞人 = 进入接触距离时机器人自己还在朝人走（人走向已停下的机器人不算）
+                win = int(0.5 / dt)
+                if dist < CONTACT_DIST and len(hist_xy) > win:
+                    v_to = (hist_xy[-1] - hist_xy[-1 - win]) / (win * dt) @ (pp - rxy) / max(dist, 1e-6)
+                    if v_to > MOVING and status[person_seg[0]] != "HIT":
+                        status[person_seg[0]] = "HIT"
+                        print(f"  {person_seg[0]:16s} HIT    t={t_total:5.1f}s  x={rxy[0]:.2f}")
+
         sim.step(cmd)
         tracker.update(t_local, dt, record=False)
         t_local += dt
@@ -417,8 +473,10 @@ def mode_tour(args):
 
         # 越过当前段终点后还要稳住走 PASS_MARGIN 米才算通过（冲下坡后在坡底摔倒算这一段失败）
         while idx < len(segs) and x > segs[idx][2] + PASS_MARGIN:
-            status[segs[idx][0]] = "PASS"
-            print(f"  {segs[idx][0]:16s} PASS   t={t_total:5.1f}s")
+            seg_name = segs[idx][0]
+            if status[seg_name] != "HIT":
+                status[seg_name] = "PASS"
+            print(f"  {seg_name:16s} {status[seg_name]:5s}  t={t_total:5.1f}s")
             idx += 1
         if idx >= len(segs):
             break
@@ -765,11 +823,12 @@ def mode_safety(args):
 COURSE_TITLES = {
     "full": None,
     "3d": "G1 3D test course (F cross slope · G rough ground · H angled stairs · I narrow stairs 0.6 m)",
+    "demo": "G1 demo course (C single steps · F cross slope · D/E stairs up and down · H angled stairs)",
 }
 
 
 def course_specs(args):
-    return C.COURSE_3D if args.course == "3d" else C.FULL_COURSE
+    return C.NAMED_COURSES[args.course][0]
 
 
 def out_dir(args):
@@ -904,7 +963,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--mode", choices=["profile", "full", "tour", "segments", "viewer", "scan", "safety"], default="full")
     p.add_argument("--controller", choices=list(CONTROLLERS), default="v0")
-    p.add_argument("--course", choices=["full", "3d"], default="full", help="full = 原始 2D 路线；3d = 高度随 x、y 变化的路线")
+    p.add_argument("--safety", choices=["off", "stop", "hold", "iso"], default="off",
+                   help="巡回模式里有人横穿的路段用哪种安全层（见 --mode safety）")
+    p.add_argument("--course", choices=list(C.NAMED_COURSES), default="full",
+                   help="full = 原始 2D 路线；3d = 高度随 x、y 变化的路线；demo = 三种状态对比用的混合路线")
     p.add_argument("--speed", type=float, default=0.5, help="V0 恒定前进速度 m/s")
     p.add_argument("--trials", type=int, default=10)
     p.add_argument("--seed", type=int, default=0)

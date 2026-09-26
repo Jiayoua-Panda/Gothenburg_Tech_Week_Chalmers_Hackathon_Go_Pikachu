@@ -15,3 +15,10 @@ g1_step_playback/models/g1/course_*.xml
 g1_course/third_party/
 # temp file from atomic edits
 g1_course/run_course_tmp_check.py
+
+# full-resolution demo videos (too large for git; the *_2x.mp4 comparison videos contain all of them)
+g1_course/outputs/compare_demo.mp4
+g1_course/outputs/compare4_demo.mp4
+g1_course/outputs/compare4_demo4.mp4
+g1_course/outputs/*/demo/course_tour.mp4
+g1_course/outputs/*/demo4/course_tour.mp4

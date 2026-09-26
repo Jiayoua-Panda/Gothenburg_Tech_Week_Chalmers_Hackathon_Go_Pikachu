@@ -1,0 +1,16 @@
+segment,status
+A warm-up,PASS
+B1 up 5deg,PASS
+B2 up 10deg,PASS
+B3 down 10deg,PASS
+C1 step 5cm,PASS
+C2 step 10cm,PASS
+C3 step 15cm,PASS
+U pallet (unmapped),PASS
+F1 cross 5deg,PASS
+S person crossing,PASS
+"R step, glare (blind)",PASS
+D1 up 3x10cm,PASS
+D2 up 2x15cm,PASS
+E1 down 4x15cm,PASS
+H1 stairs 15deg,PASS

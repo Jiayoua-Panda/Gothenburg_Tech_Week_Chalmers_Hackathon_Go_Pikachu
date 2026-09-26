@@ -1,0 +1,14 @@
+segment,status
+A warm-up,PASS
+B1 up 5deg,OFF
+B2 up 10deg,FELL
+B3 down 10deg,PASS
+C1 step 5cm,PASS
+C2 step 10cm,FELL
+C3 step 15cm,FELL
+F1 cross 5deg,PASS
+S person crossing,PASS
+D1 up 3x10cm,FELL
+D2 up 2x15cm,FELL
+E1 down 4x15cm,FELL
+H1 stairs 15deg,OFF
