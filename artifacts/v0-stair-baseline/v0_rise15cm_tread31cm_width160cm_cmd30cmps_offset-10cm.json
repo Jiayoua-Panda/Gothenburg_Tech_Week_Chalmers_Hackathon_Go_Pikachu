@@ -1,0 +1,27 @@
+{
+  "policy": "Unitree G1 29-DoF velocity V0 policy.onnx",
+  "policy_sha256": "610c27e463a8f666aa50a06346678c00b4df3859f10b54bcc1f817c28251406f",
+  "robot_mjcf": "G1DWAQ_Lab g1_29dof_rev_1_0_daf.xml",
+  "rise_cm": 15,
+  "tread_cm": 31,
+  "width_cm": 160,
+  "flat_control": false,
+  "initial_lateral_offset_cm": -10,
+  "command_speed_mps": 0.3,
+  "center_correction_uses_simulator_ground_truth": true,
+  "camera_perception_used": false,
+  "fall_height_threshold_m": 0.32,
+  "outcome": "fall",
+  "sim_time_s": 7.059999999999872,
+  "max_x_m": 1.7111438154825604,
+  "max_pelvis_z_m": 0.7896843079102847,
+  "goal_x_m": 8.004999999999999,
+  "final_xyz_m": [
+    1.3151480868158527,
+    -0.2977331461659456,
+    0.31655980784451426
+  ],
+  "trajectory": "v0_rise15cm_tread31cm_width160cm_cmd30cmps_offset-10cm.csv.gz",
+  "video": null,
+  "video_frames": null
+}
