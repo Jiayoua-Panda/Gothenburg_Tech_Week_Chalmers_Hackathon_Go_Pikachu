@@ -43,6 +43,8 @@ def main():
     draw_js = (HERE / "draw.js").read_text()
     pages = SECTION.findall(scenes)
     team = scenes[scenes.rfind("<!--", 0, scenes.rfind(pages[-1])):].strip()  # team page with its comment
+    # the opening copy introduces the team; only the closing one says thank you
+    team = re.sub(r'data-notes="[^"]*"', 'data-notes="We are team Go Pikachu: Leif, Zhichao, Darin, Shuwen and Jianying."', team, count=1)
 
     stage = STAGE.search(index)
     if "--merge" not in sys.argv:
