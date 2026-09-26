@@ -59,6 +59,13 @@ In [`videos/`](videos/), each rendered from the centred start (same outcome as i
 | [L2, 5 kg](videos/l2_corner_stairs_v30_rec_carry5kgnear_varm_align_y+0cm_yaw+0_ideal_flat30.mp4) | near, virtual arms, 0.3 m/s | climbs, then leaves the top landing while turning |
 | [L4, 2 kg](videos/l4_factory_route_v30_rec_carry2kgnear_varm_align_y+0cm_yaw+0_ideal_flat30.mp4) | near, virtual arms, 0.3 m/s | full route, goal, 53 s |
 | [L4, 3 kg](videos/l4_factory_route_v30_rec_carry3kgnear_varm_align_y+0cm_yaw+0_ideal_flat30.mp4) | near, virtual arms, 0.3 m/s | leaves the descending flight |
+| [L2, 8 kg on chest](videos/l2_corner_stairs_v30_rec_chest8kg_align_y+0cm_yaw+0_ideal.mp4) | chest, arms free | goal, 33 s |
+| [L1, 12 kg on chest](videos/l1_corner_v30_rec_chest12kg_align_y+0cm_yaw+0_ideal.mp4) | chest, arms free | goal, 12 s |
+| [L4, 5 kg on chest](videos/l4_factory_route_v30_rec_chest5kg_align_y+0cm_yaw+0_ideal.mp4) | chest, arms free | full route, goal, 72 s |
+| [L4, 12 kg on chest](videos/l4_factory_route_v30_rec_chest12kg_align_y+0cm_yaw+0_ideal.mp4) | chest, arms free | walks off a mezzanine corner while turning, 32 s |
+| [L2, 5 kg on back](videos/l2_corner_stairs_v30_rec_back5kg_align_y+0cm_yaw+0_ideal.mp4) | back, arms free | stuck, cannot climb the first riser |
+
+Failure videos keep recording for 4 s after the failure (`--video-tail-s`), so they show what happens next (the fall or drop). The run's metrics still stop at the moment of failure.
 
 ## Reproduce
 
