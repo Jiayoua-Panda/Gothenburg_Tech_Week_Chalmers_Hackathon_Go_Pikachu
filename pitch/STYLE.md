@@ -67,7 +67,7 @@ Font stack: `"SF Pro Display", "Segoe UI Variable Display", "Segoe UI", "Inter",
 - **Video pills.** Top-left and top-right of a pair: `camera only · 1 Hz` / `+ odometry · 1 Hz`. Black at 60 % with blur.
 - **Number over video.** Dim the video with `rgba(0,0,0,.72)` or the bottom fade (`transparent → .92` black), then put the number on top.
 - **Pipeline circles.** Dark discs with a hairline outline, a small line glyph inside, name at 44 px and a grey subtitle at 24 px. The final "Tests" node outlined green.
-- **Failure loop.** Red dotted line (dash 2 / 12, round caps, slowly moving) from the failing stage back to training, labelled *train only what fails*.
+- **Failure loop.** Red dotted line (dash 2 / 12, round caps, slowly moving) from the failing stage back to training, labelled *more challenges*.
 - **Charts.** No boxes, no gridlines except the axis and a dashed maximum. Grey line for "before", amber for "after", dashed amber for a second seed. Rings pulse around the points that matter: green for the gain, red for the regression. Direct labels at the line ends, no legend box.
 - **Robot drawing.** White and grey limbs, amber visor and chest light, amber height-scan dots in front of the feet.
 

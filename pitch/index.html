@@ -52,140 +52,154 @@ canvas { display: block; }
 <body>
 <div id="stage">
 
-<!-- 1 · Every factory has stairs -->
-<section class="scene" data-start="0" data-holds="3.6"
-  data-notes="Every factory has stairs. SKF asked: how do we make training humanoids easier? We are Go Pikachu. Everything you see is our own simulation of a Unitree G1.">
+<!-- 总 · the whole picture ============================================== -->
+
+<!-- 1 · Train less. Test everything. -->
+<section class="scene" data-holds="3.6"
+  data-notes="Train less, test everything. SKF asked us: how do we make training humanoids easier and more efficient? We are Go Pikachu.">
   <canvas class="el" data-draw="hero" data-w="1920" data-h="1080" data-in="0" data-out="5.2" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
   <div class="el eyebrow" data-in="0.9" data-out="5.0" style="left:150px; top:360px">Industrial humanoids · SKF</div>
-  <div class="el l" data-in="1.3" data-out="5.0" style="left:150px; top:420px">Every factory</div>
-  <div class="el l grad" data-in="1.8" data-out="5.0" style="left:150px; top:552px">has stairs.</div>
+  <div class="el l" data-in="1.3" data-out="5.0" style="left:150px; top:420px">Train less.</div>
+  <div class="el l grad" data-in="1.8" data-out="5.0" style="left:150px; top:552px">Test everything.</div>
 </section>
 
-<!-- 2 · The fall -->
-<section class="scene" data-start="5.6" data-holds="5.2"
-  data-notes="Unitree's own walking policy, trained on flat ground, meets a 15 centimetre stair. The toe hits the riser. Zero percent on stairs, across 220 runs.">
+<!-- 分 · small brain deep dive: V0 → V0.5 → V1.0 → train ====================== -->
+
+<!-- 4 · V0: the fall -->
+<section class="scene" data-holds="5.2"
+  data-notes="Small brain, version zero: Unitree's own policy, trained only on flat ground. The toe hits the step. Zero percent on steps and stairs.">
   <div class="el frame bleed" data-in="0" data-out="6.4" data-fx="zoom" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px">
     <video src="media/v0_fall.mp4" muted playsinline preload="auto"></video>
   </div>
-  <div class="el eyebrow" data-in="0.5" data-out="3.6" style="left:110px; top:90px; color:#fff; text-shadow:0 2px 20px rgba(0,0,0,.5)">A flat-ground walking policy meets a 15 cm stair.</div>
+  <div class="el eyebrow" data-in="0.5" data-out="3.6" style="left:110px; top:90px; color:#fff; text-shadow:0 2px 20px rgba(0,0,0,.5)">V0 · a policy trained on flat ground meets a 15 cm stair.</div>
   <div class="el" data-in="4.0" data-out="6.4" data-fx="fade" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px; background:rgba(0,0,0,.72)"></div>
   <div class="el xl full" data-in="4.3" data-out="6.4" style="top:140px; font-size:300px">0%</div>
-  <div class="el s full" data-in="4.8" data-out="6.4" style="top:470px">on stairs, across 220 test runs</div>
+  <div class="el s full" data-in="4.8" data-out="6.4" style="top:470px">on steps and stairs · 21% of our whole test course</div>
 </section>
 
-<!-- 3 · Thesis -->
-<section class="scene" data-start="12.3" data-holds="2.4,5.6"
-  data-notes="The usual answer: retrain for every task and every site. Weeks of GPU time and new data, every time. || Our answer: train less, test everything.">
-  <div class="el m full" data-in="0.3" data-out="3.0" style="top:400px">Retrain for every task?</div>
-  <div class="el m full muted" data-in="1.0" data-out="3.0" style="top:510px">For every site?</div>
-  <div class="el xl full" data-in="3.4" data-out="7.2" style="top:330px">Train less.</div>
-  <div class="el xl full grad" data-in="4.0" data-out="7.2" style="top:530px">Test everything.</div>
-</section>
-
-<!-- 4 · System -->
-<section class="scene" data-start="19.8" data-holds="5.6"
-  data-notes="Five parts. Map and cameras say where the robot is. A height scan picks the skill. Skills are pretrained and reused. Safety stays classical. Everything passes the same tests; only what fails goes back to training.">
-  <div class="el eyebrow full" data-in="0.2" data-out="7.4" style="top:200px">The Humanoid Skill Factory</div>
-  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.1" data-out="7.4" data-fx="fade" style="left:0;top:290px"></canvas>
-</section>
-
-<!-- 5 · It sees the step -->
-<section class="scene" data-start="27.6" data-holds="4.2"
-  data-notes="The height scan sees the step and switches from the flat-ground skill to a stair skill, and back. 36 to 99 percent, same 220 runs, no new training.">
-  <div class="el l" data-in="0.2" data-out="6.6" style="left:150px; top:120px">It sees <span class="grad">the step.</span></div>
-  <div class="el frame" data-in="0.6" data-out="6.6" data-fx="zoom" style="left:150px; top:330px; width:1120px; height:630px">
-    <video src="media/switch_tour.mp4" muted loop playsinline preload="auto" style="transform:scale(1.28); transform-origin:40% 100%"></video>
+<!-- 5 · Which learning method? (the comparison SKF asked for) -->
+<section class="scene" data-holds="5.0"
+  data-notes="We compared seven learning methods on SKF's criteria. What is certifiable does not adapt; what adapts is hard to certify. So we layer them, starting from trained skills.">
+  <div class="el eyebrow full" data-in="0.1" data-out="7.0" style="top:130px">Seven learning methods · SKF's eight criteria</div>
+  <div class="el l full" data-in="0.3" data-out="7.0" style="top:190px">No single method <span class="grad">fits.</span></div>
+  <div class="el" data-in="1.0" data-out="7.0" style="left:150px; top:470px; width:500px">
+    <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Manual programming</div>
+    <div class="s" style="margin-top:18px; color:var(--text)">+ certifiable, repeatable</div>
+    <div class="s" style="color:var(--grey)">− breaks when anything changes</div>
   </div>
-  <div class="el s" data-in="1.6" data-out="6.6" style="left:1370px; top:430px">Pass rate, 220 runs</div>
-  <div class="el xl green" data-in="1.8" data-out="6.6" data-count="36,99" data-cat="2.0" data-cdur="1.8" data-suffix="%" style="left:1360px; top:480px">36%</div>
-  <div class="el s" data-in="3.0" data-out="6.6" style="left:1370px; top:690px">36% with one policy.<br>No new training.</div>
+  <div class="el" data-in="1.4" data-out="7.0" style="left:710px; top:470px; width:500px">
+    <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Reinforcement learning</div>
+    <div class="s" style="margin-top:18px; color:var(--text)">+ adapts, needs no human data</div>
+    <div class="s" style="color:var(--grey)">− hard to explain and certify</div>
+  </div>
+  <div class="el" data-in="1.8" data-out="7.0" style="left:1270px; top:470px; width:500px">
+    <div style="font-size:44px; font-weight:700; letter-spacing:-.02em">Foundation models</div>
+    <div class="s" style="margin-top:18px; color:var(--text)">+ flexible, understands language</div>
+    <div class="s" style="color:var(--grey)">− immature, heavy compute</div>
+  </div>
+  <div class="el full" data-in="2.8" data-out="7.0" style="top:760px; font-size:44px; font-weight:700; letter-spacing:-.02em">So layer them: learned skills to move, and choose skills based on perception.</div>
+  <div class="el s full" data-in="3.2" data-out="7.0" style="top:930px; font-size:24px">also compared: teleoperation · imitation learning · sim-to-real · human feedback</div>
 </section>
 
-<!-- 6 · A real route -->
-<section class="scene" data-start="34.6" data-holds="4.6,8.8"
-  data-notes="A real route: up to a mezzanine, five turns, twelve steps down. The robot follows the factory map; fixed cameras tell it where it is. || 22 of 25 starts reach the goal. All three misses are on the long descent.">
-  <div class="el l" data-in="0.2" data-out="5.4" style="left:150px; top:150px">A real route.</div>
-  <canvas class="el" data-draw="route" data-w="1180" data-h="820" data-in="0.1" data-out="5.4" data-fx="fade" style="left:640px; top:170px"></canvas>
-  <div class="el m" data-in="1.6" data-out="5.4" style="left:150px; top:430px">19.9 m</div>
-  <div class="el m" data-in="2.1" data-out="5.4" style="left:150px; top:540px">5 turns</div>
-  <div class="el m" data-in="2.6" data-out="5.4" style="left:150px; top:650px">1.8 m <span class="muted">high</span></div>
-  <div class="el frame bleed" data-in="5.2" data-out="10.8" data-fx="zoom" data-din="1.0" style="left:0;top:0;width:1920px;height:1080px">
+<!-- 6 · V0.5: two ways to choose the skill, compared (demo4 tour clips) -->
+<section class="scene" data-holds="3.2"
+  data-notes="Version zero-point-five: reuse a stair skill someone already trained, and choose when to use it. Darin's robot uses its own eyes: 92 percent, but blind under glare. Zhichao's uses the factory map and cameras: 93 percent, but it walks into a pallet the map doesn't show.">
+  <div class="el eyebrow" data-in="0.1" style="left:150px; top:70px">V0.5 · reuse a trained stair skill · two ways to choose it</div>
+  <div class="el m" data-in="0.2" style="left:150px; top:115px">Eyes <span class="muted">or</span> <span class="grad">map?</span></div>
+  <!-- 两部分同时出现，两个数字同时从 0 跳到终值 -->
+  <div class="el frame" data-in="0.6" data-fx="zoom" style="left:150px; top:260px; width:640px; height:360px">
+    <video src="media/eyes_glare.mp4" muted loop playsinline preload="auto"></video>
+  </div>
+  <div class="el" data-in="0.9" style="left:860px; top:270px; font-size:44px; font-weight:700; letter-spacing:-.02em">Robot's own eyes <span class="muted" style="font-size:30px">· Darin</span></div>
+  <div class="el m green" data-in="1.1" data-count="0,92" data-cat="1.3" data-cdur="1.4" data-suffix="%" style="left:856px; top:340px">0%</div>
+  <div class="el s" data-in="1.8" style="left:860px; top:460px"><span class="green">passes the pallet</span> · <span class="red">blind under glare</span><br>own sensors only, drifts over long runs</div>
+  <div class="el frame" data-in="0.6" data-fx="zoom" style="left:150px; top:660px; width:640px; height:360px">
+    <video src="media/map_pallet.mp4" muted loop playsinline preload="auto"></video>
+  </div>
+  <div class="el" data-in="0.9" style="left:860px; top:670px; font-size:44px; font-weight:700; letter-spacing:-.02em">Factory map + cameras <span class="muted" style="font-size:30px">· Zhichao</span></div>
+  <div class="el m green" data-in="1.1" data-count="0,93" data-cat="1.3" data-cdur="1.4" data-suffix="%" style="left:856px; top:740px">0%</div>
+  <div class="el s" data-in="1.8" style="left:860px; top:860px"><span class="green">sees the glare step</span> · <span class="red">misses the pallet</span><br>needs cameras installed in the factory</div>
+</section>
+
+<!-- 8 · V1.0: eyes + map on our demo4 course with two injected faults -->
+<section class="scene" data-holds="4.8,8.8"
+  data-notes="On our 46.7 metre course we added two faults: a pallet missing from the map, and a step under glare. Each alone fails one. || Version one uses both: 100 percent.">
+  <div class="el eyebrow" data-in="0.1" data-out="5.2" style="left:150px; top:60px">V0.5 · each source alone</div>
+  <div class="el l" data-in="0.2" data-out="5.2" style="left:150px; top:100px">Alone, each one <span class="grad">fails.</span></div>
+  <div class="el eyebrow" data-in="5.5" data-out="10.4" style="left:150px; top:60px">V1.0 · eyes + map + a classical safety layer</div>
+  <div class="el l green" data-in="5.6" data-out="10.4" style="left:150px; top:100px">Together.</div>
+  <canvas class="el" data-draw="faults" data-w="1620" data-h="560" data-in="0.4" data-out="10.4" data-fx="fade" style="left:150px; top:320px"></canvas>
+  <div class="el s" data-in="1.2" data-out="10.4" style="left:150px; top:930px">46.7 m test course · 15 segments · 10 random starts each · V0 as delivered: 21%</div>
+</section>
+
+<!-- 8b · V1.0: one continuous run over the whole demo4 course (2x highlights) -->
+<section class="scene" data-holds="13.0"
+  data-notes="Here is V1.0 on the whole course in one go: over the pallet the map doesn't know, stopping for the worker, over the glare step, up the stairs. 15 of 15.">
+  <div class="el eyebrow" data-in="0.1" data-out="15.4" style="left:150px; top:70px">V1.0 · one continuous run · 2× speed</div>
+  <div class="el m" data-in="0.2" data-out="15.4" style="left:150px; top:115px">The whole <span class="grad">process.</span></div>
+  <div class="el frame" data-in="0.4" data-out="15.4" data-fx="zoom" style="left:150px; top:270px; width:1120px; height:630px">
+    <video src="media/v1_tour.mp4" muted playsinline preload="auto"></video>
+  </div>
+  <div class="el m green" data-in="1.0" data-out="15.4" style="left:1336px; top:280px">15 / 15</div>
+  <div class="el s" data-in="1.3" data-out="15.4" style="left:1340px; top:380px">segments passed</div>
+  <div class="el s" data-in="1.4" data-out="15.4" style="left:1340px; top:500px; color:var(--text)">over the pallet<br><span class="muted">the map doesn't know</span></div>
+  <div class="el s" data-in="4.2" data-out="15.4" style="left:1340px; top:610px; color:var(--text)">stops for the worker<br><span class="muted">at 1.67 m, then goes on</span></div>
+  <div class="el s" data-in="7.0" data-out="15.4" style="left:1340px; top:720px; color:var(--text)">over the glare step<br><span class="muted">the scan can't see</span></div>
+  <div class="el s" data-in="10.0" data-out="15.4" style="left:1340px; top:830px; color:var(--text)">up the stairs</div>
+</section>
+
+<!-- 9 · After V1.0: the tests decide what to train next (real route + loads) -->
+<section class="scene" data-holds="3.6,7.6"
+  data-notes="After V1.0, the tests tell us what to train next. On a real factory route with switchback stairs, 22 of 25 reach the goal; all misses are on the long descent. || Carrying loads was the other gap, so we fine-tuned for it. With 8 kilos, 6 became 20. Without a load, 22 fell to 3. Caught before deployment.">
+  <div class="el eyebrow" data-in="0.1" data-out="9.0" style="left:150px; top:70px">After V1.0 · the tests decide what to train next</div>
+  <div class="el m" data-in="0.2" data-out="9.0" style="left:150px; top:115px">Train only <span class="grad">what fails.</span></div>
+  <div class="el frame" data-in="0.6" data-out="9.0" data-fx="zoom" style="left:150px; top:270px; width:780px; height:439px">
     <video src="media/factory_route.mp4" muted loop playsinline preload="auto"></video>
   </div>
-  <div class="el fadeb" data-in="6.0" data-out="10.8" data-fx="fade" style="left:0;top:0;width:1920px;height:1080px"></div>
-  <div class="el xl green" data-in="6.4" data-out="10.8" style="left:150px; top:700px">22 / 25</div>
-  <div class="el s" data-in="7.0" data-out="10.8" style="left:160px; top:910px; color:#ddd">reach the goal · all 3 misses on the long descent</div>
-</section>
-
-<!-- 7 · Two faults: scan alone vs map alone vs both (four-stage comparison on demo4) -->
-<section class="scene" data-start="45.8" data-holds="4.8,8.8"
-  data-notes="We added two faults on purpose: a pallet missing from the map, and a step under glare the scan can't see. Scan alone falls at the glare, map alone at the pallet. || Together they cover each other: every segment passes.">
-  <div class="el l" data-in="0.2" data-out="5.2" style="left:150px; top:100px">Alone, each one <span class="grad">fails.</span></div>
-  <div class="el l" data-in="5.6" data-out="10.4" style="left:150px; top:100px">Together, <span class="green">none do.</span></div>
-  <canvas class="el" data-draw="faults" data-w="1620" data-h="560" data-in="0.4" data-out="10.4" data-fx="fade" style="left:150px; top:320px"></canvas>
-  <div class="el s" data-in="1.2" data-out="10.4" style="left:150px; top:930px">46.7 m test course · 15 segments · 10 random starts each</div>
-</section>
-
-<!-- 8 · Cameras -->
-<section class="scene" data-start="56.4" data-holds="1.8,6.2"
-  data-notes="How good must the cameras be? || Ordinary. Across 1025 runs, 10 centimetres, 2 hertz and 300 milliseconds is as good as perfect. Add the robot's odometry and even 1 hertz arrives. That is a purchase spec.">
-  <div class="el m full" data-in="0.2" data-out="2.4" style="top:460px">How good must the cameras be?</div>
-  <div class="el l full" data-in="2.8" data-out="8.8" style="top:110px"><span class="grad">Ordinary</span> is enough.</div>
-  <div class="el frame" data-in="3.2" data-out="8.8" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
-    <video src="media/camera_pair.mp4" muted loop playsinline preload="auto"></video>
-    <span class="vl l0">camera only · 1 Hz</span><span class="vl r0">+ odometry · 1 Hz</span>
+  <div class="el" data-in="0.9" data-out="9.0" style="left:150px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">A real route <span class="muted" style="font-size:30px">· switchback stairs, 1.8 m up</span></div>
+  <div class="el green" data-in="1.1" data-out="9.0" style="left:148px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em">22 / 25</div>
+  <div class="el s" data-in="1.8" data-out="9.0" style="left:150px; top:890px; width:780px">reach the goal · <span class="red">all 3 misses on the long descent</span><br>next to train: long stairs down</div>
+  <div class="el frame" data-in="4.2" data-out="9.0" data-fx="zoom" style="left:990px; top:270px; width:780px; height:439px">
+    <video src="media/payload_pair.mp4" muted loop playsinline preload="auto" style="object-position:0% 50%"></video>
+    <span class="vl l0">8 kg on the chest</span>
   </div>
-  <div class="el m full" data-in="4.6" data-out="8.8" style="top:830px">10 cm <span class="muted">·</span> 2 Hz <span class="muted">·</span> 300 ms</div>
-  <div class="el s full" data-in="5.2" data-out="8.8" style="top:950px">tolerated error, from 1025 simulated runs</div>
+  <div class="el" data-in="4.5" data-out="9.0" style="left:990px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Carrying loads <span class="muted" style="font-size:30px">· fine-tuned on GPUs</span></div>
+  <div class="el" data-in="4.7" data-out="9.0" style="left:988px; top:800px; font-size:64px; font-weight:700; letter-spacing:-.03em"><span class="muted">6 →</span> <span class="green">20</span> <span class="muted">&nbsp;·&nbsp; 22 →</span> <span class="red">3</span></div>
+  <div class="el s" data-in="5.4" data-out="9.0" style="left:990px; top:890px; width:780px">with 8 kg · <span class="red">without a load</span> · out of 25<br><span style="color:var(--text); font-weight:600">caught before deployment</span></div>
 </section>
 
-<!-- 9 · Safety -->
-<section class="scene" data-start="64.7" data-holds="5.0"
-  data-notes="Told to stop, the learned policy still creeps 27 centimetres. So stopping stays classical, with the ISO distance. Contacts with a person: 44 to 0.">
-  <div class="el m full" data-in="0.2" data-out="7.4" style="top:120px">A learned stop <span class="grad">isn't a stop.</span></div>
-  <div class="el frame" data-in="1.2" data-out="7.4" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
-    <video src="media/safety_pair.mp4" muted loop playsinline preload="auto" style="transform:scale(1.12); transform-origin:50% 100%"></video>
-  </div>
-  <div class="el l full" data-in="3.0" data-out="7.4" style="top:810px">44 <span class="muted">→</span> <span class="green">0</span></div>
-  <div class="el s full" data-in="3.6" data-out="7.4" style="top:950px">contacts with a person · classical ISO/TS 15066 monitor</div>
+<!-- 总 · back to the whole picture: big brain, skill library, cyber brain ========= -->
+
+<!-- 11 · Big brain: one pipeline for every skill -->
+<section class="scene" data-holds="5.4"
+  data-notes="Zoom out: the big brain. Our loop becomes the factory pipeline: collect, build the scene, train, validate, deploy, with specs from our tests.">
+  <div class="el eyebrow full" data-in="0.1" data-out="7.4" style="top:130px">Big brain · the factory</div>
+  <div class="el l full" data-in="0.2" data-out="7.4" style="top:180px">One pipeline <span class="grad">for every skill.</span></div>
+  <canvas class="el" data-draw="pipe" data-w="1920" data-h="700" data-in="0.3" data-out="7.4" data-fx="fade" style="left:0;top:370px"></canvas>
 </section>
 
-<!-- 10 · Tests decide the training -->
-<section class="scene" data-start="72.6" data-holds="2.8,10.0"
-  data-notes="The tests found the load limit: 8 kilograms on the chest works, a backpack doesn't. || So we fine-tuned for loads on Chalmers GPUs. With 8 kilograms, 6 of 25 became 20. With no load, 22 fell to 3. The same tests caught it before deployment.">
-  <div class="el m full" data-in="0.2" data-out="12.2" style="top:120px">The tests decide <span class="grad">what to train.</span></div>
-  <div class="el frame" data-in="0.8" data-out="4.2" data-fx="zoom" style="left:160px; top:320px; width:1600px; height:450px">
-    <video src="media/payload_pair.mp4" muted loop playsinline preload="auto"></video>
-    <span class="vl l0">8 kg on the chest</span><span class="vl r0">5 kg backpack</span>
-  </div>
-  <div class="el s full" data-in="1.8" data-out="4.2" style="top:830px"><span class="green">reaches the top</span> &nbsp;·&nbsp; <span class="red">stuck at the first step</span></div>
-  <canvas class="el" data-draw="chart" data-w="1180" data-h="640" data-in="4.4" data-out="12.2" data-fx="fade" style="left:120px; top:300px"></canvas>
-  <div class="el s" data-in="6.9" data-out="12.2" style="left:1400px; top:380px">8 kg load</div>
-  <div class="el m green" data-in="6.9" data-out="12.2" style="left:1396px; top:420px">6 → 20</div>
-  <div class="el s" data-in="7.8" data-out="12.2" style="left:1400px; top:580px">no load</div>
-  <div class="el m red" data-in="7.8" data-out="12.2" style="left:1396px; top:620px">22 → 3</div>
-  <div class="el s" data-in="8.8" data-out="12.2" style="left:1400px; top:790px; color:var(--text); font-size:36px; font-weight:600">Caught before<br>deployment.</div>
+<!-- 13 · Cyber brain: a factory that learns (vision) -->
+<section class="scene" data-holds="4.6"
+  data-notes="And the cyber brain, our vision: a collective brain above the fleet. Every failure one robot meets becomes a test for all of them, and a training case for the next version.">
+  <div class="el eyebrow" data-in="0.1" data-out="6.6" style="left:150px; top:110px">Cyber brain · vision</div>
+  <div class="el l" data-in="0.2" data-out="6.6" style="left:150px; top:160px">A factory <span class="grad">that learns.</span></div>
+  <div class="el" data-in="0.6" data-out="6.6" style="left:150px; top:390px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Collective brain</span> <span class="s">&nbsp; hours · shared by the fleet · skill library, training, digital twins</span></div>
+  <div class="el" data-in="1.1" data-out="6.6" style="left:150px; top:520px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Edge brain</span> <span class="s">&nbsp; seconds · one per robot · task plan, local map</span></div>
+  <div class="el" data-in="1.6" data-out="6.6" style="left:150px; top:650px"><span style="font-size:60px; font-weight:700; letter-spacing:-.03em">Execute brain</span> <span class="s">&nbsp; milliseconds · on the robot · balance, safety stop</span></div>
+  <div class="el" data-in="2.6" data-out="6.6" style="left:150px; top:850px; font-size:44px; font-weight:700; letter-spacing:-.02em">One robot's <span class="red">failure</span> becomes every robot's test.</div>
 </section>
 
-<!-- 11 · A new site -->
-<section class="scene" data-start="85.4" data-holds="3.4"
-  data-notes="A new site becomes: scan it, install cameras to spec, run the tests, train only what fails. Next: one real SKF route, as a pilot.">
-  <div class="el eyebrow full" data-in="0.1" data-out="5.6" style="top:190px">A new site</div>
-  <div class="el m full" data-in="0.3" data-out="5.6" style="top:270px">Scan it.</div>
-  <div class="el m full" data-in="0.9" data-out="5.6" style="top:385px">Install cameras to spec.</div>
-  <div class="el m full" data-in="1.5" data-out="5.6" style="top:500px">Run the tests.</div>
-  <div class="el l full grad" data-in="2.2" data-out="5.6" style="top:650px">Train only what fails.</div>
-</section>
-
-<!-- 12 · End -->
-<section class="scene" data-start="91.4" data-holds="3.2"
-  data-notes="Train less, test everything. Thank you.">
+<!-- 14 · End -->
+<section class="scene" data-holds="3.2"
+  data-notes="Train less, test everything. Next: one real SKF route, as a pilot. Thank you.">
   <canvas class="el" data-draw="heroEnd" data-w="1920" data-h="1080" data-in="0" data-fx="fade" data-din="1.6" style="left:0;top:0"></canvas>
-  <div class="el xl" data-in="0.6" style="left:150px; top:330px">Train less.</div>
-  <div class="el xl grad" data-in="1.1" style="left:150px; top:520px">Test everything.</div>
-  <div class="el s" data-in="1.8" style="left:156px; top:740px">Team Go Pikachu · SKF track · GTW × Chalmers Hackathon 2026</div>
-  <div class="el" data-in="2.4" style="left:156px; top:1000px; font-size:18px; color:#555">All results in MuJoCo simulation of a Unitree G1. Stair skill: third-party G1-DWAQ (BSD-3). Code, data and videos in our repository.</div>
+  <div class="el xl" data-in="0.6" style="left:150px; top:300px">Train less.</div>
+  <div class="el xl grad" data-in="1.1" style="left:150px; top:490px">Test everything.</div>
+  <div class="el" data-in="1.8" style="left:156px; top:740px; font-size:44px; font-weight:700; letter-spacing:-.02em">Next: one real SKF route, as a pilot.</div>
+  <div class="el s" data-in="2.2" style="left:156px; top:820px">Team Go Pikachu · SKF track · GTW × Chalmers Hackathon 2026</div>
+  <div class="el" data-in="2.6" style="left:156px; top:1000px; font-size:18px; color:#555">All results in MuJoCo simulation of a Unitree G1. Stair skill: third-party G1-DWAQ (BSD-3). Code, data and videos in our repository.</div>
 </section>
+
 
 </div>
 <div id="bar"></div>
@@ -298,8 +312,8 @@ function drawHero(ctx, W, H, local, amb, ax = 0.66, m0 = 0.40, m1 = 0.66) {
 
 // Five parts in a row, then the failure loop back into training.
 function drawPipe(ctx, W, H, local, amb) {
-  const names = ["Map", "Scan", "Skills", "Safety", "Tests"];
-  const subs = ["where am I", "which skill now", "pretrained, reused", "classical, certifiable", "the same for every skill"];
+  const names = ["Collect", "Scene", "Train", "Validate", "Deploy"];
+  const subs = ["floor scan, fault cases", "46.7 m test course", "reuse, then what fails", "100% gate · 1.67 m stop", "cameras: 10 cm · 2 Hz"];
   const cy = 170, r = 84, gap = 330, x0 = W / 2 - 2 * gap;
   const cx = i => x0 + i * gap;
   const kl = easeIO((local - 0.4) / 2.0);
@@ -310,16 +324,17 @@ function drawPipe(ctx, W, H, local, amb) {
     if (k <= 0) return;
     ctx.save(); ctx.globalAlpha = k; ctx.translate(cx(i), cy + (1 - k) * 24);
     ctx.fillStyle = "#0e0e10"; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = i === 4 ? "rgba(48,209,88,0.8)" : "rgba(245,245,247,0.22)"; ctx.lineWidth = 2; ctx.stroke();
-    glyph(ctx, i, amb);
+    ctx.strokeStyle = i >= 1 && i <= 3 ? "rgba(48,209,88,0.8)" : "rgba(245,245,247,0.22)"; ctx.lineWidth = 2; ctx.stroke();
+    glyph(ctx, [0, 2, 1, 4, 3][i], amb);
+    if (i >= 1 && i <= 3) label(ctx, "built today", 0, -r - 26, 24, COL.green, 600);
     label(ctx, n, 0, r + 70, 44, COL.text, 700);
     label(ctx, subs[i], 0, r + 112, 24, COL.grey, 500);
     ctx.restore();
   });
-  // loop: tests → skills
+  // loop: validate → train
   const kL = easeIO((local - 2.6) / 1.2);
   if (kL > 0) {
-    const sx = cx(4), ex = cx(2), pts = [];
+    const sx = cx(3), ex = cx(2), pts = [];
     for (let i = 0; i <= 60; i++) { const u = i / 60; pts.push([lerp(sx, ex, u), (cy + r + 150) + Math.sin(Math.PI * u) * 110]); }
     const n = Math.floor(pts.length * kL);
     ctx.strokeStyle = COL.red; ctx.lineWidth = 4; ctx.setLineDash([2, 12]); ctx.lineCap = "round"; ctx.lineDashOffset = -amb * 30;
@@ -329,7 +344,7 @@ function drawPipe(ctx, W, H, local, amb) {
     ctx.stroke(); ctx.setLineDash([]);
     if (kL >= 1) { ctx.fillStyle = COL.red; ctx.beginPath(); ctx.moveTo(ex, cy + r + 124); ctx.lineTo(ex - 11, cy + r + 144); ctx.lineTo(ex + 11, cy + r + 144); ctx.fill(); }
     const kt = ease((local - 3.4) / 0.8);
-    ctx.save(); ctx.globalAlpha = kt; label(ctx, "train only what fails", (sx + ex) / 2, cy + r + 310 + (1 - kt) * 16, 34, COL.red, 700); ctx.restore();
+    ctx.save(); ctx.globalAlpha = kt; label(ctx, "more challenges", (sx + ex) / 2, cy + r + 310 + (1 - kt) * 16, 34, COL.red, 700); ctx.restore();
   }
 }
 function glyph(ctx, i, t) {
@@ -446,9 +461,9 @@ function drawRoute(ctx, W, H, local, amb) {
 // Pass rate per segment on demo4 (g1_course/outputs/s2_eyes, s3_map, s4_both): each source alone vs both.
 const FAULTS = {
   rows: [
-    { name: "Scan only", sub: "robot's own height scan", v: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, .9, .9, 1], pct: 92, at: 0.3 },
-    { name: "Map only", sub: "factory map + cameras", v: [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1], pct: 93, at: 1.1 },
-    { name: "Scan + map", sub: "either one can call a stair", v: Array(15).fill(1), pct: 100, at: 5.4 },
+    { name: "Eyes only", sub: "V0.5 · robot's height scan", v: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, .9, .9, 1], pct: 92, at: 0.3 },
+    { name: "Map only", sub: "V0.5 · factory map + cameras", v: [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1], pct: 93, at: 1.1 },
+    { name: "V1.0 · both", sub: "either one can call a stair", v: Array(15).fill(1), pct: 100, at: 5.4 },
   ],
   cols: [{ i: 7, name: "pallet", sub: "not on map" }, { i: 10, name: "glare step", sub: "scan blind" }],
 };
@@ -534,11 +549,14 @@ function drawChart(ctx, W, H, local, amb) {
 }
 const DRAW = { hero: drawHero, heroEnd: (c, W, H, l, a) => drawHero(c, W, H, l, a, 0.8, 0.6, 0.78), pipe: drawPipe, route: drawRoute, faults: drawFaults, chart: drawChart };
 
-/* =================== timeline engine =================== */
+/* =================== page engine =================== */
+// 没有全局时间轴：每个 .scene 是一页，按 HTML 顺序播放。点击 / → 下一步或下一页。
+// 每页进场时本页时钟从 0 开始；data-in / data-out 都是本页内的秒数。
+// data-holds（可选）= 本页里的停顿点（秒），多个就是分步展示，每次点击走到下一个；
+// 不写就停在所有元素都出现之后。
 const stage = document.getElementById("stage");
 let scale = 1;
 const scenes = [...document.querySelectorAll(".scene")].map(el => {
-  const start = +el.dataset.start;
   const items = [...el.querySelectorAll("[data-in]")].map(e => ({
     el: e, tin: +e.dataset.in, tout: e.dataset.out ? +e.dataset.out : Infinity, fx: e.dataset.fx || "up",
     din: +(e.dataset.din || 0.9), dout: +(e.dataset.dout || 0.7), vis: false, since: 0,
@@ -546,14 +564,12 @@ const scenes = [...document.querySelectorAll(".scene")].map(el => {
     ctx: e.tagName === "CANVAS" ? e.getContext("2d") : null, w: +e.dataset.w, h: +e.dataset.h,
     count: e.dataset.count ? e.dataset.count.split(",").map(Number) : null,
   }));
-  const end = start + Math.max(...items.map(i => i.tout + i.dout));
-  const holds = (el.dataset.holds || "").split(",").filter(Boolean).map(h => start + +h);
+  let steps = (el.dataset.holds || "").split(",").filter(Boolean).map(Number);
+  if (!steps.length) steps = [Math.max(...items.map(i => i.tin + i.din))];
   const notes = (el.dataset.notes || "").split("||").map(s => s.trim());
-  return { el, start, end, items, holds, notes };
+  return { el, items, steps, notes };
 });
-const HOLDS = scenes.flatMap(s => s.holds).sort((a, b) => a - b);
-const NOTES = scenes.flatMap(s => s.holds.map((h, i) => ({ h, text: s.notes[i] || s.notes[0] })));
-const END = HOLDS[HOLDS.length - 1];
+const N = scenes.length;
 
 function sizeCanvases() {
   const k = Math.max(1, scale * (devicePixelRatio || 1));
@@ -568,24 +584,37 @@ function fit() {
   sizeCanvases();
 }
 
-let T = 0, playing = false, target = HOLDS[0], last = performance.now(), started = false, timerStart = 0;
-function play() {
-  if (T >= END - 1e-6) return;
-  target = HOLDS.find(h => h > T + 1e-6) ?? END;
-  playing = true; started = true;
+// page = 当前页，step = 本页第几个停顿点，L = 本页时钟（秒）
+let page = 0, step = 0, L = 0, playing = false, last = performance.now(), started = false, timerStart = 0;
+const target = () => scenes[page].steps[step];
+function start() {
+  started = true; playing = true;
   document.getElementById("hint").style.opacity = 0;
   if (!timerStart) timerStart = performance.now();
 }
-function next() { if (playing) { T = target; playing = false; } else play(); }
-function prev() { playing = false; const p = [...HOLDS].reverse().find(h => h < T - 1e-6); T = p ?? 0; }
+function goPage(p) { page = p; step = 0; L = 0; playing = true; }
+function next() {
+  if (!started) return start();
+  if (playing) { L = target(); playing = false; return; }           // 动画没放完：先直接放完
+  if (step < scenes[page].steps.length - 1) { step++; playing = true; }  // 本页下一步
+  else if (page < N - 1) goPage(page + 1);                           // 下一页
+}
+function prev() {
+  if (!started) return;
+  playing = false;
+  if (step > 0) { step--; L = target(); }
+  else if (page > 0) { page--; step = scenes[page].steps.length - 1; L = target(); }
+  else L = 0;
+}
 
 function render(now) {
   const dt = Math.min(0.1, (now - last) / 1000); last = now;
-  if (playing) { T += dt; if (T >= target) { T = target; playing = false; } }
-  for (const s of scenes) {
-    const on = started && T >= s.start && T <= s.end + 1e-6;
+  if (playing) { L += dt; if (L >= target()) { L = target(); playing = false; } }
+  for (let i = 0; i < N; i++) {
+    const s = scenes[i];
+    const on = started && i === page;
     s.el.style.visibility = on ? "visible" : "hidden";
-    const local = T - s.start;
+    const local = L;
     for (const it of s.items) {
       const ai = on ? ease((local - it.tin) / it.din) : 0;
       const ao = on ? ease((local - it.tout) / it.dout) : 0;
@@ -617,9 +646,9 @@ function render(now) {
       }
     }
   }
-  document.getElementById("bar").style.width = (T / END * 100) + "%";
-  const note = NOTES.find(n => n.h >= T - 1e-6) || NOTES[NOTES.length - 1];
-  document.getElementById("notes-body").textContent = " " + note.text;
+  const sc = scenes[page];
+  document.getElementById("bar").style.width = (started ? (page + (step + 1) / sc.steps.length) / N * 100 : 0) + "%";
+  document.getElementById("notes-body").textContent = ` [${page + 1}/${N}] ` + (sc.notes[step] || sc.notes[0]);
   if (timerStart) {
     const sec = Math.floor((now - timerStart) / 1000), el = document.getElementById("timer");
     el.textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; el.classList.toggle("over", sec >= 180);
@@ -634,16 +663,16 @@ addEventListener("keydown", e => {
   else if (k === "f" || k === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
   else if (k === "n" || k === "N") document.getElementById("notes").classList.toggle("on");
   else if (k === "t" || k === "T") document.getElementById("timer").classList.toggle("on");
-  else if (k === "r" || k === "R") { T = 0; playing = false; started = false; timerStart = 0; document.getElementById("hint").style.opacity = 1; }
+  else if (k === "r" || k === "R") { page = 0; step = 0; L = 0; playing = false; started = false; timerStart = 0; document.getElementById("hint").style.opacity = 1; }
 });
 addEventListener("click", e => { if (e.target.closest("#notes")) return; e.clientX < innerWidth * 0.2 ? prev() : next(); });
 let mouseTimer = 0;
 addEventListener("mousemove", () => { document.body.classList.add("cursor"); clearTimeout(mouseTimer); mouseTimer = setTimeout(() => document.body.classList.remove("cursor"), 1500); });
 addEventListener("resize", fit);
 fit();
-// ?t=seconds jumps the timeline (for rehearsal)
-const jump = parseFloat(new URLSearchParams(location.search).get("t"));
-if (jump >= 0) { T = jump; started = true; document.getElementById("hint").style.opacity = 0; }
+// ?p=页码（从 1 开始）直接跳到某一页（排练用）
+const jump = parseInt(new URLSearchParams(location.search).get("p"));
+if (jump >= 1) { start(); goPage(Math.min(jump, N) - 1); }
 requestAnimationFrame(render);
 })();
 </script>
