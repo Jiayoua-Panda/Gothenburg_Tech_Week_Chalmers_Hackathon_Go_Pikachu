@@ -1,0 +1,78 @@
+{
+  "run": "l1_corner_v30_rec_carry5kgnear_varm_align_y+10cm_yaw+0_ideal_flat30",
+  "course": {
+    "name": "l1_corner",
+    "description": "Ground-floor corridor with one 90° left corner",
+    "width_m": 1.2,
+    "path_length_m": 6.0,
+    "turns": 1,
+    "stair_flights": 0,
+    "risers": 0,
+    "max_height_m": 0.0,
+    "goal_xyz_m": [
+      3.0,
+      3.0,
+      0.0
+    ]
+  },
+  "outcome": "path_exit",
+  "detail": "segment 1 (flat), follow",
+  "sim_time_s": 8.54,
+  "wall_time_s": 0.5,
+  "route_progress_m": 3.552,
+  "route_completion": 0.592,
+  "final_goal_distance_cm": 252.1,
+  "mean_abs_cross_track_cm": 13.32,
+  "max_abs_cross_track_cm": 60.13,
+  "final_xyz_m": [
+    3.601,
+    0.552,
+    0.783
+  ],
+  "start_offset_cm": 10.0,
+  "start_yaw_deg": 0.0,
+  "flat_speed_mps": 0.3,
+  "stair_speed_mps": 0.3,
+  "stall_recovery": true,
+  "recoveries": 0,
+  "align_before_stairs": true,
+  "payload_kg": 5.0,
+  "carry_pose": "near",
+  "arm_observation": "virtual",
+  "alignments": 0,
+  "localization": {
+    "source": "MuJoCo ground truth",
+    "sigma_xy_cm": 0.0,
+    "sigma_yaw_deg": 0.0,
+    "rate_hz": 50.0,
+    "latency_ms": 0.0,
+    "bias_cm": 0.0,
+    "odometry_fusion": false,
+    "seed": 0
+  },
+  "camera_images_used": false,
+  "policy": "G1DWAQ_Lab model_9999.pt (third-party, blind)",
+  "checkpoint_sha256": "5042017a558b98ab24a3784d1f960383ee42015d79b67b24b74f6b6a117759c1",
+  "code_sha256": {
+    "run_factory_course.py": "4705527aa7a6",
+    "factory_course.py": "4654b83aea42"
+  },
+  "video": null,
+  "trace": "l1_corner_v30_rec_carry5kgnear_varm_align_y+10cm_yaw+0_ideal_flat30.csv.gz",
+  "trace_columns": [
+    "t",
+    "x",
+    "y",
+    "yaw",
+    "z",
+    "est_x",
+    "est_y",
+    "est_yaw",
+    "segment",
+    "mode",
+    "cmd_vx",
+    "cmd_vy",
+    "cmd_wz",
+    "progress_m"
+  ]
+}

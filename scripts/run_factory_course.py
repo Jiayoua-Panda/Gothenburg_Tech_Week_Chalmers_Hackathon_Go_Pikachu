@@ -48,6 +48,23 @@ ALIGN_ZONE = 0.35         # align-before-stairs: within this distance of a fligh
 ALIGN_ENTER_RAD = 0.10    # ... stop and turn if heading is off by more than ~6°,
 ALIGN_EXIT_RAD = 0.05     # until it is within ~3°,
 ALIGN_MAX_TICKS = 150     # or give up after 3 s
+# Carrying: both arms held in a fixed pose (MuJoCo joint order 15-21 left, 22-28 right:
+# shoulder pitch/roll/yaw, elbow, wrist roll/pitch/yaw) with a box between the hands.
+# Two holds, from forward kinematics of the arm pose (hands 0.21 m apart):
+#   far:  shoulder pitch -0.5, elbow 0.9 -> hands 0.27 m ahead of the pelvis, box centre 0.26 m ahead
+#   near: shoulder pitch -0.5, elbow 1.5 -> hands 0.19 m ahead, box held against the body, centre 0.19 m ahead
+CARRY_POSES = {
+    "far": (np.array([-0.5, -0.05, 0.0, 0.9, 0.0, 0.0, 0.0, -0.5, 0.05, 0.0, 0.9, 0.0, 0.0, 0.0]),
+            (0.264, 0.0, 0.026)),
+    "near": (np.array([-0.5, -0.05, 0.0, 1.5, 0.0, 0.0, 0.0, -0.5, 0.05, 0.0, 1.5, 0.0, 0.0, 0.0]),
+             (0.194, 0.0, -0.044)),
+}
+ARM_JOINTS = slice(15, 29)
+ARM_QPOS, ARM_QVEL = slice(7 + 15, 7 + 29), slice(6 + 15, 6 + 29)
+VIRTUAL_ARM_GAIN = 1 - math.exp(-DT / 0.05)  # virtual arms follow commands with a 50 ms lag
+# Box (20 cm cube, no collisions) rigidly attached to torso_link between the hands; position in the
+# torso frame is the second entry of CARRY_POSES.
+PAYLOAD_HALF = (0.10, 0.10, 0.10)
 GOAL_RADIUS = 0.3        # m; true pelvis position must be this close to the goal point
 TURN_RATE = 1.0          # rad/s, top of the policy's training range; at 0.6 its right turns nearly stall
 TURN_DONE_RAD = 0.15     # ~9°: hand over to the walking controller
@@ -63,6 +80,17 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def with_payload(robot_xml: Path, mass_kg: float, position: tuple[float, float, float]) -> str:
+    """Robot MJCF with a box body fixed to torso_link (mass 0 is replaced by 0.1 g, i.e. pose only)."""
+    import xml.etree.ElementTree as ET
+    tree = ET.parse(robot_xml)
+    torso = next(body for body in tree.iter("body") if body.get("name") == "torso_link")
+    payload = ET.SubElement(torso, "body", name="payload", pos=" ".join(map(str, position)))
+    ET.SubElement(payload, "geom", name="payload_box", type="box", size=" ".join(map(str, PAYLOAD_HALF)),
+                  mass=f"{max(mass_kg, 1e-4):.4f}", contype="0", conaffinity="0", rgba="0.72 0.53 0.30 1")
+    return ET.tostring(tree.getroot(), encoding="unicode")
 
 
 class Localizer:
@@ -243,6 +271,11 @@ def main() -> None:
     parser.add_argument("--stair-speed", type=float, default=0.3)
     parser.add_argument("--recovery", action="store_true", help="back off and retry when progress stalls")
     parser.add_argument("--align", action="store_true", help="stop and square up before entering a stair flight")
+    parser.add_argument("--payload-kg", type=float, default=None,
+                        help="carry a box of this mass with arms held in a fixed carry pose (0 = pose only)")
+    parser.add_argument("--carry-reach", choices=tuple(CARRY_POSES), default="far")
+    parser.add_argument("--arm-obs", choices=("real", "virtual"), default="real",
+                        help="while carrying: show the policy the real locked arms or a virtual free-arm state")
     parser.add_argument("--loc-sigma-cm", type=float, default=0.0, help="camera position noise (1σ)")
     parser.add_argument("--loc-yaw-sigma-deg", type=float, default=0.0, help="camera heading noise (1σ)")
     parser.add_argument("--loc-rate-hz", type=float, default=0.0, help="camera update rate; 0 = every tick")
@@ -270,6 +303,8 @@ def main() -> None:
         f"s{args.loc_sigma_cm:g}cm_y{args.loc_yaw_sigma_deg:g}deg_{args.loc_rate_hz:g}hz_"
         f"{args.loc_latency_ms:g}ms_b{args.loc_bias_cm:g}cm{'_fused' if args.loc_fusion else ''}_seed{args.seed}")
     control_label = (f"v{round(args.stair_speed * 100)}" + ("_rec" if args.recovery else "")
+                     + (f"_carry{args.payload_kg:g}kg{args.carry_reach}" if args.payload_kg is not None else "")
+                     + ("_varm" if args.payload_kg is not None and args.arm_obs == "virtual" else "")
                      + ("_align" if args.align else ""))
     run_name = (f"{course.name}_{control_label}_y{args.start_y_cm:+g}cm_yaw{args.start_yaw_deg:+g}_"
                 f"{loc_label}{args.tag}")
@@ -296,7 +331,12 @@ def main() -> None:
 
     with tempfile.TemporaryDirectory(prefix="skf-factory-course-") as temp_dir:
         temp = Path(temp_dir)
-        (temp / "g1_29dof_rev_1_0_daf.xml").symlink_to(source_models / "g1_29dof_rev_1_0_daf.xml")
+        robot_xml = source_models / "g1_29dof_rev_1_0_daf.xml"
+        if args.payload_kg is None:
+            (temp / "g1_29dof_rev_1_0_daf.xml").symlink_to(robot_xml)
+        else:
+            (temp / "g1_29dof_rev_1_0_daf.xml").write_text(
+                with_payload(robot_xml, args.payload_kg, CARRY_POSES[args.carry_reach][1]))
         (temp / "meshes").symlink_to(source_models / "meshes", target_is_directory=True)
         scene_path = temp / f"{course.name}.xml"
         scene_path.write_text(scene_xml(course))
@@ -349,6 +389,9 @@ def main() -> None:
         outcome, detail = "time_limit", ""
         best_progress, best_progress_time = 0.0, 0.0
         settle_ticks = 25  # stand still for 0.5 s so the policy's history is consistent
+        virtual_arms = None
+        if args.payload_kg is not None and args.arm_obs == "virtual":
+            virtual_arms = [runner.default_dof_pos[ARM_JOINTS].astype(float).copy(), np.zeros(14)]
         start_wall = time.monotonic()
         next_frame_time = 0.0
         try:
@@ -365,7 +408,15 @@ def main() -> None:
                     detail = f"stopped {100 * goal_error:.0f} cm from the goal"
                     break
                 runner.command_vel[:] = command
-                current = runner.normalize_obs(runner.get_current_obs())
+                if virtual_arms is not None:
+                    # Show the policy a virtual arm state (where its own arm commands would have taken
+                    # the arms) instead of the locked carry pose; physics is untouched.
+                    real_q, real_dq = runner.data.qpos[ARM_QPOS].copy(), runner.data.qvel[ARM_QVEL].copy()
+                    runner.data.qpos[ARM_QPOS], runner.data.qvel[ARM_QVEL] = virtual_arms
+                    current = runner.normalize_obs(runner.get_current_obs())
+                    runner.data.qpos[ARM_QPOS], runner.data.qvel[ARM_QVEL] = real_q, real_dq
+                else:
+                    current = runner.normalize_obs(runner.get_current_obs())
                 runner.update_obs_history(current)
                 with torch.inference_mode():
                     action = runner.policy.act_inference(
@@ -374,8 +425,19 @@ def main() -> None:
                     )
                 runner.action[:] = np.clip(action.squeeze(0).numpy(), -runner.cfg.sim.clip_actions,
                                            runner.cfg.sim.clip_actions)
+                if virtual_arms is not None:
+                    previous = virtual_arms[0].copy()
+                    commanded = runner.position_control()[ARM_JOINTS]
+                    virtual_arms[0] = previous + (commanded - previous) * VIRTUAL_ARM_GAIN
+                    virtual_arms[1] = (virtual_arms[0] - previous) / DT
                 for _ in range(runner.cfg.sim.decimation):
-                    runner.data.ctrl[:runner.num_actions] = runner.pd_control(runner.position_control())
+                    target = runner.position_control()
+                    if args.payload_kg is not None:
+                        # arms leave the policy's control and move to the carry pose during the settle phase
+                        blend = min(1.0, tick / settle_ticks)
+                        target[ARM_JOINTS] = ((1 - blend) * runner.default_dof_pos[ARM_JOINTS]
+                                              + blend * CARRY_POSES[args.carry_reach][0])
+                    runner.data.ctrl[:runner.num_actions] = runner.pd_control(target)
                     mujoco.mj_step(runner.model, runner.data)
                 runner.gait_phase_time += DT
 
@@ -460,6 +522,9 @@ def main() -> None:
         "stall_recovery": args.recovery,
         "recoveries": follower.recoveries,
         "align_before_stairs": args.align,
+        "payload_kg": args.payload_kg,
+        "carry_pose": args.carry_reach if args.payload_kg is not None else None,
+        "arm_observation": args.arm_obs if args.payload_kg is not None else None,
         "alignments": follower.alignments,
         "localization": {
             "source": "MuJoCo ground truth" + ("" if localizer.ideal else " + simulated camera error"),

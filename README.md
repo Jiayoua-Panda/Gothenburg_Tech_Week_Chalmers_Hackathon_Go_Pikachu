@@ -33,6 +33,7 @@ python3 /path/to/visualize/scripts/render.py web/stairlab.fragment.html index.ht
 
 - [Factory route course](artifacts/factory-course/README.md): the G1-DWAQ policy with a waypoint route follower on multi-segment layouts (corners, switchback stairs, a 12-riser descent). With ideal external localization, the 19.9 m full route reaches the goal in 22/25 start conditions; the remaining failures are all on the descending flight.
 - [Camera localization error sweep](artifacts/factory-course/localization-sweep/README.md): 1025 runs of the full route with degraded camera poses. Success stays comparable to a perfect camera up to ~10 cm noise, 20 cm bias, 2 Hz and 300 ms latency; fusing on-board odometry extends that to 1 Hz and 1 s.
+- [Carrying a box without retraining](artifacts/factory-course/payload-sweep/README.md): arms held in a carry pose with a 0–8 kg box. It only works if the policy is shown a virtual free-arm state. It then carries about 2 kg up one flight reliably, but no load reliably over the full route with a descent, which motivates fine-tuning.
 
 These use different policies and test scenes, so their results are not a controlled policy comparison.
 
