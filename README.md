@@ -1,6 +1,7 @@
 # SKF Humanoid Hackathon
 
-> **Team: start with [START_HERE.md](START_HERE.md)** — factory-route, camera-error and box-carrying experiments (Chinese summary, with links to results and videos).
+> **Final approach and all results in one page: [analysis/final_approach.md](analysis/final_approach.md)** (English).
+> Factory-route, camera-error and box-carrying experiments: [START_HERE.md](START_HERE.md) (Chinese summary, with links to results and videos).
 
 GTW Chalmers Hackathon 2026 — SKF challenge: *Analyze and compare learning methods suitable for industrial humanoids*.
 

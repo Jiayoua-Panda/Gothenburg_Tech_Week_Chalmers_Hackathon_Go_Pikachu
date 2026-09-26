@@ -37,6 +37,12 @@ The scan becomes a simulation scene. Stair measurements feed straight into a par
 exactly what [`g1_course/course.py`](../g1_course/course.py) does today with hand-entered numbers
 (`rise`, `tread`, `n`, `yaw`, `width`). So "onboarding a new facility" becomes a scan, not a reprogramming job.
 
+**Fixed cameras for localisation [measured, Zhou]:** with a known floor plan and fixed cameras reporting the robot's
+pose, a route follower walks a 19.9 m factory route (switchback up to a 1.8 m mezzanine, 12 risers down) in 22/25
+starts. A 1025-run camera-error sweep gives the camera spec: position σ ≤ 10 cm, bias ≤ 20 cm, ≥ 2 Hz, ≤ 300 ms —
+or ≥ 1 Hz and ≤ 1 s when fused with on-board odometry
+([`artifacts/factory-course/localization-sweep/`](../artifacts/factory-course/localization-sweep/README.md)).
+
 ## 2. Train
 
 - **Locomotion:** reinforcement learning in massively parallel simulation (Isaac Lab / legged_gym style),
@@ -79,6 +85,10 @@ matrix tooling and ran V0 (Unitree's pretrained flat-ground policy) and our **sc
 
 Sources: `g1_course/outputs/{v0,switch}/segment_results.csv` and `3d/` (10 randomised trials per segment);
 one-page summary in [`g1_course/outputs/MORNING_SUMMARY.md`](../g1_course/outputs/MORNING_SUMMARY.md).
+
+Further gates built by the team (Zhou, [`artifacts/factory-course/`](../artifacts/factory-course/README.md)): full
+factory routes with corners and long flights (88 % on the 19.9 m route; failures on the 12-riser descent), a camera
+localisation-error sweep (1025 runs) and a payload sweep (0–15 kg, hand-held / chest / back).
 
 Example gate for stairs **[proposed]**: ≥ 99 % success over 1 000 simulated trials on the twin ± randomisation,
 ≥ 95 % on *unseen* stair geometries, zero off-track events, then a supervised hardware trial on a gantry/harness.
@@ -162,7 +172,7 @@ robot falls / near-miss on site  →  log state, sensor data, map position
 
 | Stage | Status in this repository |
 |---|---|
-| Collect | Unitree robot model + pretrained policy; parametric course generator (stand-in for a site scan) |
+| Collect | Unitree robot model + pretrained skills (V0, G1-DWAQ); parametric course generator (stand-in for a site scan); factory floor-plan routes with simulated fixed cameras and a measured camera spec |
 | Train | CPU-only: overnight CMA-ES tuning of a classical layer (V0.5) — improved trained terrain, broke held-out terrain (documented). RL training of our own stair skill needs a GPU → V1 recipe in [task_locomotion.md](task_locomotion.md) |
 | Simulate | MuJoCo sim2sim of two Isaac Lab policies (Unitree V0, third-party G1-DWAQ) on our robot model — working |
 | Validate | 2D + 3D test matrix (220 trials), perception scan, safety scenarios — working, results above |

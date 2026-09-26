@@ -120,6 +120,12 @@ Test changed the design again: the first selector only looked for height steps a
 walked cross slopes and drifted off (75 %). Adding the scan's lateral slope (plane fit, > ≈ 3°) to the selector
 raised it to 90 % (first version kept in `outputs/switch/v1_selector/`).
 
+**Long flights and full routes (Zhou, [`artifacts/factory-course/`](../artifacts/factory-course/README.md)):** our
+stairs-down segments are 4-step flights. On 10–12-riser flights the same stair skill sometimes twists on steps 3–5
+and walks off (`diag_down` 7/9), and a 19.9 m factory route with a switchback up and a 12-riser descent reaches the
+goal in 22/25 starts with camera-based route following — all failures on the long descent. Descent on long flights
+is therefore the stair skill's measured weak spot, and the first fine-tuning target (running on GPU).
+
 **Caveats (say them in the pitch):** the DWAQ weights are third-party, not trained by us; walkway centring uses
 simulator position (on a robot: localisation); stairs are MuJoCo boxes with exact geometry and 1 cm scan noise.
 Sources: `outputs/{v0,dwaq,switch}/segment_results.csv` and `3d/`, summary in `outputs/MORNING_SUMMARY.md`.
@@ -127,7 +133,8 @@ Sources: `outputs/{v0,dwaq,switch}/segment_results.csv` and `3d/`, summary in `o
 ## 5. Next: our own V1 — method **[proposed]**
 
 Section 4b shows the target is reachable: a policy trained with a stairs curriculum climbs everything in our
-matrix. V1 means training that skill ourselves (licensable, tunable, faster than 0.3 m/s) and adding the
+matrix. The gates also show what to train first: long descents and carried loads — Zhou's fine-tunes of the stair
+skill with more descent terrain and payload / centre-of-mass randomisation are running on the Chalmers GPU cluster. V1 means training that skill ourselves (licensable, tunable, faster than 0.3 m/s) and adding the
 height map so it can plan footholds and speed:
 
 **RL in simulation with a height-map observation, terrain curriculum, domain randomisation, teacher–student.**

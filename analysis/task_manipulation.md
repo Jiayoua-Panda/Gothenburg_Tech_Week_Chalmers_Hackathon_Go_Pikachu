@@ -62,7 +62,21 @@ is unchanged; what changes is **Collect** (human demonstrations instead of rewar
 | **Safety** | Pinch points, dropped parts; power & force limiting (ISO/TS 15066) for any contact with people | Low-energy task; main risk is the arm reaching into a person's space |
 | **Industrial readiness** | Pilot-ready at one station within months; not yet a certified product | Pilot-ready for non-critical surfaces |
 
-## 5. How we would validate it (same gate idea as locomotion)
+## 5. Carrying while walking — what the team measured **[measured, Zhou]**
+
+The first manipulation-like skill SKF's use case needs is *carrying a tray up stairs*. Zhou tested the stair skill
+with a box and **no retraining** ([`artifacts/factory-course/payload-sweep/`](../artifacts/factory-course/payload-sweep/README.md)):
+
+- **Locked arms break the policy** even with an empty box; showing it a simulated "virtual free arm" state restores
+  walking — a cheap way to separate upper-body control from locomotion without retraining.
+- **Where the load sits matters as much as its mass:** a chest carrier (arms free) takes ~8 kg up one flight
+  (8/9); hand-held close to the body ~2 kg; a backpack fails from 2 kg (centre of mass moves backwards).
+- **Full route with a load:** chest 2 kg 15/25, 8 kg 6/25 — again failing mostly on the long descent.
+
+Consequence for the pipeline: carry sample rings in a **front tray / chest carrier** now, and fine-tune the
+locomotion skill with payload and centre-of-mass randomisation (running on GPU) before hand-held carrying.
+
+## 6. How we would validate it (same gate idea as locomotion)
 
 - Test matrix: ring size × pose on tray × lighting × fixture position (± 2 cm) × clutter.
 - Gate: ≥ 99 % correct placements over 1 000 simulated episodes, ≥ 98 % over 200 real trials at the pilot

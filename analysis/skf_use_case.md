@@ -40,6 +40,9 @@ This single job needs **both** tasks from the brief: locomotion (stairs, shared 
 | Contacts with the robot driving (not in protective stop), sim scenarios | 0 | V0 + ISO/TS 15066 monitor + position hold: 0 / 50 (without monitor: 44 / 50); 11 / 50 people walked into the stopped robot ([`safety_summary.csv`](../g1_course/outputs/v0/safety/safety_summary.csv)) |
 | Placement accuracy (ring in fixture) | ≥ 99 % within tolerance | not implemented |
 | Test matrix run time | < 1 h per candidate policy | 220 locomotion trials in 81 s on a laptop CPU |
+| Full route line → lab (with stairs up and down) | ≥ 99 % | Factory route 19.9 m, 24 risers: 88 % (22/25) with camera-based route following (Zhou) |
+| Fixed-camera localisation spec | met before go-live | σ ≤ 10 cm, bias ≤ 20 cm, ≥ 2 Hz, ≤ 300 ms (or ≥ 1 Hz / ≤ 1 s with odometry) — measured in a 1025-run sweep |
+| Sample tray payload up stairs | tray + rings ≤ tested limit | ~8 kg on a chest carrier up one flight, ~2 kg hand-held (no retraining) |
 
 ### Business KPIs
 
