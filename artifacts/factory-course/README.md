@@ -56,6 +56,12 @@ These were found while building the course, and each changed the controller:
 
 No text is burned into the picture. The camera follows the robot from the rear left, and the green pad is the goal.
 
+One video per course (centred start, with stall recovery unless noted), plus the failure cases:
+
+- [`l1_corner_v30_rec_y+0cm_yaw+0_ideal.mp4`](runs/l1_corner_v30_rec_y+0cm_yaw+0_ideal.mp4): L1 corner, success, 15 s
+- [`diag_uturn_v30_rec_y+0cm_yaw+0_ideal.mp4`](runs/diag_uturn_v30_rec_y+0cm_yaw+0_ideal.mp4): ground-floor 180° U-turn, success, 17 s
+- [`l2_corner_stairs_v30_rec_y+0cm_yaw+0_ideal.mp4`](runs/l2_corner_stairs_v30_rec_y+0cm_yaw+0_ideal.mp4): L2 corner, flight up, right corner, success, 39 s
+- [`diag_down_v30_rec_y-10cm_yaw+0_ideal.mp4`](runs/diag_down_v30_rec_y-10cm_yaw+0_ideal.mp4): straight descent, success (−10 cm start; the centred start fails, see below), 18 s
 - [`l4_factory_route_v30_rec_y+0cm_yaw+0_ideal.mp4`](runs/l4_factory_route_v30_rec_y+0cm_yaw+0_ideal.mp4): full route, success, 75 s
 - [`l4_factory_route_v30_y-10cm_yaw-5_ideal.mp4`](runs/l4_factory_route_v30_y-10cm_yaw-5_ideal.mp4): same start without recovery, stuck at the first riser
 - [`l4_factory_route_v30_rec_y-10cm_yaw-5_ideal.mp4`](runs/l4_factory_route_v30_rec_y-10cm_yaw-5_ideal.mp4): same start with recovery, success, 88 s
