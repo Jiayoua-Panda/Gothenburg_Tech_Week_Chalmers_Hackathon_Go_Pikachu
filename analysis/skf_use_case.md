@@ -33,9 +33,9 @@ This single job needs **both** tasks from the brief: locomotion (stairs, shared 
 
 | KPI | Target *(assumption)* | Where we are **[measured]** |
 |---|---|---|
-| Stair success rate in sim (site twin ± randomisation) | ≥ 99 % over 1 000 trials | V0: 0 % on all stair variants (blind policy) |
-| Success on unseen geometries (other rises/angles) | ≥ 95 % | V0: 0 % |
-| Off-walkway events | 0 | V0: 10/10 on a 5° cross slope |
+| Stair success rate in sim (site twin ± randomisation) | ≥ 99 % over 1 000 trials | V0: 0 %. Scan-selected stair skill: 100 % up, 100 % down (20 trials each), 97 % angled/narrow (30) |
+| Success on unseen geometries (other rises/angles) | ≥ 95 % | Switch over the full 220-trial matrix: 99 % (stair skill is third-party; our own V1 still to train) |
+| Off-walkway events | 0 | V0: 10/10 on a 5° cross slope; switch: 1/20 on 5–10° cross slopes (plus 1 timeout), 1/10 on 0.6 m narrow stairs |
 | Falls per 1 000 steps (flat + ramps) | < 0.1 | V0: no falls on flat or 5° ramps in our tests |
 | Contacts with the robot driving (not in protective stop), sim scenarios | 0 | V0 + ISO/TS 15066 monitor + position hold: 0 / 50 (without monitor: 44 / 50); 11 / 50 people walked into the stopped robot ([`safety_summary.csv`](../g1_course/outputs/v0/safety/safety_summary.csv)) |
 | Placement accuracy (ring in fixture) | ≥ 99 % within tolerance | not implemented |

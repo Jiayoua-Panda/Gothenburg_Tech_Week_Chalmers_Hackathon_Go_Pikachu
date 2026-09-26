@@ -1,0 +1,22 @@
+{
+  "slow_gain": 0.4256,
+  "v_min": 0.3965,
+  "k_y": 0.8256,
+  "k_slope": 4.6133,
+  "k_yaw": 1.5338,
+  "yaw_slope": 1.6126,
+  "hip": 0.0549,
+  "knee": 0.5946,
+  "ankle": 0.0263,
+  "t_swing": 0.3038,
+  "trigger": 0.6519,
+  "w_toe": 0.0008,
+  "reach": 0.0359,
+  "t_reach": 0.3002,
+  "push": 0.2459,
+  "boost": 0.2587,
+  "_fitness_reevaluated": 0.794898356827375,
+  "_generation": 147,
+  "_fitness_logged": 0.6936,
+  "_trials": 8
+}

@@ -39,5 +39,10 @@ and on our own simulation tests. They are meant to structure a discussion, not t
    distance computed from the measured stopping behaviour cut contacts in our scenarios from 44/50 to 11/50 —
    every remaining one with the robot already stopped. Learned + classical beat either alone.
    (Source: [`g1_course/outputs/v0/safety/`](../g1_course/outputs/v0/safety/).)
-4. **What makes training easier and more efficient** is not the choice of one algorithm but the pipeline
+4. **The same lesson for locomotion skills [measured].** A classical layer tuned on top of the flat-ground
+   policy (V0.5, CMA-ES overnight) helped where it was tuned but broke unseen terrain. A policy *trained on stairs*
+   (third-party G1-DWAQ), selected by our height scan only where it is needed, passed 99 % of our 220-trial matrix
+   while keeping V0's speed on the flat. Training data that covers the terrain beats patching afterwards; perception
+   is most useful for choosing the right skill ([task_locomotion.md §4](task_locomotion.md)).
+5. **What makes training easier and more efficient** is not the choice of one algorithm but the pipeline
    around them: site scan → digital twin → automatic test matrix → failure loop ([pipeline.md](pipeline.md)).

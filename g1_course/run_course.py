@@ -61,9 +61,16 @@ class CourseSim(G1Sim):
         self.spawn = (x, y, yaw)
         self.residual = np.zeros(len(self.qadr))
         self.ctrl_state = {}  # 控制器自己的每回合状态（混合控制器的摆动相位等）
-        super().reset()
+        if hasattr(self.policy, "ids_map"):
+            super().reset()  # V0：与原来完全相同的路径
+        else:  # 其他策略（DWAQ）：同样的步骤，默认姿态和站立高度由策略给
+            mujoco.mj_resetData(self.model, self.data)
+            self.data.qpos[self.qadr] = self.policy.default_sdk()
+            mujoco.mj_forward(self.model, self.data)
+            self.policy.reset()
+            self.target = self.policy.default_sdk()
         self.data.qpos[0], self.data.qpos[1] = x, y
-        self.data.qpos[2] = 0.78 + self.course.ground(x, y)
+        self.data.qpos[2] = getattr(self.policy, "init_height", 0.78) + self.course.ground(x, y)
         self.data.qpos[3:7] = [math.cos(yaw / 2), 0, 0, math.sin(yaw / 2)]
         mujoco.mj_forward(self.model, self.data)
 
@@ -101,6 +108,66 @@ class CourseSim(G1Sim):
         return math.atan2(h[1], h[0])
 
 
+class SwitchSim(CourseSim):
+    """两个技能共用同一个机器人模型：flat = Unitree V0，stairs = G1-DWAQ（第三方楼梯策略，dwaq_policy.py）。
+
+    控制器（看高度扫描）调用 request(skill)；这里负责切换：新策略先空跑 WARMUP 个控制周期填满观测历史
+    （动作不施加），再在 BLEND_S 秒内用 smoothstep 混合两边的 PD 力矩，最后完全交给新策略。
+    """
+
+    WARMUP, BLEND_S = 10, 0.8
+
+    def __init__(self, scene_xml, course: C.Course):
+        from dwaq_policy import DwaqPolicy
+
+        self.skills = {"flat": G1Policy(POLICY_DIR), "stairs": DwaqPolicy()}
+        self.skill, self.next_skill = "flat", None
+        super().__init__(self.skills["flat"], scene_xml, course)
+
+    def reset(self, x=0.0, y=0.0, yaw=0.0):
+        self.skill, self.next_skill, self.warm, self.blend_t = "flat", None, 0, None
+        self.policy = self.skills["flat"]
+        self.skill_log = []
+        for pol in self.skills.values():
+            pol.reset()
+        super().reset(x, y, yaw)
+
+    def request(self, skill):
+        if skill != self.skill and self.next_skill is None:
+            self.next_skill, self.warm, self.blend_t = skill, 0, None
+            self.skills[skill].reset()
+
+    def _tau(self, pol, target):
+        q, dq = self.data.qpos[self.qadr], self.data.qvel[self.vadr]
+        return np.clip(pol.kp * (target - q) - pol.kd * dq, -self.tau_lim, self.tau_lim)
+
+    def step(self, cmd):
+        q, dq = self.data.qpos[self.qadr], self.data.qvel[self.vadr]
+        ang_vel_b, gravity_b = self.base_state()
+        cur = self.skills[self.skill]
+        tgt_cur = cur.act(q, dq, ang_vel_b, gravity_b, cur.clip_command(cmd))
+        new, tgt_new, alpha = None, None, 0.0
+        if self.next_skill:
+            new = self.skills[self.next_skill]
+            tgt_new = new.act(q, dq, ang_vel_b, gravity_b, new.clip_command(cmd))
+            self.warm += 1
+            if self.warm > self.WARMUP:
+                self.blend_t = 0.0 if self.blend_t is None else self.blend_t + self.policy.step_dt
+                u = min(1.0, self.blend_t / self.BLEND_S)
+                alpha = u * u * (3 - 2 * u)
+        self.target = tgt_cur
+        for _ in range(self.decimation):
+            tau = self._tau(cur, tgt_cur)
+            if alpha > 0.0:
+                tau = (1 - alpha) * tau + alpha * self._tau(new, tgt_new)
+            self.data.ctrl[:] = tau
+            mujoco.mj_step(self.model, self.data)
+        if self.next_skill and alpha >= 1.0:
+            self.skill, self.next_skill, self.blend_t = self.next_skill, None, None
+            self.policy = self.skills[self.skill]
+        self.skill_log.append(self.skill if not self.next_skill else f"{self.skill}->{self.next_skill}")
+
+
 """
 速度指令（"控制器"）。V0：恒定前进速度 + 操作员式纠偏（朝向、横向偏移）。
 """
@@ -127,8 +194,55 @@ def controller_hybrid(sim, t, **kw):
     return hybrid.controller(sim, t, **kw)
 
 
-CONTROLLERS = {"v0": controller_v0, "hybrid": controller_hybrid}
-CONTROLLER_LABELS = {"v0": "V0 pretrained", "hybrid": "V0.5 hybrid (scan + V0 + tuned layer)"}
+DWAQ_SPEED = 0.3  # G1-DWAQ 在楼梯上测过的速度（队友实验与本仓库探针）
+ROLL_SWITCH = 0.05  # 侧倾坡度 dz/dlat（≈ 3°）超过这个也交给 DWAQ；V0 在侧倾坡上会往下漂（第一版 switch 的弱点）
+
+
+def controller_dwaq(sim, t, vx=0.5, settle=2.0, ramp=1.0):
+    """全程用 G1-DWAQ（第三方楼梯策略），速度 0.3 m/s，纠偏同 V0。"""
+    return controller_v0(sim, t, vx=min(vx, DWAQ_SPEED), settle=settle, ramp=ramp)
+
+
+def controller_switch(sim, t, vx=0.5, settle=2.0, ramp=1.0):
+    """感知选技能：高度扫描看到前方 0.9 m 内有 > 4 cm 的台阶，或横向坡度 > ROLL_SWITCH → stairs（DWAQ）；
+    前方 0.8 m 都平（< 2.5 cm）且不侧倾，持续 0.5 s → flat（V0）。纠偏同 V0（仿真真值，真机上是定位 / 里程计）。"""
+    import hybrid
+
+    st = sim.ctrl_state
+    if "rng" not in st:
+        st.update(rng=np.random.default_rng(0), level_ticks=0)
+    if t < settle:
+        return np.zeros(3)
+    f = hybrid.terrain_features(sim, st["rng"])
+    step_h = max(f["up"], -f["down"])
+    tilted = abs(f["roll"]) > ROLL_SWITCH  # 侧倾坡：前方中线看不出高差，要看平面拟合的横向坡度
+    if sim.skill == "flat" and ((step_h > 0.04 and f["edge"] < 0.9) or tilted):
+        sim.request("stairs")
+    if sim.skill == "stairs":
+        level = step_h < 0.025 and f["edge"] == float("inf") and abs(f["roll"]) < 0.5 * ROLL_SWITCH
+        st["level_ticks"] = st["level_ticks"] + 1 if level else 0
+        if st["level_ticks"] >= 25:
+            sim.request("flat")
+    speed = DWAQ_SPEED if (sim.skill == "stairs" or sim.next_skill) else vx
+    v = speed * min(1.0, (t - settle) / ramp)
+    vy, wz = steer(sim)
+    return sim.policy.clip_command([v, vy, wz])
+
+
+CONTROLLERS = {"v0": controller_v0, "hybrid": controller_hybrid, "dwaq": controller_dwaq, "switch": controller_switch}
+CONTROLLER_LABELS = {"v0": "V0 pretrained", "hybrid": "V0.5 hybrid (scan + V0 + tuned layer)",
+                     "dwaq": "G1-DWAQ stair policy (third-party)", "switch": "scan picks skill: V0 flat / DWAQ stairs"}
+
+
+def make_sim(controller, scene_xml, course):
+    """按控制器建仿真：switch 需要两个策略，dwaq 用 DWAQ，其余用 V0。"""
+    if controller == "switch":
+        return SwitchSim(scene_xml, course)
+    if controller == "dwaq":
+        from dwaq_policy import DwaqPolicy
+
+        return CourseSim(DwaqPolicy(), scene_xml, course)
+    return CourseSim(G1Policy(POLICY_DIR), scene_xml, course)
 
 
 class VideoSink:
@@ -194,7 +308,8 @@ def run_trial(sim, controller, goal_x, time_limit, video_path=None, width=960, h
                 add_scan(renderer.scene, sim)
             img = renderer.render().copy()
             seg = sim.course.segment_at(x) or "-"
-            lines = [f"{label}   segment: {seg}", f"x = {x:5.2f} m   cmd vx = {cmd[0]:.2f} m/s   t = {t:4.1f} s"]
+            skill = f"   skill: {sim.skill_log[-1]}" if getattr(sim, "skill_log", None) else ""
+            lines = [f"{label}   segment: {seg}{skill}", f"x = {x:5.2f} m   cmd vx = {cmd[0]:.2f} m/s   t = {t:4.1f} s"]
             import cv2
 
             for j, s in enumerate(lines):
@@ -255,7 +370,7 @@ def draw_overlay(img, label, seg, x, cmd, t, board, banner=None):
 def mode_tour(args):
     out = out_dir(args)
     course = C.build_named(args.course)
-    sim = CourseSim(G1Policy(POLICY_DIR), C.write_scene(course, args.course), course)
+    sim = make_sim(args.controller, C.write_scene(course, args.course), course)
     controller = CONTROLLERS[args.controller]
     segs = [s for s in course.segments if s[0] != "finish"]
     status = {s[0]: "..." for s in segs}
@@ -286,7 +401,8 @@ def mode_tour(args):
         img = renderer.render().copy()
         x = sim.data.qpos[0]
         board = [(s[0], status[s[0]]) for s in segs]
-        draw_overlay(img, label, course.segment_at(x) or "-", x, cmd, t_total, board, banner)
+        shown = f"{label} [{sim.skill_log[-1]}]" if getattr(sim, "skill_log", None) else label
+        draw_overlay(img, shown, course.segment_at(x) or "-", x, cmd, t_total, board, banner)
         sink.append(img)
 
     while idx < len(segs):
@@ -355,7 +471,7 @@ def mode_scan(args):
 
     out = out_dir(args)
     course = C.build_named(args.course)
-    sim = CourseSim(G1Policy(POLICY_DIR), C.write_scene(course, args.course), course)
+    sim = make_sim(args.controller, C.write_scene(course, args.course), course)
     segs = [s for s in course.segments if s[0] not in ("finish", "A warm-up")]
     picks = [s for s in segs if s[0].split(" ")[0] in ("F2", "G2", "H2", "I", "C2", "D2", "E1")][:4] or segs[:4]
     renderer = mujoco.Renderer(sim.model, 360, 480)
@@ -675,7 +791,7 @@ def mode_full(args):
     out = out_dir(args)
     course = C.build_named(args.course)
     C.plot_profile(course, out / "course_profile.png", COURSE_TITLES[args.course])
-    sim = CourseSim(G1Policy(POLICY_DIR), C.write_scene(course, args.course), course)
+    sim = make_sim(args.controller, C.write_scene(course, args.course), course)
     t0 = time.time()
     video = None if args.no_video else out / "full_course.mp4"
     r = run_trial(sim, CONTROLLERS[args.controller], course.end_x - 0.5, time_limit=args.time_limit,
@@ -693,7 +809,6 @@ def mode_full(args):
 
 def mode_segments(args):
     out = out_dir(args)
-    policy = G1Policy(POLICY_DIR)
     rng = np.random.default_rng(args.seed)
     rows = []
     for spec in course_specs(args):
@@ -701,7 +816,7 @@ def mode_segments(args):
         if not name or name == "finish":
             continue
         course = C.standalone(spec)
-        sim = CourseSim(policy, C.write_scene(course, f"seg_{args.course}"), course)
+        sim = make_sim(args.controller, C.write_scene(course, f"seg_{args.course}_{args.controller}"), course)
         _, x0, x1, _ = course.segments[0]
         results = []
         for i in range(args.trials):
@@ -766,7 +881,7 @@ def mode_viewer(args):
     import mujoco.viewer
 
     course = C.build_named(args.course)
-    sim = CourseSim(G1Policy(POLICY_DIR), C.write_scene(course, args.course), course)
+    sim = make_sim(args.controller, C.write_scene(course, args.course), course)
     controller = CONTROLLERS[args.controller]
     with mujoco.viewer.launch_passive(sim.model, sim.data) as viewer:
         viewer.cam.type = mujoco.mjtCamera.mjCAMERA_TRACKING

@@ -24,6 +24,12 @@ cd g1_course
 ../.venv/bin/python run_course.py --mode scan --course 3d                  # perception-view figure
 ../.venv/bin/python run_course.py --mode safety --trials 50                # person in the walkway: off / stop / hold / iso
 
+# Stairs: our height scan picks the skill — V0 on the flat, the stair-trained G1-DWAQ policy on steps/stairs
+../.venv/bin/pip install torch && sh fetch_dwaq.sh                         # third-party weights (BSD-3), not in git
+../.venv/bin/python run_course.py --mode segments --course full --controller switch --trials 10
+../.venv/bin/python run_course.py --mode tour --course 3d --controller switch --show-scan   # video
+../.venv/bin/python morning_summary.py                                     # V0 / V0.5 / DWAQ / switch table
+
 # V0.5 hybrid: height scan + V0 policy + a classical layer tuned by CMA-ES on CPU (no GPU)
 ../.venv/bin/pip install cma
 ../.venv/bin/python optimize.py --probe                                    # quick check: V0 vs untuned hybrid
@@ -32,9 +38,16 @@ cd g1_course
 ../.venv/bin/python run_course.py --mode segments --course 3d --controller hybrid
 ```
 
+**Headline result [measured]:** over the 220-trial test matrix (2D + 3D, 10 randomised trials per segment),
+Unitree's flat-ground V0 passes 36 %; with our height scan switching to a stair-trained policy (third-party
+G1-DWAQ) where needed, the robot passes **99 %** — stairs up and down, angled and narrow stairs included — at V0's
+speed on the flat. See [`g1_course/outputs/MORNING_SUMMARY.md`](g1_course/outputs/MORNING_SUMMARY.md) and
+[analysis/task_locomotion.md](analysis/task_locomotion.md) §4.
+
 - [`g1_step_playback/`](g1_step_playback/) — Unitree's pretrained G1 walking policy replayed in MuJoCo; step length vs speed.
 - [`g1_course/`](g1_course/) — parametric test course (2D and 3D), evaluation, perception scan, safety demo;
-  `perception.py` (height scan), `hybrid.py` (V0.5 controller), `optimize.py` (CMA-ES tuning, train/test split).
+  `perception.py` (height scan), `hybrid.py` (V0.5 controller), `optimize.py` (CMA-ES tuning, train/test split),
+  `dwaq_policy.py` (G1-DWAQ inference in numpy), `overnight.py` (detached overnight run), `morning_summary.py`.
   Results in [`g1_course/outputs/v0/`](g1_course/outputs/v0/) (`3d/`, `safety/`).
 
 Evaluation results in `g1_course/outputs/v0/segment_results.csv` were regenerated on macOS (MuJoCo 3.x);

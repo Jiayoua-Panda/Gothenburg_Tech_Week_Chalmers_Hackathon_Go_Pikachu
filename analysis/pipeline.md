@@ -61,21 +61,24 @@ exactly what [`g1_course/course.py`](../g1_course/course.py) does today with han
 ## 4. Validate — the gate before hardware
 
 A skill only passes to deployment when it clears a **test matrix** with pass-rate gates. We built the
-matrix tooling and ran the current policy (V0, Unitree's pretrained blind walking policy) through it:
+matrix tooling and ran V0 (Unitree's pretrained flat-ground policy) and our **scan-selected skill switch**
+(V0 on the flat, the stair-trained G1-DWAQ policy on steps and stairs — see
+[task_locomotion.md §4b](task_locomotion.md)) through it:
 
-| Dimension | Segments | V0 result **[measured]** |
-|---|---|---|
-| Flat, gentle slopes | A, B1 (±5°) | 100 % |
-| Steep slopes | B2/B3 up (10°, 15°) | 0 % (stalls, slides sideways) |
-| Single steps | C1–C3 (5/10/15 cm) | 0 % |
-| Straight stairs | D1–D2 up, E1–E2 down | 0–20 % |
-| Cross slope (3D) | F1/F2 (5°, 10°) | 0 % — drifts downhill off a 1.2 m walkway |
-| Rough floor (3D) | G1/G2 (2 cm, 4 cm) | 100 % / 90 % |
-| Angled / narrow stairs (3D) | H1/H2 (15°, 30°), I (0.6 m) | 0 % |
-| Person in the walkway | safety scenarios | see [safety results](#safety-layer) |
+| Dimension | Segments | V0 **[measured]** | Switch **[measured]** |
+|---|---|---|---|
+| Flat, gentle slopes | A, B1 (±5°) | 100 % | 100 % |
+| Steep slopes | B2/B3 (10°, 15°) up / down | 0 % up, 90 % down | 100 % / 100 % |
+| Single steps | C1–C3 (5/10/15 cm) | 0 % | 100 % |
+| Straight stairs | D1–D2 up, E1–E2 down | 0 % up, 10 % down | 100 % / 100 % |
+| Cross slope (3D) | F1/F2 (5°, 10°) | 0 % — drifts off a 1.2 m walkway | 90 % |
+| Rough floor (3D) | G1/G2 (2 cm, 4 cm) | 95 % | 100 % |
+| Angled / narrow stairs (3D) | H1/H2 (15°, 30°), I (0.6 m) | 0 % | 97 % |
+| **All 220 trials** | | **36 %** | **99 %** |
+| Person in the walkway | safety scenarios | see [safety results](#safety-layer) | |
 
-Sources: [`g1_course/outputs/v0/segment_results.csv`](../g1_course/outputs/v0/segment_results.csv),
-[`g1_course/outputs/v0/3d/segment_results.csv`](../g1_course/outputs/v0/3d/segment_results.csv) (10 randomised trials per segment).
+Sources: `g1_course/outputs/{v0,switch}/segment_results.csv` and `3d/` (10 randomised trials per segment);
+one-page summary in [`g1_course/outputs/MORNING_SUMMARY.md`](../g1_course/outputs/MORNING_SUMMARY.md).
 
 Example gate for stairs **[proposed]**: ≥ 99 % success over 1 000 simulated trials on the twin ± randomisation,
 ≥ 95 % on *unseen* stair geometries, zero off-track events, then a supervised hardware trial on a gantry/harness.
@@ -84,8 +87,11 @@ Example gate for stairs **[proposed]**: ≥ 99 % success over 1 000 simulated tr
 
 Four layers run on the robot and in the building **[proposed]**:
 
-1. **Instruction layer** — language/VLA model selects the skill ("climb stairs", "pick ring").
-2. **Skill policies** — learned locomotion and manipulation policies (50 Hz), fed by onboard perception.
+1. **Instruction layer** — language/VLA model selects the task ("go to the wash room", "pick ring").
+2. **Skill policies + skill selection** — several learned policies (50 Hz), each for the terrain it was trained
+   on; perception picks which one runs. **Demonstrated [measured]:** our height scan hands over from V0 (flat) to
+   a stair-trained policy before the first riser and back on the landing — 99 % of 220 trials, including stairs
+   down, angled and narrow stairs; V0 alone: 36 %.
 3. **Onboard perception** — the G1 carries a depth camera and a 3D lidar in its head (per Unitree's
    published spec — verify for the exact variant). These build a **local height map** around the feet in
    real time: the input a V1 stair policy uses. Our simulation renders exactly this scan
@@ -157,7 +163,7 @@ robot falls / near-miss on site  →  log state, sensor data, map position
 | Stage | Status in this repository |
 |---|---|
 | Collect | Unitree robot model + pretrained policy; parametric course generator (stand-in for a site scan) |
-| Train | **Not done** — no GPU available during the hackathon; V1 recipe specified in [task_locomotion.md](task_locomotion.md) |
-| Simulate | MuJoCo sim2sim of Unitree's Isaac Lab policy — working |
-| Validate | 2D + 3D test matrix, perception scan, safety scenarios — working, results above |
-| Deploy | Safety-layer logic prototyped in simulation (speed & separation + position hold) |
+| Train | CPU-only: overnight CMA-ES tuning of a classical layer (V0.5) — improved trained terrain, broke held-out terrain (documented). RL training of our own stair skill needs a GPU → V1 recipe in [task_locomotion.md](task_locomotion.md) |
+| Simulate | MuJoCo sim2sim of two Isaac Lab policies (Unitree V0, third-party G1-DWAQ) on our robot model — working |
+| Validate | 2D + 3D test matrix (220 trials), perception scan, safety scenarios — working, results above |
+| Deploy | Scan-based skill selection V0 ⇄ stair skill (99 % of the matrix); safety layer (speed & separation + position hold) |

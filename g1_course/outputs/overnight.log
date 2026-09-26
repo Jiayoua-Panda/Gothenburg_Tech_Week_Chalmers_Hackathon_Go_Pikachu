@@ -1,0 +1,83 @@
+Sat Sep 26 01:45:38 CEST 2026 orchestrator start
+Sat Sep 26 02:37:59 CEST 2026 orchestrator v2 start (replaces v1; adds re-selection)
+Sat Sep 26 02:57:10 2026 overnight.py start (stage 2 until 08:30, pid 56348)
+gen  42  logged 0.713  re-evaluated 0.549  A:100%  C1:12%  C2:12%  D1:0%  H1:0%  F1:75%  B2:0%
+gen   8  logged 0.705  re-evaluated 0.430  A:100%  C1:0%  C2:12%  D1:0%  H1:0%  F1:50%  B2:0%
+gen  34  logged 0.682  re-evaluated 0.441  A:100%  C1:0%  C2:0%  D1:0%  H1:0%  F1:62%  B2:0%
+gen  41  logged 0.678  re-evaluated 0.539  A:100%  C1:38%  C2:0%  D1:0%  H1:0%  F1:62%  B2:0%
+gen  24  logged 0.657  re-evaluated 0.544  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:88%  B2:0%
+gen  30  logged 0.651  re-evaluated 0.450  A:100%  C1:25%  C2:0%  D1:0%  H1:0%  F1:62%  B2:0%
+gen   9  logged 0.642  re-evaluated 0.460  A:100%  C1:38%  C2:0%  D1:0%  H1:0%  F1:25%  B2:0%
+gen  21  logged 0.638  re-evaluated 0.413  A:100%  C1:12%  C2:0%  D1:0%  H1:0%  F1:50%  B2:0%
+gen  40  logged 0.599  re-evaluated 0.462  A:100%  C1:12%  C2:0%  D1:0%  H1:0%  F1:62%  B2:0%
+winner: gen 42 (logged 0.713, re-evaluated 0.549) → /Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/reselected_params.json
+Sat Sep 26 03:10:49 2026 stage 1 choice: {   "slow_gain": 0.4294,   "v_min": 0.3121,   "k_y": 2.574,   "k_slope": 5.9606,   "k_yaw": 2.4219,   "yaw_slope": 1.5144,   "hip": 0.0434,   "knee": 0.6375,   "ankle": 0.2066,   "t_swing": 0.199,   "trigger": 0.4815,   "w_toe": 0.0,   "reach": 0.0,   "t_reach": 0.35,   "push": 0.0,   "boost": 0.0,   "_fitness_reevaluated": 0.5488164859506732,   "_generation": 42,   "_fitness_logged": 0.7125,   "_trials": 8 }
+Sat Sep 26 03:10:49 2026 stage 2 started (pid 57026)
+Sat Sep 26 08:30:24 2026 stage 2 stopped
+gen  65  logged 0.799  re-evaluated 0.667  A:100%  C1:75%  C2:0%  D1:0%  H1:0%  F1:50%
+gen  66  logged 0.795  re-evaluated 0.771  A:100%  C1:50%  C2:38%  D1:0%  H1:0%  F1:75%
+gen  74  logged 0.792  re-evaluated 0.686  A:100%  C1:25%  C2:25%  D1:0%  H1:12%  F1:62%
+gen 101  logged 0.780  re-evaluated 0.648  A:100%  C1:50%  C2:12%  D1:0%  H1:0%  F1:38%
+gen  98  logged 0.773  re-evaluated 0.746  A:100%  C1:38%  C2:12%  D1:12%  H1:0%  F1:88%
+gen  80  logged 0.765  re-evaluated 0.669  A:100%  C1:38%  C2:0%  D1:0%  H1:0%  F1:75%
+gen  81  logged 0.761  re-evaluated 0.619  A:100%  C1:50%  C2:0%  D1:0%  H1:0%  F1:50%
+gen  76  logged 0.757  re-evaluated 0.607  A:100%  C1:25%  C2:25%  D1:0%  H1:0%  F1:38%
+gen 147  logged 0.694  re-evaluated 0.795  A:100%  C1:50%  C2:25%  D1:0%  H1:0%  F1:100%
+gen 148  logged 0.598  re-evaluated 0.708  A:100%  C1:50%  C2:12%  D1:12%  H1:0%  F1:62%
+gen 149  logged 0.628  re-evaluated 0.582  A:100%  C1:38%  C2:0%  D1:0%  H1:0%  F1:38%
+winner: gen 147 (logged 0.694, re-evaluated 0.795) → /Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/stage2/reselected_params.json
+Sat Sep 26 08:35:53 2026 evaluating stage 1
+
+train set (10 trials each)
+segment                               V0           V0.5 hybrid
+A warm-up           100% prog 1.00 f0 o0  100% prog 1.00 f0 o0
+C1 step 5cm           0% prog 0.28 f10 o0   60% prog 0.73 f1 o3
+C2 step 10cm          0% prog 0.27 f10 o0   10% prog 0.48 f6 o3
+D1 up 10/30           0% prog 0.18 f10 o0    0% prog 0.26 f6 o4
+H1 stairs 15deg       0% prog 0.17 f10 o0    0% prog 0.22 f5 o5
+F1 cross 5deg        10% prog 0.59 f0 o9  100% prog 1.00 f0 o0
+B2 up 10deg           0% prog 0.05 f3 o0    0% prog 0.15 f7 o3
+
+test set (10 trials each)
+segment                               V0           V0.5 hybrid
+C3 step 15cm          0% prog 0.24 f10 o0    0% prog 0.22 f8 o2
+D2 up 15/25           0% prog 0.14 f10 o0    0% prog 0.16 f7 o3
+E1 down 15/30        10% prog 0.62 f9 o0   10% prog 0.58 f9 o0
+E2 down 10/30         0% prog 0.49 f10 o0   10% prog 0.61 f9 o0
+B3 up 15deg           0% prog 0.09 f3 o3    0% prog 0.13 f9 o1
+B1 up 5deg          100% prog 1.00 f0 o0    0% prog 0.04 f10 o0
+F2 cross 10deg        0% prog 0.34 f0 o10    0% prog 0.22 f5 o5
+G1 rough 2cm        100% prog 1.00 f0 o0   90% prog 1.00 f1 o0
+G2 rough 4cm         90% prog 0.91 f1 o0   10% prog 0.17 f8 o1
+H2 stairs 30deg       0% prog 0.16 f10 o0    0% prog 0.17 f8 o2
+I narrow 0.6m         0% prog 0.12 f10 o0    0% prog 0.19 f7 o3
+
+results: /Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/evaluation.csv, /Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/v0_vs_hybrid.png
+Sat Sep 26 08:39:00 2026 evaluating stage 2 (reselected_params.json)
+
+train set (10 trials each)
+segment                               V0           V0.5 hybrid
+A warm-up           100% prog 1.00 f0 o0  100% prog 1.00 f0 o0
+C1 step 5cm           0% prog 0.28 f10 o0   20% prog 0.55 f5 o3
+C2 step 10cm          0% prog 0.27 f10 o0    0% prog 0.34 f5 o5
+D1 up 10/30           0% prog 0.18 f10 o0    0% prog 0.26 f6 o4
+H1 stairs 15deg       0% prog 0.17 f10 o0    0% prog 0.25 f6 o4
+F1 cross 5deg        10% prog 0.59 f0 o9   70% prog 0.86 f0 o3
+
+test set (10 trials each)
+segment                               V0           V0.5 hybrid
+B2 up 10deg           0% prog 0.05 f3 o0    0% prog 0.19 f5 o5
+C3 step 15cm          0% prog 0.24 f10 o0    0% prog 0.21 f7 o3
+D2 up 15/25           0% prog 0.14 f10 o0    0% prog 0.15 f8 o2
+E1 down 15/30        10% prog 0.62 f9 o0    0% prog 0.57 f10 o0
+E2 down 10/30         0% prog 0.49 f10 o0    0% prog 0.57 f10 o0
+B3 up 15deg           0% prog 0.09 f3 o3   10% prog 0.32 f4 o5
+B1 up 5deg          100% prog 1.00 f0 o0    0% prog 0.15 f3 o7
+F2 cross 10deg        0% prog 0.34 f0 o10    0% prog 0.30 f0 o10
+G1 rough 2cm        100% prog 1.00 f0 o0   70% prog 0.81 f1 o2
+G2 rough 4cm         90% prog 0.91 f1 o0   30% prog 0.36 f5 o2
+H2 stairs 30deg       0% prog 0.16 f10 o0    0% prog 0.31 f6 o4
+I narrow 0.6m         0% prog 0.12 f10 o0    0% prog 0.30 f5 o5
+
+results: /Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/stage2/evaluation.csv, /Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/hybrid/stage2/v0_vs_hybrid.png
+Sat Sep 26 08:41:38 2026 ALL DONE

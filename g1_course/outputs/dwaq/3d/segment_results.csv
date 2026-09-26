@@ -1,0 +1,9 @@
+segment,trials,pass_rate,fell,off_track,timeout,mean_time_pass,fail_x_rel,fail_progress_rel,max_lateral_dev,stride_target,stride_mean,stride_err
+A warm-up,10,1.0,0,0,0,26.778000000000002,nan,nan,0.04793771502992838,nan,nan,nan
+F1 cross 5deg,10,1.0,0,0,0,25.796,nan,nan,0.12012825344512112,nan,nan,nan
+F2 cross 10deg,10,1.0,0,0,0,26.695999999999998,nan,nan,0.1828898541226031,nan,nan,nan
+G1 rough 2cm,10,1.0,0,0,0,25.55,nan,nan,0.05191607636464335,nan,nan,nan
+G2 rough 4cm,10,1.0,0,0,0,24.410000000000004,nan,nan,0.0601910727538152,nan,nan,nan
+H1 stairs 15deg,10,1.0,0,0,0,26.918,nan,nan,0.19548142252008288,nan,nan,nan
+H2 stairs 30deg,10,1.0,0,0,0,30.046,nan,nan,0.19231045428619437,nan,nan,nan
+I narrow 0.6m,10,0.8,0,2,0,25.7825,0.8136178152402482,0.8136178152402482,0.28700769942604554,nan,nan,nan

@@ -4,6 +4,7 @@
     py optimize.py --probe                    # 默认参数 vs V0，训练路段各 4 次（几分钟）
     py optimize.py --generations 60           # 整夜跑；每代写 outputs/hybrid/es_log.csv 和 best_params.json
     py optimize.py --evaluate --trials 10     # 用 best_params.json 跑训练集 + 测试集，和 V0 对比
+    py optimize.py --reselect --top 8 --trials 8   # 从 es_log.csv 里挑前 8 名重新测，选最稳的（单次 4 次试验的分数有运气成分）
     第 2 阶段（课程：5 cm → 10 cm，从第 1 阶段最优参数热启动，结果写到 stage2/）：
     py optimize.py --out outputs/hybrid/stage2 --init outputs/hybrid/best_params.json \
         --train "A warm-up,C1 step 5cm,C2 step 10cm,D1 up 10/30,H1 stairs 15deg" --weights "C2 step 10cm=2,D1 up 10/30=2"
@@ -20,6 +21,7 @@ import json
 import multiprocessing as mp
 import os
 import pathlib
+import signal
 import sys
 import time
 
@@ -166,6 +168,37 @@ def mode_es(pool, args):
     print(f"done: {OUT / 'best_params.json'}")
 
 
+def mode_reselect(pool, args):
+    """每代最优候选的分数只来自 4 次试验，最高分常常是运气。把前 top 名用新种子重测，选平均最好的。"""
+    with open(OUT / "es_log.csv", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    names = [k for k in H.PARAM_NAMES if k in rows[0]]
+    ranked = sorted(rows, key=lambda r: -float(r["best_gen"]))[: args.top] + rows[-3:]  # 加上最后 3 代（最新的分布）
+    cands, seen = [], set()
+    for r in ranked:
+        key = tuple(round(float(r[k]), 4) for k in names)
+        if key not in seen:
+            seen.add(key)
+            cands.append((int(r["gen"]), float(r["best_gen"]), {**H.DEFAULT_PARAMS, **{k: float(r[k]) for k in names}}))
+    seeds = [50_000 + k for k in range(args.trials)]  # 与调参（10000+）和评估（1000+）都不重叠
+    results = []
+    for gen, old_fit, prm in cands:
+        summ = summarize(pool.map(run_one, [(prm, n, s) for n in TRAIN for s in seeds]))
+        fit = fitness(summ)
+        results.append((fit, gen, old_fit, prm, summ))
+        print(f"gen {gen:3d}  logged {old_fit:.3f}  re-evaluated {fit:.3f}  " +
+              "  ".join(f"{n.split(' ')[0]}:{summ[n][0] * 100:.0f}%" for n in TRAIN), flush=True)
+    fit, gen, old_fit, prm, _ = max(results, key=lambda x: x[0])
+    (OUT / "reselected_params.json").write_text(json.dumps({**prm, "_fitness_reevaluated": fit, "_generation": gen,
+                                                            "_fitness_logged": old_fit, "_trials": args.trials}, indent=2))
+    with open(OUT / "reselect.csv", "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["gen", "fitness_logged", "fitness_reevaluated", *[f"{n} pass" for n in TRAIN]])
+        for fit_r, g, of, _, summ in results:
+            w.writerow([g, round(of, 4), round(fit_r, 4), *[round(summ[n][0], 3) for n in TRAIN]])
+    print(f"winner: gen {gen} (logged {old_fit:.3f}, re-evaluated {fit:.3f}) → {OUT / 'reselected_params.json'}")
+
+
 def mode_evaluate(pool, args):
     params = H.load_params(args.params or OUT / "best_params.json")
     test = [n for n in ALL_SEGMENTS if n not in TRAIN]
@@ -221,6 +254,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--probe", action="store_true")
     p.add_argument("--evaluate", action="store_true")
+    p.add_argument("--reselect", action="store_true")
+    p.add_argument("--top", type=int, default=8)
     p.add_argument("--generations", type=int, default=60)
     p.add_argument("--popsize", type=int, default=12)
     p.add_argument("--sigma", type=float, default=0.25, help="CMA-ES 初始步长（参数已归一化到 0~1）")
@@ -247,11 +282,15 @@ def main():
             WEIGHTS[name.strip()] = float(w)
     if args.resume and not args.init:
         args.init = str(OUT / "best_params.json")
+    # SIGTERM（overnight.py 到时间停止）→ SystemExit → with 块退出时 pool.terminate()，不留孤儿进程
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
     with mp.get_context("spawn").Pool(args.workers) as pool:
         if args.probe:
             mode_probe(pool, args)
         elif args.evaluate:
             mode_evaluate(pool, args)
+        elif args.reselect:
+            mode_reselect(pool, args)
         else:
             mode_es(pool, args)
 

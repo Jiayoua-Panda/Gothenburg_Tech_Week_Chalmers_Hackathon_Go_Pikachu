@@ -1,0 +1,80 @@
+Sat Sep 26 03:14:35 CEST 2026 stairs eval start
+Sat Sep 26 03:14:35 CEST 2026 segments switch full
+A warm-up        通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+B1 up 5deg       通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+B1 down 5deg     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+B2 up 10deg      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+B2 down 10deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+B3 up 15deg      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+B3 down 15deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+C1 step 5cm      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.08 m
+C2 step 10cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.10 m
+C3 step 15cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+D1 up 10/30      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+D2 up 15/25      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+E1 down 15/30    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.19 m
+E2 down 10/30    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.25 m
+结果：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/switch/segment_results.csv
+Sat Sep 26 03:30:49 CEST 2026 segments switch 3d
+A warm-up        通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+F1 cross 5deg    通过  6/10  摔倒 0  出界 3  超时 1  最大横向偏移 0.28 m  最远到达≈段内 1.55 m
+F2 cross 10deg   通过  9/10  摔倒 0  出界 1  超时 0  最大横向偏移 0.23 m  最远到达≈段内 1.90 m
+G1 rough 2cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+G2 rough 4cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.08 m
+H1 stairs 15deg  通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.19 m
+H2 stairs 30deg  通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.15 m
+I narrow 0.6m    通过  9/10  摔倒 0  出界 1  超时 0  最大横向偏移 0.27 m  最远到达≈段内 0.72 m
+结果：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/switch/3d/segment_results.csv
+Sat Sep 26 03:38:58 CEST 2026 segments dwaq full
+A warm-up        通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.05 m
+B1 up 5deg       通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+B1 down 5deg     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.05 m
+B2 up 10deg      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+B2 down 10deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.05 m
+B3 up 15deg      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+B3 down 15deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.05 m
+C1 step 5cm      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.08 m
+C2 step 10cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+C3 step 15cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+D1 up 10/30      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.10 m
+D2 up 15/25      通过  9/10  摔倒 0  出界 1  超时 0  最大横向偏移 0.24 m  最远到达≈段内 0.25 m
+E1 down 15/30    通过  9/10  摔倒 0  出界 1  超时 0  最大横向偏移 0.20 m  最远到达≈段内 1.00 m
+E2 down 10/30    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.17 m
+结果：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/dwaq/segment_results.csv
+Sat Sep 26 03:50:44 CEST 2026 segments dwaq 3d
+A warm-up        通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.05 m
+F1 cross 5deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+F2 cross 10deg   通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.18 m
+G1 rough 2cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.05 m
+G2 rough 4cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+H1 stairs 15deg  通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.20 m
+H2 stairs 30deg  通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.19 m
+I narrow 0.6m    通过  8/10  摔倒 0  出界 2  超时 0  最大横向偏移 0.29 m  最远到达≈段内 0.81 m
+结果：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/dwaq/3d/segment_results.csv
+Sat Sep 26 03:57:37 CEST 2026 STAIRS EVAL DONE
+Sat Sep 26 08:32:45 CEST 2026 switch selector v2 (roll) re-evaluation start
+A warm-up        通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+F1 cross 5deg    通过  9/10  摔倒 0  出界 0  超时 1  最大横向偏移 0.14 m  最远到达≈段内 1.00 m
+F2 cross 10deg   通过  9/10  摔倒 0  出界 1  超时 0  最大横向偏移 0.23 m  最远到达≈段内 1.90 m
+G1 rough 2cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+G2 rough 4cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.08 m
+H1 stairs 15deg  通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.19 m
+H2 stairs 30deg  通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.15 m
+I narrow 0.6m    通过  9/10  摔倒 0  出界 1  超时 0  最大横向偏移 0.27 m  最远到达≈段内 0.72 m
+结果：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/switch/3d/segment_results.csv
+A warm-up        通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+B1 up 5deg       通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+B1 down 5deg     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+B2 up 10deg      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.07 m
+B2 down 10deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+B3 up 15deg      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.09 m
+B3 down 15deg    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.06 m
+C1 step 5cm      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.08 m
+C2 step 10cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.10 m
+C3 step 15cm     通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+D1 up 10/30      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+D2 up 15/25      通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.12 m
+E1 down 15/30    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.19 m
+E2 down 10/30    通过 10/10  摔倒 0  出界 0  超时 0  最大横向偏移 0.25 m
+结果：/Users/darinjaderi/Downloads/humanoid-skill-factory/g1_course/outputs/switch/segment_results.csv
+Sat Sep 26 08:43:34 CEST 2026 SWITCH V2 DONE
