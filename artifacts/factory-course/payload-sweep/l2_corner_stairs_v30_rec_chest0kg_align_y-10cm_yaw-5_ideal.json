@@ -1,0 +1,80 @@
+{
+  "run": "l2_corner_stairs_v30_rec_chest0kg_align_y-10cm_yaw-5_ideal",
+  "course": {
+    "name": "l2_corner_stairs",
+    "description": "Corner, straight 10-riser flight (15/31 cm), landing, right corner, mezzanine corridor",
+    "width_m": 1.2,
+    "path_length_m": 11.1,
+    "turns": 2,
+    "stair_flights": 1,
+    "risers": 10,
+    "max_height_m": 1.5,
+    "goal_xyz_m": [
+      5.0,
+      6.1,
+      1.5
+    ]
+  },
+  "outcome": "goal",
+  "detail": "stopped 6 cm from the goal",
+  "sim_time_s": 37.62,
+  "wall_time_s": 1.9,
+  "route_progress_m": 11.1,
+  "route_completion": 1.0,
+  "final_goal_distance_cm": 5.8,
+  "mean_abs_cross_track_cm": 5.5,
+  "max_abs_cross_track_cm": 14.88,
+  "final_xyz_m": [
+    5.006,
+    6.157,
+    2.276
+  ],
+  "video_tail_s": 0.0,
+  "start_offset_cm": -10.0,
+  "start_yaw_deg": -5.0,
+  "flat_speed_mps": 0.5,
+  "stair_speed_mps": 0.3,
+  "stall_recovery": true,
+  "recoveries": 0,
+  "align_before_stairs": true,
+  "payload_kg": 0.0,
+  "payload_mount": "chest",
+  "carry_pose": null,
+  "arm_observation": null,
+  "alignments": 1,
+  "localization": {
+    "source": "MuJoCo ground truth",
+    "sigma_xy_cm": 0.0,
+    "sigma_yaw_deg": 0.0,
+    "rate_hz": 50.0,
+    "latency_ms": 0.0,
+    "bias_cm": 0.0,
+    "odometry_fusion": false,
+    "seed": 0
+  },
+  "camera_images_used": false,
+  "policy": "G1DWAQ_Lab model_9999.pt (third-party, blind)",
+  "checkpoint_sha256": "5042017a558b98ab24a3784d1f960383ee42015d79b67b24b74f6b6a117759c1",
+  "code_sha256": {
+    "run_factory_course.py": "671535553394",
+    "factory_course.py": "4654b83aea42"
+  },
+  "video": null,
+  "trace": "l2_corner_stairs_v30_rec_chest0kg_align_y-10cm_yaw-5_ideal.csv.gz",
+  "trace_columns": [
+    "t",
+    "x",
+    "y",
+    "yaw",
+    "z",
+    "est_x",
+    "est_y",
+    "est_yaw",
+    "segment",
+    "mode",
+    "cmd_vx",
+    "cmd_vy",
+    "cmd_wz",
+    "progress_m"
+  ]
+}

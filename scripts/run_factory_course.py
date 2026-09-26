@@ -59,6 +59,9 @@ CARRY_POSES = {
     "near": (np.array([-0.5, -0.05, 0.0, 1.5, 0.0, 0.0, 0.0, -0.5, 0.05, 0.0, 1.5, 0.0, 0.0, 0.0]),
              (0.194, 0.0, -0.044)),
 }
+# Box strapped to the torso instead of held: arms stay under the policy. Positions in the torso frame
+# (shoulders are 0.25 m above its origin): chest box front of the sternum, back box like a backpack.
+BODY_MOUNTS = {"chest": (0.13, 0.0, 0.16), "back": (-0.15, 0.0, 0.16)}
 ARM_JOINTS = slice(15, 29)
 ARM_QPOS, ARM_QVEL = slice(7 + 15, 7 + 29), slice(6 + 15, 6 + 29)
 VIRTUAL_ARM_GAIN = 1 - math.exp(-DT / 0.05)  # virtual arms follow commands with a 50 ms lag
@@ -274,6 +277,8 @@ def main() -> None:
     parser.add_argument("--payload-kg", type=float, default=None,
                         help="carry a box of this mass with arms held in a fixed carry pose (0 = pose only)")
     parser.add_argument("--carry-reach", choices=tuple(CARRY_POSES), default="far")
+    parser.add_argument("--payload-mount", choices=("hands", *BODY_MOUNTS), default="hands",
+                        help="hands: arms locked in a carry pose; chest/back: box strapped to the torso, arms free")
     parser.add_argument("--arm-obs", choices=("real", "virtual"), default="real",
                         help="while carrying: show the policy the real locked arms or a virtual free-arm state")
     parser.add_argument("--loc-sigma-cm", type=float, default=0.0, help="camera position noise (1σ)")
@@ -286,6 +291,8 @@ def main() -> None:
     parser.add_argument("--max-time-s", type=float, default=None)
     parser.add_argument("--stuck-s", type=float, default=25.0, help="stop if route progress stalls this long")
     parser.add_argument("--video", action="store_true")
+    parser.add_argument("--video-tail-s", type=float, default=4.0,
+                        help="after a fall or path exit, keep simulating this long for the video (metrics stop)")
     parser.add_argument("--plot", action="store_true", help="also write a top-down map with this run's path")
     parser.add_argument("--tag", default="", help="extra run-name suffix")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "artifacts/factory-course/runs")
@@ -302,9 +309,11 @@ def main() -> None:
     loc_label = "ideal" if localizer.ideal else (
         f"s{args.loc_sigma_cm:g}cm_y{args.loc_yaw_sigma_deg:g}deg_{args.loc_rate_hz:g}hz_"
         f"{args.loc_latency_ms:g}ms_b{args.loc_bias_cm:g}cm{'_fused' if args.loc_fusion else ''}_seed{args.seed}")
+    hands = args.payload_kg is not None and args.payload_mount == "hands"
     control_label = (f"v{round(args.stair_speed * 100)}" + ("_rec" if args.recovery else "")
-                     + (f"_carry{args.payload_kg:g}kg{args.carry_reach}" if args.payload_kg is not None else "")
-                     + ("_varm" if args.payload_kg is not None and args.arm_obs == "virtual" else "")
+                     + (("" if args.payload_kg is None else f"_carry{args.payload_kg:g}kg{args.carry_reach}"
+                         if args.payload_mount == "hands" else f"_{args.payload_mount}{args.payload_kg:g}kg"))
+                     + ("_varm" if hands and args.arm_obs == "virtual" else "")
                      + ("_align" if args.align else ""))
     run_name = (f"{course.name}_{control_label}_y{args.start_y_cm:+g}cm_yaw{args.start_yaw_deg:+g}_"
                 f"{loc_label}{args.tag}")
@@ -336,7 +345,8 @@ def main() -> None:
             (temp / "g1_29dof_rev_1_0_daf.xml").symlink_to(robot_xml)
         else:
             (temp / "g1_29dof_rev_1_0_daf.xml").write_text(
-                with_payload(robot_xml, args.payload_kg, CARRY_POSES[args.carry_reach][1]))
+                with_payload(robot_xml, args.payload_kg, CARRY_POSES[args.carry_reach][1] if hands
+                             else BODY_MOUNTS[args.payload_mount]))
         (temp / "meshes").symlink_to(source_models / "meshes", target_is_directory=True)
         scene_path = temp / f"{course.name}.xml"
         scene_path.write_text(scene_xml(course))
@@ -388,9 +398,10 @@ def main() -> None:
         trace = []
         outcome, detail = "time_limit", ""
         best_progress, best_progress_time = 0.0, 0.0
+        failed_at = end_time = end_xyz = None
         settle_ticks = 25  # stand still for 0.5 s so the policy's history is consistent
         virtual_arms = None
-        if args.payload_kg is not None and args.arm_obs == "virtual":
+        if hands and args.arm_obs == "virtual":
             virtual_arms = [runner.default_dof_pos[ARM_JOINTS].astype(float).copy(), np.zeros(14)]
         start_wall = time.monotonic()
         next_frame_time = 0.0
@@ -432,7 +443,7 @@ def main() -> None:
                     virtual_arms[1] = (virtual_arms[0] - previous) / DT
                 for _ in range(runner.cfg.sim.decimation):
                     target = runner.position_control()
-                    if args.payload_kg is not None:
+                    if hands:
                         # arms leave the policy's control and move to the carry pose during the settle phase
                         blend = min(1.0, tick / settle_ticks)
                         target[ARM_JOINTS] = ((1 - blend) * runner.default_dof_pos[ARM_JOINTS]
@@ -445,6 +456,11 @@ def main() -> None:
                     write_frame()
                     next_frame_time += 1 / fps
 
+                if failed_at is not None:
+                    # the run already failed; only keep simulating so the video shows what happens next
+                    if runner.data.time - failed_at >= args.video_tail_s:
+                        break
+                    continue
                 truth = true_pose()
                 z = float(runner.data.qpos[2])
                 gravity_z = float(runner.get_gravity_orientation(runner.data.qpos[3:7])[2])
@@ -457,22 +473,28 @@ def main() -> None:
                               *np.round(estimate, 4).tolist(), follower.index, follower.mode,
                               *np.round(command, 3).tolist(), round(progress, 3)])
 
-                if not np.isfinite(runner.data.qpos).all() or gravity_z > -0.6 or z - surface < 0.4:
-                    outcome, detail = "fall", f"segment {follower.index} ({segment.kind})"
-                    break
                 if follower.mode == "follow":
                     lateral = abs(across)
                 else:
                     # turning on the square corner landing centred on the segment end
                     lateral = max(abs(truth[0] - segment.end[0]), abs(truth[1] - segment.end[1]))
-                if lateral > course.width / 2:
-                    outcome, detail = "path_exit", f"segment {follower.index} ({segment.kind}), {follower.mode}"
-                    break
-                if progress > best_progress + 0.1:
+                failure = None
+                if not np.isfinite(runner.data.qpos).all() or gravity_z > -0.6 or z - surface < 0.4:
+                    failure = ("fall", f"segment {follower.index} ({segment.kind})")
+                elif lateral > course.width / 2:
+                    failure = ("path_exit", f"segment {follower.index} ({segment.kind}), {follower.mode}")
+                elif progress > best_progress + 0.1:
                     best_progress, best_progress_time = progress, t
                 elif t - best_progress_time > args.stuck_s and tick > settle_ticks:
-                    outcome, detail = "stuck", f"segment {follower.index} ({segment.kind}), {follower.mode}"
-                    break
+                    failure = ("stuck", f"segment {follower.index} ({segment.kind}), {follower.mode}")
+                if failure is not None:
+                    outcome, detail = failure
+                    end_time, end_xyz = float(runner.data.time), runner.data.qpos[:3].copy()
+                    if not (args.video and args.video_tail_s > 0 and outcome != "stuck"):
+                        break
+                    failed_at = end_time
+            if end_time is None:
+                end_time, end_xyz = float(runner.data.time), runner.data.qpos[:3].copy()
             write_frame()
             if ffmpeg is not None and last_frame is not None:
                 for _ in range(fps):
@@ -506,15 +528,15 @@ def main() -> None:
         "course": course.summary() | {"segments": None},
         "outcome": outcome,
         "detail": detail,
-        "sim_time_s": round(float(runner.data.time), 2),
+        "sim_time_s": round(end_time, 2),
         "wall_time_s": round(time.monotonic() - start_wall, 1),
         "route_progress_m": round(final_progress, 3),
         "route_completion": round(final_progress / course.total_length, 4),
-        "final_goal_distance_cm": round(100 * math.hypot(runner.data.qpos[0] - course.goal[0],
-                                                         runner.data.qpos[1] - course.goal[1]), 1),
+        "final_goal_distance_cm": round(100 * math.hypot(end_xyz[0] - course.goal[0], end_xyz[1] - course.goal[1]), 1),
         "mean_abs_cross_track_cm": round(100 * float(np.mean(errors)), 2) if errors else None,
         "max_abs_cross_track_cm": round(100 * float(np.max(errors)), 2) if errors else None,
-        "final_xyz_m": [round(float(v), 3) for v in runner.data.qpos[:3]],
+        "final_xyz_m": [round(float(v), 3) for v in end_xyz],
+        "video_tail_s": args.video_tail_s if failed_at is not None else 0.0,
         "start_offset_cm": args.start_y_cm,
         "start_yaw_deg": args.start_yaw_deg,
         "flat_speed_mps": args.flat_speed,
@@ -523,8 +545,9 @@ def main() -> None:
         "recoveries": follower.recoveries,
         "align_before_stairs": args.align,
         "payload_kg": args.payload_kg,
-        "carry_pose": args.carry_reach if args.payload_kg is not None else None,
-        "arm_observation": args.arm_obs if args.payload_kg is not None else None,
+        "payload_mount": args.payload_mount if args.payload_kg is not None else None,
+        "carry_pose": args.carry_reach if hands else None,
+        "arm_observation": args.arm_obs if hands else None,
         "alignments": follower.alignments,
         "localization": {
             "source": "MuJoCo ground truth" + ("" if localizer.ideal else " + simulated camera error"),

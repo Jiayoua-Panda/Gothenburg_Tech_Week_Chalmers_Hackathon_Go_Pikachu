@@ -29,7 +29,23 @@ Full table with 95% intervals: [`results.md`](results.md) / [`summary.csv`](summ
 3. **Walk slower with a load on flat ground.** At 0.3 m/s the near hold carries up to 3 kg around the L1 corner 9/9, and 8 kg 6/9. At 0.5 m/s the load drives the robot past the corner point: it cannot stop, keeps moving forward while commanded backwards, and leaves the landing while turning. Loaded runs finish faster than unloaded ones even at the same command (L4 goal times 49–65 s vs 81 s), because the forward centre of mass keeps pulling the robot ahead.
 4. **The full route is where zero-shot carrying stops being usable.** On L4, success is 16–52% for 0–3 kg (depending on mass and corridor speed) and 0/25 at 5 kg. Most failures are on the 12-riser descent, the same weak spot as without a box, now made worse. At 5 kg, corners fail too (turning in place on landings with the load).
 
-**Bottom line:** without retraining, and with a close hold, virtual arm observation and slow corridors, the existing policy carries **about 2 kg** reliably on a single flight (L2), which matches the G1's rated arm payload. It does **not** carry any load reliably over the full route with a descent. Reliable load carrying on stairs needs a policy trained for it: payload mass and centre-of-mass randomization, a fixed or separately controlled upper body, and more descent practice. That is the fine-tuning step of the pipeline.
+### Box strapped to the body, arms free (`--payload-mount chest|back`)
+
+This tests whether the locked arms, rather than the mass, were the main problem. The same 20 cm box is fixed to the torso link, either 0.13 m in front of it (chest) or 0.15 m behind (back), 0.16 m up. The arms stay under the policy, and nothing else changes: 0.5 m/s corridors, stall recovery, square-up.
+
+| Course | Chest box | Back box |
+| --- | --- | --- |
+| L1 corner (flat), 9 runs | 0–5 kg: 9/9 · 8 kg: 8/9 · **12 kg: 9/9** · 15 kg: 1/9 | 0–8 kg: 9/9 · 12 kg: 0/9 (stuck) · 15 kg: 0/9 |
+| L2 stairs up, 9 runs | 0 kg: 6/9 · 2 kg: 8/9 · 5 kg: 6/9 · **8 kg: 8/9** · 12 kg: 0/9 | 0 kg: 8/9 · **2 kg: 1/9** · ≥ 5 kg: 0/9 (stuck at the first riser) |
+| L4 full route, 25 runs | 0 kg: 20 · **2 kg: 15 · 5 kg: 10 · 8 kg: 6** · 12 kg: 1 · 15 kg: 0 | 0 kg: 21 · 2 kg: 2 · ≥ 5 kg: 0 |
+
+- **The locked arms were the bigger problem.** With arms free and the box on the chest, the policy carries about 4× more on stairs than with a hand-held box (8 kg vs 2 kg on L2). On the full route it goes from 4–8/25 to 15/25 at 2 kg, and from 0/25 to 10/25 at 5 kg. That fits its training: ±5 kg torso mass, with the arms always free.
+- **Where the load sits matters as much as how heavy it is.** A backpack moves the centre of mass backwards, and the robot can no longer climb: it stalls at the riser from 2 kg. A chest load leans it forward, which helps on the way up.
+- **The descent is still the ceiling.** Most chest-load failures on L4 are path exits on the down flight, as before.
+
+For a real deployment, this points to a fixed **front carrier** (tray or harness on the chest) rather than carrying in the hands, at least until a policy is trained with arm-held loads.
+
+**Bottom line:** without retraining, and with a close hold, virtual arm observation and slow corridors, the existing policy carries **about 2 kg** reliably on a single flight (L2), which matches the G1's rated arm payload. It does **not** carry any hand-held load reliably over the full route with a descent. Strapped to the chest with arms free, it carries about 8 kg on L2, but even then the full route drops to 6/25 at 8 kg. Reliable load carrying on stairs needs a policy trained for it: payload mass and centre-of-mass randomization, a fixed or separately controlled upper body, and more descent practice. That is the fine-tuning step of the pipeline.
 
 ## Videos
 

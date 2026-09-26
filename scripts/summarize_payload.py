@@ -12,12 +12,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SURFACE, INK, INK_2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 # validated categorical slots 1-4; slots 3-4 are below 3:1 contrast, so every series also has its own
-# marker and the numbers are in results.md
+# marker and the numbers are in results.md (which also lists the far hold and real-arm-observation runs)
 SERIES = [
     (("near", "virtual", 0.3), "near hold, virtual arms, 0.3 m/s corridors", "#2a78d6", "o"),
     (("near", "virtual", 0.5), "near hold, virtual arms, 0.5 m/s corridors", "#eb6834", "s"),
-    (("far", "virtual", 0.5), "far hold, virtual arms, 0.5 m/s", "#1baf7a", "^"),
-    (("near", "real", 0.5), "near hold, real arm observation, 0.5 m/s", "#eda100", "D"),
+    (("chest", "-", 0.5), "box strapped to chest, arms free, 0.5 m/s", "#1baf7a", "^"),
+    (("back", "-", 0.5), "box on back, arms free, 0.5 m/s", "#eda100", "D"),
 ]
 COURSES = [("l1_corner", "L1 corner (flat)"), ("l2_corner_stairs", "L2 corner + 10 risers up"),
            ("l4_factory_route", "L4 full route (24 risers, 5 turns)")]
@@ -37,7 +37,9 @@ def main() -> None:
     groups: dict[tuple, list[dict]] = defaultdict(list)
     for path in sorted(args.runs.glob("*.json")):
         run = json.loads(path.read_text())
-        key = (run["course"]["name"], run.get("carry_pose") or "arms free", run.get("arm_observation") or "-",
+        mount = run.get("payload_mount")
+        hold = mount if mount in ("chest", "back") else (run.get("carry_pose") or "arms free")
+        key = (run["course"]["name"], hold, run.get("arm_observation") or "-",
                run["flat_speed_mps"], run.get("payload_kg"))
         groups[key].append(run)
 
@@ -96,17 +98,18 @@ def plot(rows: list[dict], path: Path) -> None:
         n = next((r["runs"] for r in rows if r["course"] == course and r["payload_kg"] != ""), 0)
         ax.set_title(f"{title} — {n} runs per point", loc="left", fontsize=9.5, fontweight="bold", color=INK)
         ax.set_xlabel("box mass (kg)")
-        ax.set_xticks([0, 1, 2, 3, 5, 8])
+        ax.set_xticks([0, 2, 5, 8, 12, 15])
         ax.set_ylim(-3, 103)
         ax.set_yticks([0, 25, 50, 75, 100], ["0%", "25%", "50%", "75%", "100%"])
         ax.grid(axis="y", color=GRID, linewidth=0.6)
         ax.spines[["top", "right"]].set_visible(False)
     axes[0].set_ylabel("routes completed")
     handles, labels = axes[1].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", ncol=4, frameon=False, fontsize=8)
+    fig.legend(handles, labels, loc="lower center", ncol=2, frameon=False, fontsize=8)
     fig.suptitle("Carrying a box with the unmodified G1-DWAQ stair policy: goal rate vs box mass "
-                 "(arms held in a carry pose, box fixed to the torso)", x=0.01, ha="left", fontsize=10.5, color=INK)
-    fig.tight_layout(rect=(0, 0.07, 1, 0.95))
+                 "(held in locked arms, or strapped to chest/back with arms free)", x=0.01, ha="left", fontsize=10.5,
+                 color=INK)
+    fig.tight_layout(rect=(0, 0.1, 1, 0.95))
     fig.savefig(path, facecolor=SURFACE)
     plt.close(fig)
 
