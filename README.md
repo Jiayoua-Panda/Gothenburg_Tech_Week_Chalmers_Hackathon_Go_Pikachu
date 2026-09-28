@@ -56,29 +56,9 @@ speed on the flat. See [`g1_course/outputs/MORNING_SUMMARY.md`](g1_course/output
 Evaluation results in `g1_course/outputs/v0/segment_results.csv` were regenerated on macOS (MuJoCo 3.x);
 the videos in the same folder are from the earlier Windows run. Pass rates agree within trial noise.
 
-## StairLab interactive concept
+## Pitch
 
-Open [index.html](index.html) in a browser to explore the saved StairLab interface. No build step is required. GitHub displays the HTML source; download or clone the repository to open the page locally.
-
-- Adjust stair rise, tread depth, and usable width.
-- Switch between spatial and perception views.
-- Show or hide illustrative footholds.
-- Use the responsive layout on desktop or mobile.
-
-The saved starting view is perception mode, with a **20 cm rise, 40 cm tread, and 110 cm width**. Subsequent changes are remembered by the browser when local storage is available.
-
-This is an interactive geometry and interface concept, not a physics simulation or a trained robot policy. Robot poses, sensor coverage, and footholds are illustrative; experimental metrics remain unmeasured.
-
-Files:
-
-- `index.html`: standalone browser export, including its display and state-storage runtime.
-- `web/stairlab.fragment.html`: editable interface source, preserved from the conversation visualization with the selected starting values.
-
-The standalone page is exported with the visualize skill's `scripts/render.py`:
-
-```sh
-python3 /path/to/visualize/scripts/render.py web/stairlab.fragment.html index.html --title "StairLab — Industrial Humanoid Learning" --force
-```
+The GitHub Pages site opens the pitch deck ([pitch/index.html](pitch/index.html)); the site root redirects there.
 
 ## MuJoCo evaluations
 
