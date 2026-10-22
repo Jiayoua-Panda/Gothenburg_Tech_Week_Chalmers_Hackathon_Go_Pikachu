@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pitch-film",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "pitch"],
+      "port": 8765
+    }
+  ]
+}
